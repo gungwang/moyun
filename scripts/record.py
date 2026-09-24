@@ -90,6 +90,8 @@ async def main():
     a = ap.parse_args(); URL, OUT = a.url, a.out; os.makedirs(OUT, exist_ok=True)
     which = a.formats
     async with async_playwright() as p:
-        if "16x9" in which: await record(p, "16x9", 1024, 576, 1.875, 1920, 1080)
-        if "9x16" in which: await record(p, "9x16", 540, 960, 2, 1080, 1920)
+        # CDP screencast in headless Chromium emits CSS-pixel frames and ignores device_scale_factor,
+        # so the viewport itself must be the target resolution.
+        if "16x9" in which: await record(p, "16x9", 1920, 1080, 1, 1920, 1080)
+        if "9x16" in which: await record(p, "9x16", 1080, 1920, 1, 1080, 1920)
 asyncio.run(main())
