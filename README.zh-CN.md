@@ -56,4 +56,21 @@ MIT，见 [LICENSE](LICENSE)。
 
 ---
 
+## Author | 作者
+
+**Axton Liu** — AI Educator & Creator
+
+- Website: [axtonliu.ai](https://www.axtonliu.ai)
+- YouTube: [@AxtonLiu](https://youtube.com/@AxtonLiu)
+- Twitter/X: [@axtonliu](https://x.com/axtonliu)
+
+### Learn More
+
+- [MAPS™ AI Agent Course](https://www.axtonliu.ai/aiagent) - Systematic AI agent skills training
+- [Claude Skills: A Systematic Guide](https://www.axtonliu.ai/newsletters/ai-2/posts/claude-agent-skills-maps-framework) - Complete methodology
+- [AI Elite Weekly Newsletter](https://www.axtonliu.ai/newsletters/ai-2) - Weekly AI insights
+- [Free AI Course](https://www.axtonliu.ai/axton-free-course) - Get started with AI
+
+---
+
 © AXTONLIU™ & AI 精英学院™ 版权所有
