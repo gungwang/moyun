@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -124,8 +124,8 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   .tools button[data-size]::before{width:10px}
   .sizes button{min-width:31px;padding:0 4px}
   .sep{display:none}
-  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 176px)}
-  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 200px)}
+  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 210px)}
+  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);max-height:min(52vh,420px)}
   .mast p{display:none}
 }
 .fallback{position:fixed;inset:0;display:grid;place-items:center;padding:0 24px;text-align:center;font-size:16px;line-height:1.9;color:var(--ink-soft)}
@@ -172,6 +172,11 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
     <button role="radio" aria-checked="false" data-size="thick">粗</button>
   </div>
   <span class="sep"></span>
+  <div class="tools paper-modes" role="radiogroup" aria-label="画纸颜色">
+    <button role="radio" aria-checked="true" data-paper-theme="light">白色</button>
+    <button role="radio" aria-checked="false" data-paper-theme="dark">黑色</button>
+  </div>
+  <span class="sep"></span>
   <button id="wash">洗纸</button>
   <button id="sound" aria-pressed="false">琴 · 静</button>
   <button id="about" aria-expanded="false" aria-controls="sheet">背后</button>
@@ -210,6 +215,9 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 'use strict';
 const canvas = document.getElementById('c');
 const $ = id => document.getElementById(id);
+let paperTheme = 'light';
+try { if (localStorage.getItem('moyun-paper-theme') === 'dark') paperTheme = 'dark'; } catch (_) {}
+document.documentElement.dataset.theme = paperTheme;
 const poemEl = $('poem'), ghostEl = $('ghost'), hintEl = $('hint');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
@@ -1377,6 +1385,15 @@ document.querySelectorAll('.sizes button').forEach(b => b.addEventListener('clic
   brushSize = b.dataset.size;
   document.querySelectorAll('.sizes button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
 }));
+const paperModeButtons = document.querySelectorAll('.paper-modes button');
+function setPaperTheme(mode){
+  paperTheme = mode === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = paperTheme;
+  paperModeButtons.forEach(b => b.setAttribute('aria-checked', b.dataset.paperTheme === paperTheme ? 'true' : 'false'));
+  try { localStorage.setItem('moyun-paper-theme', paperTheme); } catch (_) {}
+}
+paperModeButtons.forEach(b => b.addEventListener('click', () => setPaperTheme(b.dataset.paperTheme)));
+setPaperTheme(paperTheme);
 const sheet = $('sheet'), aboutBtn = $('about');
 aboutBtn.addEventListener('click', () => { sheet.hidden = !sheet.hidden; aboutBtn.setAttribute('aria-expanded', String(!sheet.hidden)); });
 document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
