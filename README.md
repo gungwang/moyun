@@ -1,4 +1,4 @@
-# 墨韵 Moyun
+# 画与歌
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Live demo](https://img.shields.io/badge/Live-axtonliu.github.io%2Fmoyun-B03A2A.svg)](https://axtonliu.github.io/moyun/)
@@ -12,7 +12,7 @@ A sheet of rice paper that breathes. Ink runs on a real-time fluid simulation on
 ## What it does
 
 - **Watch**: on load, a brush you can't see paints a fresh landscape. Use the scene menu to choose among a campus ginkgo avenue, library, sports field, dormitory, garden, streamside walkers, birds in woods, a horse carriage in the city, a Kunming streetscape, and the original landscape. Each scene has its own composition and poem.
-- **Paint**: press and drag. Slow strokes are wet and heavy; fast strokes are thin and dry. Each stroke is one dip of ink, so it runs dry into flying-white (飞白) streaks.
+- **Paint**: choose ink, cinnabar, azurite, ochre, jade, or clear water; set a fine, medium, or thick brush; then press and drag. Slow strokes are wet and heavy, while fast strokes grow thin and dry into flying-white (飞白) streaks.
 - **Play**: `清水` (clear water) is a fluid brush — stir a finished painting and watch the ink swirl.
 - **Listen**: strokes play a pentatonic guqin, so nothing you draw is ever out of tune.
 
@@ -23,7 +23,7 @@ The painter is a single HTML file with ten small local transparent figure PNGs. 
 | Part | Technique |
 |---|---|
 | Fluid | Incompressible Navier–Stokes in WebGL2 fragment shaders: curl → vorticity confinement → divergence → 24 Jacobi pressure iterations → gradient subtraction → semi-Lagrangian advection |
-| Ink bleeding | The RGBA dye texture stores free ink, signed cinnabar/azurite pigment, water and ochre pigment. Ink and pigments bleed through procedural paper-fibre noise while water evaporates |
+| Ink bleeding | The RGBA dye texture stores free ink, signed cinnabar/azurite pigment, water, and signed ochre/jade pigment. Ink and pigments bleed through procedural paper-fibre noise while water evaporates |
 | Brush | Gaussian stamps at even spacing along the path, normalised by spacing. Speed sets width, ink load decays with distance, and bristle streaks are cut with 1-D noise across the stroke normal |
 | Paper | Procedural fibres and granulation, baked once per resize/theme |
 | Qin | Karplus–Strong plucked-string synthesis into AudioBuffers; slides and vibrato via `playbackRate` automation; procedural reverb impulse |

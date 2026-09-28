@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="墨韵">
+<meta property="og:title" content="画与歌">
 <meta property="og:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:url" content="https://axtonliu.github.io/moyun/">
 <meta property="og:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="墨韵">
+<meta name="twitter:title" content="画与歌">
 <meta name="twitter:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta name="twitter:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta name="theme-color" content="#ECE8DD">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%23B03A2A'/%3E%3C/svg%3E">
 <style>:root{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>墨韵</title>
+<title>画与歌</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
@@ -49,9 +49,9 @@
   --veil:rgba(22,24,29,.8); --line:rgba(218,221,226,.16);
   --seal-blend:normal; color-scheme:dark;
 }
-:root{--azurite:#557D90;--ochre:#B98D43}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--azurite:#83AFC0;--ochre:#D0AC64}}
-:root[data-theme="dark"]{--azurite:#83AFC0;--ochre:#D0AC64}
+:root{--azurite:#557D90;--ochre:#B98D43;--jade:#5D7959}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--azurite:#83AFC0;--ochre:#D0AC64;--jade:#A4BD96}}
+:root[data-theme="dark"]{--azurite:#83AFC0;--ochre:#D0AC64;--jade:#A4BD96}
 html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overflow:hidden;-webkit-font-smoothing:antialiased}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
@@ -81,10 +81,24 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .bar select:hover{color:var(--ink)}
 .bar .primary{color:var(--ink);font-weight:600;display:inline-flex;align-items:center;gap:8px}
 .bar .primary::before{content:"";width:8px;height:8px;background:var(--cinnabar);border-radius:1px}
-.tools{display:flex}
-.tools button{background-image:linear-gradient(var(--ink),var(--ink))}
+.tools{display:flex;flex-wrap:wrap;justify-content:center}
+.tools button{display:inline-flex;align-items:center;gap:5px;background-image:linear-gradient(var(--ink),var(--ink))}
+.tools button[data-tool]::before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:var(--ink)}
+.tools button[data-tool="ink"]::before{background:var(--ink)}
 .tools button[data-tool="cinnabar"]{background-image:linear-gradient(var(--cinnabar),var(--cinnabar))}
+.tools button[data-tool="cinnabar"]::before{background:var(--cinnabar)}
+.tools button[data-tool="azurite"]{background-image:linear-gradient(var(--azurite),var(--azurite))}
+.tools button[data-tool="azurite"]::before{background:var(--azurite)}
+.tools button[data-tool="ochre"]{background-image:linear-gradient(var(--ochre),var(--ochre))}
+.tools button[data-tool="ochre"]::before{background:var(--ochre)}
+.tools button[data-tool="jade"]{background-image:linear-gradient(var(--jade),var(--jade))}
+.tools button[data-tool="jade"]::before{background:var(--jade)}
+.tools button[data-tool="water"]::before{background:transparent;border:1px solid var(--azurite)}
 .tools button[aria-checked="true"]{color:var(--ink);background-size:55% 2px}
+.tools button[data-size]::before{content:"";width:12px;height:var(--size-mark,2px);flex:none;background:var(--ink);border-radius:4px}
+.tools button[data-size="fine"]{--size-mark:1px}
+.tools button[data-size="thick"]{--size-mark:4px}
+.sizes button{min-width:34px;justify-content:center;padding:0 6px}
 .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
 #sound[aria-pressed="true"]{color:var(--ink)}
 
@@ -102,10 +116,16 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .corner{position:fixed;left:18px;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums;pointer-events:none;opacity:.8}
 @media (max-width:980px){.corner{display:none}}
 @media (max-width:520px){
-  .bar button{font-size:14px;padding:0 4px;letter-spacing:.06em}
+  .bar{row-gap:2px;padding:5px 7px}
+  .bar button{font-size:13px;padding:0 3px;letter-spacing:.02em}
+  .tools{max-width:calc(100vw - 48px);gap:0}
+  .tools button{min-height:36px;gap:3px}
+  .tools button[data-tool]::before{width:7px;height:7px}
+  .tools button[data-size]::before{width:10px}
+  .sizes button{min-width:31px;padding:0 4px}
   .sep{display:none}
-  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 120px)}
-  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 116px)}
+  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 176px)}
+  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 200px)}
   .mast p{display:none}
 }
 .fallback{position:fixed;inset:0;display:grid;place-items:center;padding:0 24px;text-align:center;font-size:16px;line-height:1.9;color:var(--ink-soft)}
@@ -116,7 +136,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 
 <canvas id="c" aria-label="水墨画纸，按住拖动即可作画"></canvas>
 
-<header class="mast"><h1>墨韵</h1><p>一张会呼吸的纸</p></header>
+<header class="mast"><h1>画与歌</h1><p>一张会呼吸的纸</p></header>
 <div class="poem" id="poem" hidden></div>
 <div class="ghost" id="ghost"></div>
 <p class="hint" id="hint">选择场景后点「落笔」｜也可按住拖动作画｜慢则墨浓，快则笔枯</p>
@@ -137,10 +157,19 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
     <option value="kunming">昆明街景</option>
   </select>
   <span class="sep"></span>
-  <div class="tools" role="radiogroup" aria-label="笔">
+  <div class="tools pigments" role="radiogroup" aria-label="笔刷颜色与模式">
     <button role="radio" aria-checked="true" data-tool="ink">浓墨</button>
     <button role="radio" aria-checked="false" data-tool="cinnabar">朱砂</button>
+    <button role="radio" aria-checked="false" data-tool="azurite">蓝色</button>
+    <button role="radio" aria-checked="false" data-tool="ochre">黄色</button>
+    <button role="radio" aria-checked="false" data-tool="jade">绿色</button>
     <button role="radio" aria-checked="false" data-tool="water">清水</button>
+  </div>
+  <span class="sep"></span>
+  <div class="tools sizes" role="radiogroup" aria-label="笔锋粗细">
+    <button role="radio" aria-checked="false" data-size="fine">细</button>
+    <button role="radio" aria-checked="true" data-size="medium">中</button>
+    <button role="radio" aria-checked="false" data-size="thick">粗</button>
   </div>
   <span class="sep"></span>
   <button id="wash">洗纸</button>
@@ -167,7 +196,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   <div class="pane" data-pane="eng" hidden>
     <ul>
       <li><b>流体</b>：不可压缩 Navier–Stokes，全部在片元着色器里求解。每帧依次是旋度、涡量约束、散度、24 次 Jacobi 压力迭代、梯度相减投影，最后半拉格朗日平流。</li>
-      <li><b>洇墨</b>：RGBA 四通道分别存游离墨、带符号色素（正值朱砂、负值花青）、水分和赭金色素。墨与色素随纸纤维噪声扩散，水分按指数蒸发。</li>
+      <li><b>洇墨</b>：RGBA 四通道分别存游离墨、带符号色素（朱砂/花青）、水分和带符号色素（赭黄/石绿）。四种颜色随纸纤维噪声扩散，水分按指数蒸发；笔刷可选浓墨、朱砂、蓝、黄、绿、清水和细中粗三档。</li>
       <li><b>笔</b>：沿路径等距盖高斯印章，墨量按间距归一化。行笔速度决定笔径，墨量随行笔距离衰减；墨将尽时，沿笔触法向用一维噪声切出刷毛条纹，就是飞白。</li>
       <li><b>琴</b>：Karplus–Strong 拨弦物理模型，12 个音离线合成进 AudioBuffer；上滑与吟用 playbackRate 自动化实现；混响是程序生成的指数衰减脉冲响应。</li>
       <li><b>整页</b>：一个 HTML 文件和 media/figures 下的本地人物位图。无需运行时 JS 库、外链图片或录音文件。</li>
@@ -323,7 +352,7 @@ void main(){
   n.w+=(avg.w-c.w)*k*.45;
   n.z+=(avg.z-c.z)*clamp(k*1.3,0.,1.);
   n.z*=evap;
-  o=vec4(max(n.x,0.),n.y,max(n.z,0.),max(n.w,0.));
+  o=vec4(max(n.x,0.),n.y,max(n.z,0.),clamp(n.w,-4.,4.));
 }`,
 paper: `
 uniform vec2 res; uniform vec3 paper; uniform vec3 paper2; uniform float seed;
@@ -346,7 +375,7 @@ void main(){
   o=vec4(c,gran);
 }`,
 disp: `
-uniform sampler2D uDye; uniform sampler2D uPaper; uniform vec2 dtex; uniform vec3 ink; uniform vec3 cin; uniform vec3 azurite; uniform vec3 ochre; uniform float dark;
+uniform sampler2D uDye; uniform sampler2D uPaper; uniform vec2 dtex; uniform vec3 ink; uniform vec3 cin; uniform vec3 azurite; uniform vec3 ochre; uniform vec3 jade; uniform float dark;
 void main(){
   vec4 pp=texture(uPaper,vUv); vec4 d=texture(uDye,vUv);
   vec4 l=texture(uDye,vUv-vec2(dtex.x,0.)), r=texture(uDye,vUv+vec2(dtex.x,0.));
@@ -360,9 +389,11 @@ void main(){
   float red=1.-exp(-max(d.y,0.)*2.6*gran);
   float blue=1.-exp(-max(-d.y,0.)*2.3*gran);
   float gold=1.-exp(-max(d.w,0.)*2.3*gran);
+  float green=1.-exp(-max(-d.w,0.)*2.3*gran);
   col=mix(col,mix(cin,ink,dens*.35),red*.93);
   col=mix(col,azurite,blue*.72);
   col=mix(col,ochre,gold*.72);
+  col=mix(col,jade,green*.72);
   col*=1.-.045*clamp(d.z*.6,0.,1.)*(1.-dark);
   vec2 q=vUv-.5; col*=1.-.09*dot(q,q);
   o=vec4(col,1.);
@@ -488,7 +519,7 @@ const paperSeed = Math.random() * 50;
 function readTheme(){
   theme.paper = cssColor('--paper'); theme.paper2 = cssColor('--paper-2');
   theme.ink = cssColor('--ink'); theme.cin = cssColor('--cinnabar');
-  theme.azurite = cssColor('--azurite'); theme.ochre = cssColor('--ochre');
+  theme.azurite = cssColor('--azurite'); theme.ochre = cssColor('--ochre'); theme.jade = cssColor('--jade');
   const L = theme.paper[0] * .3 + theme.paper[1] * .59 + theme.paper[2] * .11;
   theme.dark = L < .4 ? 1 : 0;
   if (paperF) bakePaper();
@@ -548,7 +579,7 @@ function brushSeg(x0, y0, x1, y1, st){
     dyeQ.push(dab(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, r, st.ink * amt, st.cin * amt, st.water * amt, st.dry, st.hard || 0, dx, dy, st.seed, (st.ochre || 0) * amt));
   }
   if (st.force) velQ.push(vsplat(x1, y1, Math.pow(Math.max(rAvg * 3, .02), 2), dx * st.force, dy * st.force));
-  if (st.ink > 0 || st.cin !== 0 || st.ochre > 0) hasInk = true;
+  if (st.ink > 0 || st.cin !== 0 || st.ochre !== 0) hasInk = true;
 }
 
 /* ───────── simulation ───────── */
@@ -594,7 +625,8 @@ function render(){
   gl.uniform1i(u.uDye, dye.read.bind(0)); gl.uniform1i(u.uPaper, paperF.bind(1));
   gl.uniform2f(u.dtex, 1 / dye.w, 1 / dye.h);
   gl.uniform3fv(u.ink, theme.ink); gl.uniform3fv(u.cin, theme.cin);
-  gl.uniform3fv(u.azurite, theme.azurite); gl.uniform3fv(u.ochre, theme.ochre); gl.uniform1f(u.dark, theme.dark);
+  gl.uniform3fv(u.azurite, theme.azurite); gl.uniform3fv(u.ochre, theme.ochre);
+  gl.uniform3fv(u.jade, theme.jade); gl.uniform1f(u.dark, theme.dark);
   blit(null);
 }
 function clearDye(){
@@ -722,7 +754,8 @@ function whoosh(){
 }
 
 /* ───────── the invisible hand ───────── */
-const ghost = { q: [], cur: null, wait: 0, on: false, speed: reduced ? 5 : 1 };
+const PAINT_SPEED = 1 / 3;
+const ghost = { q: [], cur: null, wait: 0, on: false, speed: reduced ? 5 * PAINT_SPEED : PAINT_SPEED };
 const paintBtn = $('paint');
 function moveGhost(x, y, r){
   const s = Math.max(.5, (r || .005) * canvas.clientHeight * 2.2 / 14);
@@ -1327,10 +1360,22 @@ $('scene').addEventListener('change', () => { if (!ghost.on && !washing) setPain
 $('wash').addEventListener('click', () => { ensureAudio(); if (!washing) wash(); });
 soundBtn.addEventListener('click', () => { if (!audio.ctx) ensureAudio(); else setSound(!audio.on); });
 
-let tool = 'ink';
-document.querySelectorAll('.tools button').forEach(b => b.addEventListener('click', () => {
+const PIGMENTS = {
+  ink: { ink: 1, cin: 0, ochre: 0 },
+  cinnabar: { ink: 0, cin: 1, ochre: 0 },
+  azurite: { ink: 0, cin: -1, ochre: 0 },
+  ochre: { ink: 0, cin: 0, ochre: 1 },
+  jade: { ink: 0, cin: 0, ochre: -1 }
+};
+const BRUSH_WIDTHS = { fine: .58, medium: 1, thick: 1.72 };
+let tool = 'ink', brushSize = 'medium';
+document.querySelectorAll('.pigments button').forEach(b => b.addEventListener('click', () => {
   tool = b.dataset.tool;
-  document.querySelectorAll('.tools button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+  document.querySelectorAll('.pigments button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+}));
+document.querySelectorAll('.sizes button').forEach(b => b.addEventListener('click', () => {
+  brushSize = b.dataset.size;
+  document.querySelectorAll('.sizes button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
 }));
 const sheet = $('sheet'), aboutBtn = $('about');
 aboutBtn.addEventListener('click', () => { sheet.hidden = !sheet.hidden; aboutBtn.setAttribute('aria-expanded', String(!sheet.hidden)); });
@@ -1351,28 +1396,31 @@ canvas.addEventListener('pointerdown', e => {
   if (!hinted) { hinted = true; hintEl.classList.add('gone'); }
   if (!sheet.hidden) { sheet.hidden = true; aboutBtn.setAttribute('aria-expanded', 'false'); }
   const [x, y] = toUV(e);
+  const widthScale = BRUSH_WIDTHS[brushSize], pigment = PIGMENTS[tool] || PIGMENTS.ink;
   const s = { x, y, t: e.timeStamp || performance.now(), v: 0, load: 1, acc: 0, seed: Math.random() * 900, pen: e.pointerType === 'pen', r: null };
   pointers.set(e.pointerId, s);
-  if (tool === 'water') { dyeQ.push(dab(x, y, .03, 0, 0, .5, 0)); }
-  else { dyeQ.push(dab(x, y, .014, tool === 'ink' ? .55 : 0, tool === 'cinnabar' ? .6 : 0, .9, 0)); hasInk = true; }
-  note(y, .45, x * 2 - 1, tool === 'ink' ? 'pluck' : 'harm');
+  if (tool === 'water') { dyeQ.push(dab(x, y, .03 * widthScale, 0, 0, .5, 0)); }
+  else { dyeQ.push(dab(x, y, .014 * widthScale, pigment.ink * .55, pigment.cin * .6, .9, 0, 0, 1, 0, s.seed, pigment.ochre * .6)); hasInk = true; }
+  note(y, .45, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm');
 });
 function moveTo(s, ev){
   const [x, y] = toUV(ev), A = aspect();
   const len = Math.hypot((x - s.x) * A, y - s.y); if (len < .0008) return;
   const now = ev.timeStamp || performance.now(), dtm = Math.max(4, now - s.t) / 1000; s.t = now;
   s.v = s.v * .75 + (len / dtm) * .25;
+  const widthScale = BRUSH_WIDTHS[brushSize] || 1, pigment = PIGMENTS[tool] || PIGMENTS.ink;
   if (tool === 'water') {
-    brushSeg(s.x, s.y, x, y, { r0: .03, r1: .03, ink: 0, cin: 0, water: .7, dry: 0, seed: s.seed, force: Math.min(s.v * velocity.h * 1.2, 1200) });
+    const radius = .03 * widthScale;
+    brushSeg(s.x, s.y, x, y, { r0: radius, r1: radius, ink: 0, cin: 0, water: .7, dry: 0, seed: s.seed, force: Math.min(s.v * velocity.h * 1.2, 1200) });
     s.acc += len; if (s.acc > .16) { s.acc = 0; note(y, .25, x * 2 - 1, 'harm'); }
   } else {
     const k = Math.min(1, s.v / 2.2), pr = s.pen ? (ev.pressure || .5) : .5;
-    const r = .013 * (1 - .62 * k) * (s.pen ? .4 + pr * 1.3 : 1);
+    const r = .013 * widthScale * (1 - .62 * k) * (s.pen ? .4 + pr * 1.3 : 1);
     s.load = Math.max(0, s.load - len * .75);
     const dry = Math.min(.95, Math.max(0, (.5 - s.load) / .5) * .8 + k * .35), amt = .35 + .75 * s.load;
-    brushSeg(s.x, s.y, x, y, { r0: s.r ?? r, r1: r, ink: tool === 'ink' ? amt : 0, cin: tool === 'cinnabar' ? amt * .9 : 0, water: .3 + .4 * s.load * (1 - k), dry, seed: s.seed, force: Math.min(s.v, 3) * 3 });
+    brushSeg(s.x, s.y, x, y, { r0: s.r ?? r, r1: r, ink: pigment.ink * amt, cin: pigment.cin * amt, ochre: pigment.ochre * amt, water: .3 + .4 * s.load * (1 - k), dry, seed: s.seed, force: Math.min(s.v, 3) * 3 });
     s.r = r;
-    s.acc += len; if (s.acc > .075) { s.acc = 0; note(y, .3 + .45 * k, x * 2 - 1, tool === 'cinnabar' ? 'harm' : 'pluck'); }
+    s.acc += len; if (s.acc > .075) { s.acc = 0; note(y, .3 + .45 * k, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm'); }
   }
   s.x = x; s.y = y;
 }
