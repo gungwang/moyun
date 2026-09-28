@@ -1,9 +1,9 @@
-# 墨韵 Moyun
+# 画与歌
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Live demo](https://img.shields.io/badge/Live-axtonliu.github.io%2Fmoyun-B03A2A.svg)](https://axtonliu.github.io/moyun/)
 
-A sheet of rice paper that breathes. Ink runs on a real-time fluid simulation on your GPU, every stroke plays a guqin note, and an invisible hand paints a Chinese landscape that has never existed before — then signs it with a poem and a seal.
+A sheet of rice paper that breathes. Ink runs on a real-time fluid simulation on your GPU, every stroke plays a guqin note, and an invisible hand paints one of ten scenes stroke by stroke, then signs it with a matching poem and seal.
 
 **[Open it →](https://axtonliu.github.io/moyun/)** · [中文说明](README.zh-CN.md)
 
@@ -11,23 +11,23 @@ A sheet of rice paper that breathes. Ink runs on a real-time fluid simulation on
 
 ## What it does
 
-- **Watch**: on load, a brush you can't see paints in the classical order — distant hills, main peak outline, texture strokes (皴), washes (染), moss dots, then pines, water, a fishing boat, birds, a cinnabar sun, a poem and a seal. Each painting is generated fresh.
-- **Paint**: press and drag. Slow strokes are wet and heavy; fast strokes are thin and dry. Each stroke is one dip of ink, so it runs dry into flying-white (飞白) streaks.
+- **Watch**: on load, a brush you can't see paints a fresh landscape. Use the scene menu to choose among a campus ginkgo avenue, library, sports field, dormitory, garden, streamside walkers, birds in woods, a horse carriage in the city, a Kunming streetscape, and the original landscape. Every refresh reshuffles the scene's viewpoint, layout and details, with a matching poem.
+- **Paint**: choose ink, cinnabar, azurite, ochre, jade, or clear water; set a fine, medium, or thick brush; then press and drag. Slow strokes are wet and heavy, while fast strokes grow thin and dry into flying-white (飞白) streaks.
 - **Play**: `清水` (clear water) is a fluid brush — stir a finished painting and watch the ink swirl.
 - **Listen**: strokes play a pentatonic guqin, so nothing you draw is ever out of tune.
 
 ## How it works
 
-Everything is one HTML file. No libraries, no images, no audio files.
+The painter is a single HTML file with ten small local transparent figure PNGs. It uses no runtime JavaScript libraries, external image requests, or prerecorded audio.
 
 | Part | Technique |
 |---|---|
 | Fluid | Incompressible Navier–Stokes in WebGL2 fragment shaders: curl → vorticity confinement → divergence → 24 Jacobi pressure iterations → gradient subtraction → semi-Lagrangian advection |
-| Ink bleeding | The ink texture stores free ink, cinnabar, water and settled ink in RGBA. Water diffuses anisotropically, modulated by procedural paper-fibre noise, then evaporates; dried ink settles and only moves again when re-wetted |
+| Ink bleeding | The RGBA dye texture stores free ink, signed cinnabar/azurite pigment, water, and signed ochre/jade pigment. Ink and pigments bleed through procedural paper-fibre noise while water evaporates |
 | Brush | Gaussian stamps at even spacing along the path, normalised by spacing. Speed sets width, ink load decays with distance, and bristle streaks are cut with 1-D noise across the stroke normal |
 | Paper | Procedural fibres and granulation, baked once per resize/theme |
 | Qin | Karplus–Strong plucked-string synthesis into AudioBuffers; slides and vibrato via `playbackRate` automation; procedural reverb impulse |
-| Landscape | Seeded generator for ridgelines, texture strokes, trees and composition, with separate landscape and portrait layouts |
+| Scenes | Ten seeded scenes, including five landscape viewpoints with changing mountains, sun or moon, clouds, birds, boats, pavilions, villages, waterfalls, and pine/willow/plum silhouettes; portrait and landscape layouts are composed separately |
 
 Light and dark themes follow the system: dark turns the paper to night and the ink to moonlight.
 

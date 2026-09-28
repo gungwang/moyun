@@ -1,24 +1,24 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="一张会呼吸的宣纸：GPU 实时解流体方程的水墨，五声音阶的古琴，一只看不见的手当场画一幅从未存在过的山水。">
+<meta name="description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="墨韵">
-<meta property="og:description" content="一张会呼吸的宣纸：GPU 实时解流体方程的水墨，五声音阶的古琴，一只看不见的手当场画一幅从未存在过的山水。">
+<meta property="og:title" content="画与歌">
+<meta property="og:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:url" content="https://axtonliu.github.io/moyun/">
 <meta property="og:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="墨韵">
-<meta name="twitter:description" content="一张会呼吸的宣纸：GPU 实时解流体方程的水墨，五声音阶的古琴，一只看不见的手当场画一幅从未存在过的山水。">
+<meta name="twitter:title" content="画与歌">
+<meta name="twitter:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta name="twitter:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta name="theme-color" content="#ECE8DD">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%23B03A2A'/%3E%3C/svg%3E">
 <style>:root{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>墨韵</title>
+<title>画与歌</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
@@ -49,6 +49,9 @@
   --veil:rgba(22,24,29,.8); --line:rgba(218,221,226,.16);
   --seal-blend:normal; color-scheme:dark;
 }
+:root{--azurite:#557D90;--ochre:#B98D43;--jade:#5D7959}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--azurite:#83AFC0;--ochre:#D0AC64;--jade:#A4BD96}}
+:root[data-theme="dark"]{--azurite:#83AFC0;--ochre:#D0AC64;--jade:#A4BD96}
 html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overflow:hidden;-webkit-font-smoothing:antialiased}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
@@ -61,7 +64,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .poem .ln{display:block}
 .poem .ch{display:inline-block;opacity:0;filter:blur(6px);transform:translateY(-.08em);transition:opacity 1s ease,filter 1.3s ease,transform 1.3s ease}
 .poem.on .ch{opacity:.92;filter:blur(0);transform:none}
-.seal{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;place-items:center;margin-top:auto;margin-right:.55em;width:2.5em;height:2.5em;box-sizing:border-box;padding:.18em;background:var(--cinnabar);color:var(--seal-text);font-size:.5em;line-height:1;letter-spacing:0;writing-mode:horizontal-tb;text-align:center;border-radius:2px 3px 2px 4px;mix-blend-mode:var(--seal-blend);opacity:0;transform:scale(1.6) rotate(-8deg);transition:opacity .18s ease-in,transform .22s cubic-bezier(.3,1.6,.5,1)}
+.seal{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);place-items:center;margin-top:auto;margin-right:.55em;width:1.7em;height:5.6em;box-sizing:border-box;padding:.18em;background:var(--cinnabar);color:var(--seal-text);font-size:.5em;line-height:1;letter-spacing:0;writing-mode:horizontal-tb;text-align:center;border-radius:2px 3px 2px 4px;mix-blend-mode:var(--seal-blend);opacity:0;transform:scale(1.6) rotate(-8deg);transition:opacity .18s ease-in,transform .22s cubic-bezier(.3,1.6,.5,1)}
 .seal.on{opacity:.9;transform:rotate(-2deg)}
 
 .ghost{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border:1px solid var(--ink);border-radius:50%;opacity:0;pointer-events:none;transition:opacity .4s}
@@ -73,13 +76,29 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .bar{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px 4px;width:max-content;max-width:calc(100% - 32px);box-sizing:border-box;padding:5px 10px;background:var(--veil);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:3px}
 .bar button{appearance:none;background:none;border:0;margin:0;min-height:40px;padding:0 10px;font:inherit;font-size:15px;letter-spacing:.1em;color:var(--ink-soft);cursor:pointer;background-repeat:no-repeat;background-position:50% calc(100% - 6px);background-size:0 2px;transition:color .2s,background-size .25s}
 .bar button:hover{color:var(--ink)}
-.bar button:focus-visible,.sheet button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.bar button:focus-visible,.bar select:focus-visible,.sheet button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.bar select{appearance:none;height:40px;min-width:112px;max-width:140px;box-sizing:border-box;padding:0 22px 0 8px;border:0;background-color:transparent;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 11px) 18px,calc(100% - 7px) 18px;background-size:4px 4px;background-repeat:no-repeat;font:inherit;font-size:14px;letter-spacing:.05em;color:var(--ink-soft);cursor:pointer}
+.bar select:hover{color:var(--ink)}
 .bar .primary{color:var(--ink);font-weight:600;display:inline-flex;align-items:center;gap:8px}
 .bar .primary::before{content:"";width:8px;height:8px;background:var(--cinnabar);border-radius:1px}
-.tools{display:flex}
-.tools button{background-image:linear-gradient(var(--ink),var(--ink))}
+.tools{display:flex;flex-wrap:wrap;justify-content:center}
+.tools button{display:inline-flex;align-items:center;gap:5px;background-image:linear-gradient(var(--ink),var(--ink))}
+.tools button[data-tool]::before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:var(--ink)}
+.tools button[data-tool="ink"]::before{background:var(--ink)}
 .tools button[data-tool="cinnabar"]{background-image:linear-gradient(var(--cinnabar),var(--cinnabar))}
+.tools button[data-tool="cinnabar"]::before{background:var(--cinnabar)}
+.tools button[data-tool="azurite"]{background-image:linear-gradient(var(--azurite),var(--azurite))}
+.tools button[data-tool="azurite"]::before{background:var(--azurite)}
+.tools button[data-tool="ochre"]{background-image:linear-gradient(var(--ochre),var(--ochre))}
+.tools button[data-tool="ochre"]::before{background:var(--ochre)}
+.tools button[data-tool="jade"]{background-image:linear-gradient(var(--jade),var(--jade))}
+.tools button[data-tool="jade"]::before{background:var(--jade)}
+.tools button[data-tool="water"]::before{background:transparent;border:1px solid var(--azurite)}
 .tools button[aria-checked="true"]{color:var(--ink);background-size:55% 2px}
+.tools button[data-size]::before{content:"";width:12px;height:var(--size-mark,2px);flex:none;background:var(--ink);border-radius:4px}
+.tools button[data-size="fine"]{--size-mark:1px}
+.tools button[data-size="thick"]{--size-mark:4px}
+.sizes button{min-width:34px;justify-content:center;padding:0 6px}
 .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
 #sound[aria-pressed="true"]{color:var(--ink)}
 
@@ -97,10 +116,16 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .corner{position:fixed;left:18px;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums;pointer-events:none;opacity:.8}
 @media (max-width:980px){.corner{display:none}}
 @media (max-width:520px){
-  .bar button{font-size:14px;padding:0 7px;letter-spacing:.06em}
+  .bar{row-gap:2px;padding:5px 7px}
+  .bar button{font-size:13px;padding:0 3px;letter-spacing:.02em}
+  .tools{max-width:calc(100vw - 48px);gap:0}
+  .tools button{min-height:36px;gap:3px}
+  .tools button[data-tool]::before{width:7px;height:7px}
+  .tools button[data-size]::before{width:10px}
+  .sizes button{min-width:31px;padding:0 4px}
   .sep{display:none}
-  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 120px)}
-  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 116px)}
+  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 210px)}
+  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);max-height:min(52vh,420px)}
   .mast p{display:none}
 }
 .fallback{position:fixed;inset:0;display:grid;place-items:center;padding:0 24px;text-align:center;font-size:16px;line-height:1.9;color:var(--ink-soft)}
@@ -111,19 +136,45 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 
 <canvas id="c" aria-label="水墨画纸，按住拖动即可作画"></canvas>
 
-<header class="mast"><h1>墨韵</h1><p>一张会呼吸的纸</p></header>
+<header class="mast"><h1>画与歌</h1><p>一张会呼吸的纸</p></header>
 <div class="poem" id="poem" hidden></div>
 <div class="ghost" id="ghost"></div>
-<p class="hint" id="hint">按住拖动作画｜慢则墨浓，快则笔枯｜每落一笔，重新蘸墨</p>
+<p class="hint" id="hint">选择场景后点「落笔」｜也可按住拖动作画｜慢则墨浓，快则笔枯</p>
 <p class="corner" id="corner"></p>
 
 <nav class="bar" aria-label="工具">
   <button id="paint" class="primary">落笔山水</button>
+  <select id="scene" aria-label="选择水墨场景">
+    <option value="landscape">山水</option>
+    <option value="ginkgo">银杏道</option>
+    <option value="library">图书馆</option>
+    <option value="sports">操场</option>
+    <option value="dormitory">学生宿舍</option>
+    <option value="garden">花园</option>
+    <option value="stream">溪畔行人</option>
+    <option value="birds">林间飞鸟</option>
+    <option value="carriage">街头马车</option>
+    <option value="kunming">昆明街景</option>
+  </select>
   <span class="sep"></span>
-  <div class="tools" role="radiogroup" aria-label="笔">
+  <div class="tools pigments" role="radiogroup" aria-label="笔刷颜色与模式">
     <button role="radio" aria-checked="true" data-tool="ink">浓墨</button>
     <button role="radio" aria-checked="false" data-tool="cinnabar">朱砂</button>
+    <button role="radio" aria-checked="false" data-tool="azurite">蓝色</button>
+    <button role="radio" aria-checked="false" data-tool="ochre">黄色</button>
+    <button role="radio" aria-checked="false" data-tool="jade">绿色</button>
     <button role="radio" aria-checked="false" data-tool="water">清水</button>
+  </div>
+  <span class="sep"></span>
+  <div class="tools sizes" role="radiogroup" aria-label="笔锋粗细">
+    <button role="radio" aria-checked="false" data-size="fine">细</button>
+    <button role="radio" aria-checked="true" data-size="medium">中</button>
+    <button role="radio" aria-checked="false" data-size="thick">粗</button>
+  </div>
+  <span class="sep"></span>
+  <div class="tools paper-modes" role="radiogroup" aria-label="画纸颜色">
+    <button role="radio" aria-checked="true" data-paper-theme="light">白色</button>
+    <button role="radio" aria-checked="false" data-paper-theme="dark">黑色</button>
   </div>
   <span class="sep"></span>
   <button id="wash">洗纸</button>
@@ -145,15 +196,15 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   <div class="pane" data-pane="arts" hidden>
     <p>国画讲「墨分五色」：同一锭墨，水多水少，就分出焦、浓、重、淡、清。这支笔也是这样。刚蘸的墨是饱的，越写越干，写到后来自然露出「飞白」。走得慢，墨在纸上洇开；走得快，笔锋就细，就枯。</p>
     <p>琴声只用宫、商、角、徵、羽五个音。五声音阶里没有半音，任何两个音碰在一起都不刺耳，所以你怎么画都不会走调。约三成的音从下方滑上来，那是古琴的「上」。</p>
-    <p>「落笔山水」照古人的次序作画：先远山，后主峰；先勾轮廓，再皴、再染、再点苔；然后是树、水、舟、鸟，落一点朱砂作日，最后题诗、钤印。山形和诗每次现算，不会重样。</p>
+    <p>「落笔山水」每次从远峰行舟、峡谷飞瀑、湖心亭影、近山听泉、层岭云村五种构图中随机择一，再逐笔皴染。松、柳、梅有不同树形，天象与远景会在日月、云鸟、舟亭村瀑间变化；横竖屏也会调整留白和景深。</p>
   </div>
   <div class="pane" data-pane="eng" hidden>
     <ul>
       <li><b>流体</b>：不可压缩 Navier–Stokes，全部在片元着色器里求解。每帧依次是旋度、涡量约束、散度、24 次 Jacobi 压力迭代、梯度相减投影，最后半拉格朗日平流。</li>
-      <li><b>洇墨</b>：墨层纹理的四个通道分别存游离墨、朱砂、水分、定着墨。每帧三遍扩散，扩散率由程序生成的纸纤维噪声调制，所以晕边是毛的，不是圆的。水分按指数蒸发，干透的墨转入定着通道，不再扩散。</li>
+      <li><b>洇墨</b>：RGBA 四通道分别存游离墨、带符号色素（朱砂/花青）、水分和带符号色素（赭黄/石绿）。四种颜色随纸纤维噪声扩散，水分按指数蒸发；笔刷可选浓墨、朱砂、蓝、黄、绿、清水和细中粗三档。</li>
       <li><b>笔</b>：沿路径等距盖高斯印章，墨量按间距归一化。行笔速度决定笔径，墨量随行笔距离衰减；墨将尽时，沿笔触法向用一维噪声切出刷毛条纹，就是飞白。</li>
       <li><b>琴</b>：Karplus–Strong 拨弦物理模型，12 个音离线合成进 AudioBuffer；上滑与吟用 playbackRate 自动化实现；混响是程序生成的指数衰减脉冲响应。</li>
-      <li><b>整页</b>：一个 HTML 文件。没有依赖库，没有一张图片，没有一段录音。</li>
+      <li><b>整页</b>：一个 HTML 文件和 media/figures 下的本地人物位图。无需运行时 JS 库、外链图片或录音文件。</li>
     </ul>
   </div>
   <p class="readout" id="readout"></p>
@@ -164,6 +215,9 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 'use strict';
 const canvas = document.getElementById('c');
 const $ = id => document.getElementById(id);
+let paperTheme = 'light';
+try { if (localStorage.getItem('moyun-paper-theme') === 'dark') paperTheme = 'dark'; } catch (_) {}
+document.documentElement.dataset.theme = paperTheme;
 const poemEl = $('poem'), ghostEl = $('ghost'), hintEl = $('hint');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
@@ -210,7 +264,7 @@ splat: `
 uniform sampler2D uTarget; uniform float aspect; uniform int count; uniform vec2 res; uniform float lim;
 uniform vec4 uPos[32]; uniform vec4 uVal[32]; uniform vec4 uDir[32];
 void main(){
-  vec4 base=texture(uTarget,vUv); vec3 add=vec3(0.);
+  vec4 base=texture(uTarget,vUv); vec4 add=vec4(0.);
   for(int i=0;i<32;i++){
     if(i>=count) break;
     vec2 p=vUv-uPos[i].xy; p.x*=aspect;
@@ -227,15 +281,26 @@ void main(){
     }
     add.xy+=g*uVal[i].xy;
     add.z+=exp(-q*.35)*uVal[i].z;
+    add.w+=g*uDir[i].w;
   }
-  o=vec4(clamp(base.xyz+add,-lim,lim),base.w);
+  o=clamp(base+add,vec4(-lim),vec4(lim));
+}`,
+figure: `
+uniform sampler2D uTarget; uniform sampler2D uFigure; uniform vec2 center; uniform vec2 size; uniform float flipX;
+uniform float ink; uniform float cin; uniform float water; uniform float ochre;
+void main(){
+  vec2 uv=(vUv-(center-size*.5))/max(size,vec2(1e-5));
+  float inside=step(0.,uv.x)*step(0.,uv.y)*step(uv.x,1.)*step(uv.y,1.);
+  if(flipX>.5) uv.x=1.-uv.x;
+  float mask=texture(uFigure,clamp(uv,0.,1.)).a*inside;
+  vec4 base=texture(uTarget,vUv);
+  o=clamp(base+vec4(ink,cin,water,ochre)*mask,vec4(-4.),vec4(4.));
 }`,
 advect: `
-uniform sampler2D uVelocity; uniform sampler2D uSource; uniform vec2 vtexel; uniform float dt; uniform float diss; uniform float keepW;
+uniform sampler2D uVelocity; uniform sampler2D uSource; uniform vec2 vtexel; uniform float dt; uniform float diss;
 void main(){
   vec2 c=vUv-dt*texture(uVelocity,vUv).xy*vtexel;
   vec4 a=texture(uSource,c);
-  if(keepW>.5) a.w=texture(uSource,vUv).w;
   o=diss*a;
 }`,
 curl: `
@@ -282,7 +347,7 @@ void main(){
   o=vec4(v,0.,1.);
 }`,
 bleed: `
-uniform sampler2D uDye; uniform float rate; uniform float evap; uniform float fixRate; uniform vec2 res;
+uniform sampler2D uDye; uniform float rate; uniform float evap; uniform vec2 res;
 void main(){
   vec4 c=texture(uDye,vUv), l=texture(uDye,vL), r=texture(uDye,vR), t=texture(uDye,vT), b=texture(uDye,vB);
   vec4 avg=(l+r+t+b)*.25;
@@ -292,12 +357,10 @@ void main(){
   float k=clamp(rate*wet*mix(.1,1.,fib),0.,1.);
   vec4 n=c;
   n.xy+=(avg.xy-c.xy)*k*.45;
+  n.w+=(avg.w-c.w)*k*.45;
   n.z+=(avg.z-c.z)*clamp(k*1.3,0.,1.);
   n.z*=evap;
-  float fx=n.x*(1.-clamp(wet*1.6,0.,1.))*fixRate;
-  float rw=n.w*clamp((c.z-.2)*2.,0.,1.)*.06;
-  n.x+=rw-fx; n.w+=fx-rw;
-  o=max(n,vec4(0.));
+  o=vec4(max(n.x,0.),n.y,max(n.z,0.),clamp(n.w,-4.,4.));
 }`,
 paper: `
 uniform vec2 res; uniform vec3 paper; uniform vec3 paper2; uniform float seed;
@@ -320,19 +383,25 @@ void main(){
   o=vec4(c,gran);
 }`,
 disp: `
-uniform sampler2D uDye; uniform sampler2D uPaper; uniform vec2 dtex; uniform vec3 ink; uniform vec3 cin; uniform float dark;
+uniform sampler2D uDye; uniform sampler2D uPaper; uniform vec2 dtex; uniform vec3 ink; uniform vec3 cin; uniform vec3 azurite; uniform vec3 ochre; uniform vec3 jade; uniform float dark;
 void main(){
   vec4 pp=texture(uPaper,vUv); vec4 d=texture(uDye,vUv);
   vec4 l=texture(uDye,vUv-vec2(dtex.x,0.)), r=texture(uDye,vUv+vec2(dtex.x,0.));
   vec4 t=texture(uDye,vUv+vec2(0.,dtex.y)), b=texture(uDye,vUv-vec2(0.,dtex.y));
-  float grad=length(vec2((r.x+r.w)-(l.x+l.w),(t.x+t.w)-(b.x+b.w)));
+  float grad=length(vec2(r.x-l.x,t.x-b.x));
   float gran=.8+.4*pp.a;
-  float k=max(d.x+d.w,0.)*gran;
+  float k=max(d.x,0.)*gran;
   float dens=1.-exp(-k*2.3);
   dens=clamp(dens+min(grad*.8,.25)*(1.-dens)*smoothstep(.02,.2,k),0.,1.);
   vec3 col=mix(pp.rgb,ink,dens);
-  float v=1.-exp(-max(d.y,0.)*2.6*gran);
-  col=mix(col,mix(cin,ink,dens*.35),v*.93);
+  float red=1.-exp(-max(d.y,0.)*2.6*gran);
+  float blue=1.-exp(-max(-d.y,0.)*2.3*gran);
+  float gold=1.-exp(-max(d.w,0.)*2.3*gran);
+  float green=1.-exp(-max(-d.w,0.)*2.3*gran);
+  col=mix(col,mix(cin,ink,dens*.35),red*.93);
+  col=mix(col,azurite,blue*.72);
+  col=mix(col,ochre,gold*.72);
+  col=mix(col,jade,green*.72);
   col*=1.-.045*clamp(d.z*.6,0.,1.)*(1.-dark);
   vec2 q=vUv-.5; col*=1.-.09*dot(q,q);
   o=vec4(col,1.);
@@ -358,6 +427,30 @@ try {
   };
   P = {}; for (const k in FS) P[k] = mk(FS[k]);
 } catch (e) { console.error(e); fallback('着色器编译失败：' + e.message); return; }
+
+const FIGURE_NAMES = ['young_man','young_woman','elder_man','elder_woman','scholar','attendant','traveler','qin_player','boatman','horse_carriage'];
+const figureTextures = new Map();
+let figuresReady = false, waitingForFigures = false;
+const figuresLoaded = Promise.all(FIGURE_NAMES.map(name => new Promise(resolve => {
+  const image = new Image();
+  image.onload = () => {
+    const texture = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    figureTextures.set(name, { texture, width: image.naturalWidth, height: image.naturalHeight, bind(unit){ gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, texture); return unit; } });
+    resolve();
+  };
+  image.onerror = () => { console.error('Could not load figure sprite:', name); resolve(); };
+  image.src = `media/figures/${name}.png`;
+}))).then(() => {
+  figuresReady = true;
+  if (waitingForFigures) { waitingForFigures = false; startPainting(); }
+});
 
 const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
@@ -434,6 +527,7 @@ const paperSeed = Math.random() * 50;
 function readTheme(){
   theme.paper = cssColor('--paper'); theme.paper2 = cssColor('--paper-2');
   theme.ink = cssColor('--ink'); theme.cin = cssColor('--cinnabar');
+  theme.azurite = cssColor('--azurite'); theme.ochre = cssColor('--ochre'); theme.jade = cssColor('--jade');
   const L = theme.paper[0] * .3 + theme.paper[1] * .59 + theme.paper[2] * .11;
   theme.dark = L < .4 ? 1 : 0;
   if (paperF) bakePaper();
@@ -453,9 +547,9 @@ new MutationObserver(readTheme).observe(document.documentElement, { attributes: 
 const MAXS = 32, posA = new Float32Array(MAXS * 4), valA = new Float32Array(MAXS * 4), dirA = new Float32Array(MAXS * 4);
 const dyeQ = [], velQ = [];
 let hasInk = false;
-const dab = (x, y, r, ink, cin, water, dry, hard = 0, dx = 1, dy = 0, seed = 0) =>
-  ({ x, y, r2: r * r, hard, a: ink, c: cin, w: water, dry, dx, dy, seed });
-const vsplat = (x, y, r2, fx, fy) => ({ x, y, r2, hard: 0, a: fx, c: fy, w: 0, dry: 0, dx: 1, dy: 0, seed: 0 });
+const dab = (x, y, r, ink, cin, water, dry, hard = 0, dx = 1, dy = 0, seed = 0, ochre = 0) =>
+  ({ x, y, r2: r * r, hard, a: ink, c: cin, w: water, dry, dx, dy, seed, ochre });
+const vsplat = (x, y, r2, fx, fy) => ({ x, y, r2, hard: 0, a: fx, c: fy, w: 0, dry: 0, dx: 1, dy: 0, seed: 0, ochre: 0 });
 
 function flush(q, target, lim){
   let i = 0;
@@ -467,6 +561,7 @@ function flush(q, target, lim){
       posA[o] = s.x; posA[o+1] = s.y; posA[o+2] = Math.max(s.r2, 1e-7); posA[o+3] = s.hard;
       valA[o] = s.a; valA[o+1] = s.c; valA[o+2] = s.w; valA[o+3] = s.dry;
       dirA[o] = s.dx; dirA[o+1] = s.dy; dirA[o+2] = s.seed;
+      dirA[o+3] = s.ochre || 0;
     }
     const u = P.splat.use();
     gl.uniform1i(u.uTarget, target.read.bind(0));
@@ -489,10 +584,10 @@ function brushSeg(x0, y0, x1, y1, st){
   for (let i = 1; i <= n; i++) {
     const t = i / n, r = st.r0 + (st.r1 - st.r0) * t;
     const amt = Math.min(1, Math.max(step, r * .3) / (r * 1.77));
-    dyeQ.push(dab(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, r, st.ink * amt, st.cin * amt, st.water * amt, st.dry, st.hard || 0, dx, dy, st.seed));
+    dyeQ.push(dab(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, r, st.ink * amt, st.cin * amt, st.water * amt, st.dry, st.hard || 0, dx, dy, st.seed, (st.ochre || 0) * amt));
   }
   if (st.force) velQ.push(vsplat(x1, y1, Math.pow(Math.max(rAvg * 3, .02), 2), dx * st.force, dy * st.force));
-  if (st.ink > 0 || st.cin > 0) hasInk = true;
+  if (st.ink > 0 || st.cin !== 0 || st.ochre !== 0) hasInk = true;
 }
 
 /* ───────── simulation ───────── */
@@ -522,27 +617,40 @@ function step(dt){
 
   u = P.advect.use(); gl.uniform2fv(u.vtexel, vt); gl.uniform1f(u.dt, dt);
   gl.uniform1i(u.uVelocity, velocity.read.bind(0)); gl.uniform1i(u.uSource, velocity.read.bind(0));
-  gl.uniform1f(u.diss, Math.exp(-(washing ? .4 : 1.6) * dt)); gl.uniform1f(u.keepW, 0);
+  gl.uniform1f(u.diss, Math.exp(-(washing ? .4 : 1.6) * dt));
   blit(velocity.write); velocity.swap();
 
   gl.uniform1i(u.uVelocity, velocity.read.bind(0)); gl.uniform1i(u.uSource, dye.read.bind(1));
-  gl.uniform1f(u.diss, washing ? Math.exp(-2.6 * dt) : 1); gl.uniform1f(u.keepW, washing ? 0 : 1);
+  gl.uniform1f(u.diss, washing ? Math.exp(-2.6 * dt) : 1);
   blit(dye.write); dye.swap();
 
   u = P.bleed.use(); gl.uniform2f(u.texel, 1 / dye.w, 1 / dye.h); gl.uniform2f(u.res, dye.w, dye.h);
-  gl.uniform1f(u.rate, .75); gl.uniform1f(u.evap, .99); gl.uniform1f(u.fixRate, .05);
+  gl.uniform1f(u.rate, .75); gl.uniform1f(u.evap, .99);
   for (let i = 0; i < 3; i++) { gl.uniform1i(u.uDye, dye.read.bind(0)); blit(dye.write); dye.swap(); }
 }
 function render(){
   const u = P.disp.use();
   gl.uniform1i(u.uDye, dye.read.bind(0)); gl.uniform1i(u.uPaper, paperF.bind(1));
   gl.uniform2f(u.dtex, 1 / dye.w, 1 / dye.h);
-  gl.uniform3fv(u.ink, theme.ink); gl.uniform3fv(u.cin, theme.cin); gl.uniform1f(u.dark, theme.dark);
+  gl.uniform3fv(u.ink, theme.ink); gl.uniform3fv(u.cin, theme.cin);
+  gl.uniform3fv(u.azurite, theme.azurite); gl.uniform3fv(u.ochre, theme.ochre);
+  gl.uniform3fv(u.jade, theme.jade); gl.uniform1f(u.dark, theme.dark);
   blit(null);
 }
 function clearDye(){
   const u = P.clear.use(); gl.uniform1f(u.value, 0);
   gl.uniform1i(u.uTexture, dye.read.bind(0)); blit(dye.write); dye.swap();
+}
+function stampFigure(item){
+  const sprite = figureTextures.get(item.figure);
+  if (!sprite) return;
+  const height = item.h, width = height * sprite.width / sprite.height / aspect();
+  const u = P.figure.use();
+  gl.uniform1i(u.uTarget, dye.read.bind(0)); gl.uniform1i(u.uFigure, sprite.bind(1));
+  gl.uniform2f(u.center, item.x, item.y + height * .5); gl.uniform2f(u.size, width, height);
+  gl.uniform1f(u.flipX, item.flip ? 1 : 0);
+  gl.uniform1f(u.ink, item.ink); gl.uniform1f(u.cin, item.cin); gl.uniform1f(u.water, item.water); gl.uniform1f(u.ochre, item.ochre);
+  blit(dye.write); dye.swap(); hasInk = true;
 }
 
 /* ───────── sound: Karplus–Strong guqin ───────── */
@@ -654,7 +762,8 @@ function whoosh(){
 }
 
 /* ───────── the invisible hand ───────── */
-const ghost = { q: [], cur: null, wait: 0, on: false, speed: reduced ? 5 : 1 };
+const PAINT_SPEED = 1 / 3;
+const ghost = { q: [], cur: null, wait: 0, on: false, speed: reduced ? 5 * PAINT_SPEED : PAINT_SPEED };
 const paintBtn = $('paint');
 function moveGhost(x, y, r){
   const s = Math.max(.5, (r || .005) * canvas.clientHeight * 2.2 / 14);
@@ -677,7 +786,7 @@ function emitAlong(c, s0, s1){
   while (s < s1 - 1e-9) {
     const s2 = Math.min(s1, s + .008), q = posAt(c, s2), t0 = s / c.total, t1 = s2 / c.total;
     brushSeg(p[0], p[1], q[0], q[1], {
-      r0: c.r * taper(t0), r1: c.r * taper(t1), ink: c.ink * (1 - c.fade * t1), cin: c.cin,
+      r0: c.r * taper(t0), r1: c.r * taper(t1), ink: c.ink * (1 - c.fade * t1), cin: c.cin, ochre: c.ochre,
       water: c.water, dry: Math.min(.95, c.dry + c.dryGrow * t1), seed: c.seed, force: c.force, hard: c.hard
     });
     c.acc += s2 - s;
@@ -695,8 +804,12 @@ function ghostTick(dt){
       const it = ghost.q.shift();
       if (!it) { ghost.on = false; ghostEl.classList.remove('on'); setPaintBtn(false); return; }
       if (it.fn) { it.fn(); ghost.wait = it.after || 0; continue; }
+      if (it.figure) {
+        stampFigure(it); moveGhost(it.x, it.y + it.h * .55, .004);
+        ghost.wait = it.after || .04; continue;
+      }
       if (it.dot) {
-        dyeQ.push(dab(it.x, it.y, it.r, it.ink, it.cin, it.water, 0, it.hard));
+        dyeQ.push(dab(it.x, it.y, it.r, it.ink, it.cin, it.water, 0, it.hard, 1, 0, 0, it.ochre));
         hasInk = true; moveGhost(it.x, it.y, it.r);
         if (it.chime) { play(9, .7, .4, 'harm', true); setTimeout(() => play(11, .55, .5, 'harm', true), 420); }
         else if (Math.random() < .4) note(it.y, .35, it.x * 2 - 1);
@@ -719,16 +832,27 @@ const POEMS = [
   ['青山不说话', '白水自东西', '一棹归何处', '云深鸟亦迷'],
   ['千峰藏一色', '万壑写无声', '偶落朱砂点', '人间日又生']
 ];
+const SCENE_POEMS = {
+  ginkgo: ['金叶铺长路', '书声出树梢', '行人秋色里', '一叶落肩头'],
+  library: ['窗含千卷静', '檐下过微风', '少年寻字句', '灯火到黄昏'],
+  sports: ['白线分新绿', '风从跑道生', '少年追一球', '云影过看台'],
+  dormitory: ['灯影连书页', '晚风入小楼', '归人穿树下', '月色落窗钩'],
+  garden: ['曲径藏花影', '竹露滴清池', '闲亭听风过', '一园自有诗'],
+  stream: ['石上清溪转', '行人过小桥', '云来山影动', '水去落花飘'],
+  birds: ['林深初见鸟', '枝静不惊人', '一羽穿云去', '松风满旧襟'],
+  carriage: ['马蹄穿巷过', '篷影映长街', '车中人未语', '风送晚钟来'],
+  kunming: ['春城街树暖', '花影落长街', '车声穿巷去', '云在远山开']
+};
 
-function buildLandscape(seed){
+function buildLandscape(seed, scene = 'landscape'){
   const R = rng(seed), rr = (a, b) => a + (b - a) * R();
   const A = aspect(), portrait = A < .85;
   const yb = portrait ? .1 : .085, ys = portrait ? .88 : .9, M = y => yb + y * ys;
   const wx = A < 1 ? Math.min(1.6, .75 / A) : 1;
   const W = d => d / A;
   const Q = [];
-  const S = (pts, o) => Q.push(Object.assign({ pts: pts.map(p => [p[0], M(p[1])]), speed: 1, r: .005, ink: 1, cin: 0, water: .3, dry: 0, dryGrow: 0, fade: 0, hard: 0, seed: rr(0, 900), force: 0, after: .08, note: .09, vel: .45, kind: 'pluck' }, o));
-  const D = (x, y, o) => Q.push(Object.assign({ dot: true, x, y: M(y), r: .005, ink: 1, cin: 0, water: .4, hard: 0, after: .03 }, o));
+  const S = (pts, o) => Q.push(Object.assign({ pts: pts.map(p => [p[0], M(p[1])]), speed: 1, r: .005, ink: 1, cin: 0, ochre: 0, water: .3, dry: 0, dryGrow: 0, fade: 0, hard: 0, seed: rr(0, 900), force: 0, after: .08, note: .09, vel: .45, kind: 'pluck' }, o));
+  const D = (x, y, o) => Q.push(Object.assign({ dot: true, x, y: M(y), r: .005, ink: 1, cin: 0, ochre: 0, water: .4, hard: 0, after: .03 }, o));
   const F = (fn, after = 0) => Q.push({ fn, after });
   const wave = () => { const k = [rr(0, 6.28), rr(0, 6.28), rr(0, 6.28)]; return x => Math.sin(x * 23 + k[0]) * .5 + Math.sin(x * 57 + k[1]) * .3 + Math.sin(x * 131 + k[2]) * .2; };
   const range = (peaks, base, nAmp) => { const n = wave(); return x => { let h = 0; for (const p of peaks) { const u = Math.abs(x - p.c) / (p.w * wx); h = Math.max(h, p.h * Math.exp(-Math.pow(u, 1.5))); } return base + h + nAmp * n(x) * Math.min(1, h / .05); }; };
@@ -768,68 +892,620 @@ function buildLandscape(seed){
       D(q[0] + W(rr(-.004, .004)), q[1] + rr(-.002, .006), { r: rr(.003, .0055) * o.s, ink: rr(.9, 1.4) * o.ink, water: .3, after: .05 });
     }
   }
-  function tree(x, y, h, ink){
-    const ph = rr(0, 6.28), sw = rr(.004, .01), trunk = [];
-    for (let i = 0; i <= 12; i++) { const t = i / 12; trunk.push([x + W(Math.sin(t * 3 + ph) * sw * t), y + h * t]); }
-    S(trunk, { r: .0048, ink: 1.1 * ink, water: .2, dry: .2, dryGrow: .5, fade: .3, speed: .55, note: .07, vel: .5 });
-    const tips = [trunk[12]], nb = Math.floor(rr(3, 6));
-    for (let b = 0; b < nb; b++) {
-      const t = rr(.45, .92), p = trunk[Math.round(t * 12)], side = b % 2 ? 1 : -1, L = rr(.03, .06) * (1.2 - t), pts = [[p[0], p[1]]];
-      for (let s = 1; s <= 4; s++) pts.push([p[0] + W(side * L * s / 4), p[1] + L * s / 4 * rr(.1, .45)]);
-      S(pts, { r: .0024, ink: ink, water: .15, dry: .2, speed: .7, note: .06, after: .03 });
-      tips.push(pts[4]);
+  function tree(x, y, h, ink, form = pick(['pine','willow','plum'])){
+    const ph = rr(0, 6.28), sway = W(rr(.004, .013)), trunk = [];
+    for (let i = 0; i <= 12; i++) {
+      const t = i / 12;
+      trunk.push([x + Math.sin(t * 3 + ph) * sway * t, y + h * t]);
     }
-    for (const tp of tips) {
-      const n = Math.floor(rr(6, 10));
-      for (let d = 0; d < n; d++) { const a = rr(0, 6.28), rad = rr(.004, .02); D(tp[0] + W(Math.cos(a) * rad * 1.3), tp[1] + Math.sin(a) * rad * .7, { r: rr(.004, .0068), ink: rr(.6, 1.2) * ink, water: .55, after: .025 }); }
+    S(trunk, { r: .0048, ink: 1.1 * ink, water: .2, dry: .2, dryGrow: .5, fade: .3, speed: .55, note: .07, vel: .5 });
+    const tips = [trunk[12]];
+    if (form === 'pine') {
+      for (let tier = 0; tier < 5; tier++) {
+        const t = .3 + tier * .13, p = trunk[Math.round(t * 12)], span = h * (.34 - tier * .035);
+        for (const side of [-1, 1]) {
+          const tip = [p[0] + W(side * span), p[1] + h * .045];
+          S([[p[0],p[1]],[p[0]+W(side*span*.45),p[1]+h*.13],[tip[0],tip[1]]], { r: .003, ink: .92 * ink, water: .14, dry: .2, speed: .8, note: .07 });
+          for (let spray = 1; spray <= 4; spray++) {
+            const u = spray / 5, sx = p[0] + W(side * span * u), sy = p[1] + h * (.13 * u + .008);
+            S([[sx,sy],[sx+W(side*rr(.012,.022)),sy+h*rr(.018,.035)],[sx+W(side*rr(.022,.04)),sy+h*rr(.022,.042)]], { r: .0018, ink: .68 * ink, water: .12, dry: .35, speed: 1.3, note: .12 });
+          }
+          tips.push(tip);
+        }
+      }
+    } else if (form === 'willow') {
+      for (let branch = 0; branch < 6; branch++) {
+        const t = .38 + branch * .09, p = trunk[Math.round(t * 12)], side = branch % 2 ? 1 : -1;
+        const length = rr(.09,.17) * (1.15 - t), ex = p[0] + W(side * length), ey = p[1] + h * rr(-.05,.035);
+        S([[p[0],p[1]],[p[0]+W(side*length*.55),p[1]+h*.08],[ex,ey]], { r: .0026, ink: .78 * ink, water: .17, speed: .85, note: .08 });
+        for (let strand = 0; strand < 3; strand++) {
+          const sx = ex + W((strand-1)*length*.2), sy = ey - h * rr(.1,.22), points = [[sx,ey]];
+          for (let step = 1; step <= 4; step++) points.push([sx+W(Math.sin(step+branch)*.008), ey+(sy-ey)*step/4]);
+          S(points, { r: .0018, ink: .65 * ink, water: .2, dry: .18, speed: 1, note: .1 });
+          D(sx,sy,{r:.0042,ink:.42*ink,water:.5,after:.01});
+        }
+        tips.push([ex,ey]);
+      }
+    } else {
+      for (let branch = 0; branch < 5; branch++) {
+        const t = .35 + branch * .115, p = trunk[Math.round(t * 12)], side = branch % 2 ? 1 : -1;
+        const length = rr(.045,.105), pts = [[p[0],p[1]]];
+        for (let step = 1; step <= 5; step++) pts.push([p[0]+W(side*length*step/5)+W(Math.sin(step+ph)*.008),p[1]+h*.16*step/5]);
+        S(pts, { r: .0027, ink: .9 * ink, water: .14, dry: .3, speed: .9, note: .06 });
+        tips.push(pts[5]);
+      }
+      for (const tip of tips) for (let blossom = 0; blossom < 3; blossom++) {
+        D(tip[0]+W(rr(-.02,.02)),tip[1]+rr(-.015,.018),{r:rr(.0035,.006),ink:.03,cin:R()<.55?.34:0,ochre:R()<.55?0:.36,water:.3,after:.01});
+      }
+    }
+    if (form !== 'plum') for (const tip of tips) {
+      const count = Math.floor(rr(4, 8));
+      for (let mark = 0; mark < count; mark++) {
+        const angle = rr(0, 6.28), radius = rr(.004, .018);
+        D(tip[0]+W(Math.cos(angle)*radius),tip[1]+Math.sin(angle)*radius*.7,{r:rr(.0035,.006),ink:rr(.5,1.05)*ink,water:.48,after:.02});
+      }
     }
   }
 
-  // 远山 far range, pale ink
-  const farBase = rr(.36, .4), farPeaks = [];
-  for (let i = 0; i < 5; i++) farPeaks.push({ c: rr(-.05, 1.05), h: rr(.06, .15), w: rr(.07, .14) });
-  const far = range(farPeaks, farBase, .006);
+  const quick = (pts, o = {}) => S(pts, Object.assign({ speed: 1.5, r: .0025, ink: .9, water: .22, note: .17, vel: .34, after: .015 }, o));
+  const outline = (x, y, w, h, o = {}) => quick([[x,y],[x+w,y],[x+w,y+h],[x,y+h],[x,y]], o);
+  const oval = (cx, cy, rx, ry, o = {}) => {
+    const pts = [];
+    for (let i = 0; i <= 32; i++) { const a = i / 32 * Math.PI * 2; pts.push([cx + rx * Math.cos(a), cy + ry * Math.sin(a)]); }
+    quick(pts, o);
+  };
+  function tiledRoof(x, y, w, rise, options = {}){
+    const layers = options.layers || 1, lift = options.lift ?? .02;
+    const azurite = options.azurite || 0;
+    for (let level = 0; level < layers; level++) {
+      const inset = level * .09, rx = x + w * inset / 2, rw = w * (1 - inset);
+      const ey = y + level * rise * .46, rh = rise * (level ? .64 : 1);
+      const roof = [[rx-.018,ey],[rx-.006,ey+lift],[rx+rw*.14,ey+rh*.58],[rx+rw*.5,ey+rh],[rx+rw*.86,ey+rh*.58],[rx+rw+.006,ey+lift],[rx+rw+.018,ey]];
+      quick(roof, { r: .0032, ink: options.ink ?? 1, cin: -azurite, water: .16, speed: .95, note: .1 });
+      quick(roof.map((p,i)=>[p[0],p[1]-(i===0||i===6?.01:.015)]), { r: .0018, ink: .62, cin: -azurite*.35, water: .13, speed: 1.35 });
+      quick([[rx+rw*.46,ey+rh*.96],[rx+rw*.5,ey+rh*1.08],[rx+rw*.54,ey+rh*.96]], { r: .0018, ink: .72, water: .12, speed: 1.3 });
+      for (const t of [.2,.35,.65,.8]) {
+        const ty = ey + rh * (1 - Math.abs(t - .5) * 2);
+        quick([[rx+rw*t,ty],[rx+rw*t+(t<.5?-.009:.009),ey+.004]], { r: .0015, ink: .58, cin: -azurite*.5, water: .1, speed: 1.5 });
+      }
+    }
+  }
+  function latticeWindow(x, y, w, h){
+    outline(x,y,w,h,{r:.002,ink:.78,water:.12,speed:1.35});
+    for (let i = 1; i < 3; i++) quick([[x+w*i/3,y],[x+w*i/3,y+h]], { r: .0015, ink: .62, water: .1, speed: 1.7 });
+    quick([[x,y+h*.5],[x+w,y+h*.5]], { r: .0015, ink: .62, water: .1, speed: 1.7 });
+  }
+  function timberPillar(x, base, top, red = .22){
+    quick([[x,base],[x,top]], { r: .003, ink: .68, cin: red, water: .16, speed: .95 });
+    quick([[x-W(.018),top],[x+W(.018),top],[x+W(.022),top-.012]], { r: .002, ink: .72, water: .12, speed: 1.2 });
+    quick([[x-W(.014),base],[x+W(.014),base]], { r: .0022, ink: .72, water: .14, speed: 1.2 });
+  }
+  function lacquerDoor(x, y, w, h){
+    outline(x,y,w,h,{r:.0024,ink:.72,cin:.22,water:.13,speed:1.1});
+    quick([[x+w*.5,y],[x+w*.5,y+h]], { r: .0017, ink: .6, cin: .16, water: .1, speed: 1.5 });
+    for (const dx of [.25,.75]) for (const dy of [.2,.4,.6,.8]) quick([[x+w*dx,y+h*dy],[x+w*(dx+(dx<.5?.1:-.1)),y+h*dy]], { r: .0014, ink: .55, water: .1, speed: 1.6 });
+    D(x+w*.43,y+h*.52,{r:.003,ink:.15,cin:.78,water:.1,after:.01});
+    D(x+w*.57,y+h*.52,{r:.003,ink:.15,cin:.78,water:.1,after:.01});
+  }
+  function stoneSteps(cx, y, w, count = 3){
+    for (let i = 0; i < count; i++) {
+      const span = w * (1 + i * .2), yy = y - i * .022;
+      quick([[cx-span/2,yy],[cx+span/2,yy]], { r: .002, ink: .54, water: .18, speed: 1.5 });
+    }
+  }
+  function person(x, y, h, stride = 1, role = 'scholar'){
+    Q.push({ figure: role, x, y: M(y), h: h * ys, flip: stride < 0, ink: .92, cin: 0, water: .72, ochre: 0, after: .045 });
+  }
+  function ginkgoLeaf(x, y, r, red = false){
+    const dx = Math.min(W(r), .075), shade = red ? { ink: .08, cin: .76, ochre: 0 } : { ink: .08, cin: 0, ochre: .76 };
+    quick([[x,y],[x-dx*.35,y+r*.16],[x-dx*.88,y+r*.42],[x-dx*.57,y+r*.66],[x-dx*.2,y+r*.45],[x,y+r*.8],[x+dx*.2,y+r*.45],[x+dx*.57,y+r*.66],[x+dx*.88,y+r*.42],[x+dx*.35,y+r*.16],[x,y]], Object.assign({ r: r*.12, water: .12, speed: 1.8, note: .2 }, shade));
+    quick([[x,y],[x,y+r*.68]], { r: r*.07, ink: .3, cin: red ? .28 : 0, ochre: red ? 0 : .3, water: .1, speed: 2 });
+  }
+  function ginkgoTree(x, base, h){
+    const top = base + h;
+    quick([[x,base],[x+W(h*.015),base+h*.38],[x-W(h*.012),base+h*.72],[x,top]], { r: .0045, ink: 1.05, water: .2, dry: .18, speed: .8 });
+    for (let b = 0; b < 5; b++) {
+      const t = .43 + b * .095, by = base + h * t, side = b % 2 ? 1 : -1, endX = x + W(side * h * (.24 - b*.012)), endY = by + h * (.13 + (b%2)*.025);
+      quick([[x,by],[x+W(side*h*.09),by+h*.07],[endX,endY]], { r: .0024, ink: .86, water: .16, speed: 1.1 });
+      for (let j = 0; j < 4; j++) ginkgoLeaf(endX + W((j-1.5)*h*.07), endY + h*((j%2)*.045), h*.075, R() < .42);
+    }
+    for (let j = 0; j < 5; j++) ginkgoLeaf(x + W((j-2)*h*.065), top - h*.015 + h*(j%2)*.025, h*.08, R() < .48);
+  }
+  function bamboo(x, base, h, lean = 1){
+    quick([[x,base],[x+W(lean*h*.025),base+h*.35],[x-W(lean*h*.018),base+h*.68],[x+W(lean*h*.012),base+h]], { r: .0032, ink: .8, water: .2, speed: .9 });
+    for (let i = 1; i < 5; i++) {
+      const y = base + h * i / 5, bx = x + W(lean*h*.01*Math.sin(i));
+      quick([[bx-W(h*.012),y],[bx+W(h*.012),y]], { r: .0017, ink: .7, water: .12, speed: 1.8 });
+      for (const side of [-1,1]) quick([[bx,y],[bx+W(side*h*.12),y+h*.08],[bx+W(side*h*.19),y+h*.13]], { r: .0018, ink: .66, water: .13, speed: 1.5 });
+    }
+  }
+  function bird(x, y, s = 1){
+    quick([[x-W(.015*s),y],[x-W(.008*s),y+.005*s],[x,y-.002*s],[x+W(.008*s),y+.005*s],[x+W(.015*s),y]], { r: .0018*s, ink: 1.1, water: .1, speed: .45, note: .025, after: .08, kind: 'harm' });
+  }
+
+  function drawGinkgoSunset(){
+    const view=Math.floor(R()*3),views=[
+      {name:'横街夕照',farBase:[.48,.54],nearBase:[.39,.44],roadTop:[.29,.34],roadBottom:[.105,.145],trees:[4,7],sunY:[.77,.84],lake:false},
+      {name:'山麓横路',farBase:[.52,.58],nearBase:[.43,.49],roadTop:[.34,.4],roadBottom:[.16,.2],trees:[3,6],sunY:[.76,.84],lake:false},
+      {name:'湖岸暮道',farBase:[.54,.6],nearBase:[.48,.53],roadTop:[.24,.3],roadBottom:[.09,.125],trees:[4,7],sunY:[.82,.9],lake:true}
+    ][view];
+    canvas.dataset.sceneView=`银杏道-${views.name}`;
+    const farBase=rr(...views.farBase),peakCount=3+Math.floor(R()*3),farPeaks=[];
+    for(let i=0;i<peakCount;i++)farPeaks.push({c:.04+i*.92/Math.max(1,peakCount-1)+rr(-.06,.06),h:rr(.065,.15),w:rr(.11,.23)});
+    const far=range(farPeaks,farBase,.004);
+    const nearBase=rr(...views.nearBase),near=range([{c:rr(.08,.28),h:rr(.07,.14),w:rr(.15,.27)},{c:rr(.66,.91),h:rr(.07,.15),w:rr(.16,.29)}],nearBase,.006);
+    for(const run of runs(far,farBase,0,1,.01,.008))S(run,{r:.005,ink:.22,water:.78,speed:1.2,note:.14,vel:.3});
+    for(let band=0;band<3;band++)for(const run of runs(x=>far(x)-.015-band*.025,farBase,0,1,.025,.004))S(run,{r:.018,ink:.09-band*.018,water:.82,speed:2.4,note:.3,vel:.2});
+    for(const run of runs(near,nearBase,0,1,.008,.012))S(run,{r:.004,ink:.55,water:.52,speed:1.1,note:.12,vel:.3});
+    for(let band=0;band<2;band++)for(const run of runs(x=>near(x)-.025-band*.035,nearBase,0,1,.025,.005))S(run,{r:.02,ink:.12-band*.03,water:.78,speed:2.4,note:.3,vel:.2});
+
+    D(rr(.7,.85),rr(...views.sunY),{r:rr(.043,.055),ink:.02,cin:1.08,water:.12,hard:.9,after:.55,chime:true});
+    for(let cloud=0;cloud<3;cloud++){
+      const x=rr(.08,.6),y=rr(.68,.78),span=rr(.1,.22),points=[];
+      for(let step=0;step<=10;step++){const t=step/10;points.push([x+span*t,y+Math.sin(t*Math.PI*2+cloud)*.008]);}
+      quick(points,{r:.006,ink:.09,cin:-.05,water:.68,speed:2.3,note:.3,vel:.2});
+    }
+
+    const roadTop=rr(...views.roadTop),roadBottom=rr(...views.roadBottom),roadWave=rr(.006,.018);
+    const upper=[],lower=[];
+    for(let step=0;step<=8;step++){
+      const x=step/8,undulation=Math.sin(x*13+rr(-.02,.02))*roadWave;
+      upper.push([x,roadTop+undulation]);lower.push([x,roadBottom+undulation*.6]);
+    }
+    S(upper,{r:.0034,ink:.68,water:.22,speed:1.2,note:.11});
+    S(lower,{r:.0028,ink:.47,water:.2,speed:1.45,note:.16});
+    for(let seam=0;seam<3;seam++){
+      const y=roadBottom+.035+seam*(roadTop-roadBottom)*.34,x=rr(.04,.7),length=rr(.08,.24);
+      quick([[x,y],[Math.min(.98,x+length),y+rr(-.008,.008)]],{r:.0013,ink:.22,water:.12,dry:.55,speed:2});
+    }
+
+    if(views.lake){
+      for(let ripple=0;ripple<5+Math.floor(R()*5);ripple++){
+        const y=rr(roadTop+.04,nearBase-.025),x=rr(.08,.78),length=rr(.06,.19),points=[];
+        for(let step=0;step<=5;step++){const t=step/5;points.push([x+length*t,y+Math.sin(t*5+ripple)*.003]);}
+        S(points,{r:.0017,ink:.06,cin:-.42,water:.32,dry:.25,speed:2,note:.2});
+      }
+    }
+    const treeCount=Math.floor(rr(views.trees[0],views.trees[1]+1));
+    for(let i=0;i<treeCount;i++){
+      const x=.05+i*.9/Math.max(1,treeCount-1)+rr(-.025,.025),base=roadTop+rr(.01,.045),height=rr(.23,.4);
+      ginkgoTree(Math.max(.035,Math.min(.965,x)),base,height);
+      if(R()<.4)tree(Math.max(.03,Math.min(.97,x+rr(-.045,.045))),base, height*rr(.7,.95),.38,pick(['pine','willow']));
+    }
+    if(view===1){
+      tree(.025,roadBottom+rr(.02,.05),rr(.23,.31),.55,'willow');
+      tree(.96,roadBottom+rr(.02,.05),rr(.21,.3),.48,'pine');
+    }else if(view===2){
+      for(let rock=0;rock<5;rock++)D(rr(.08,.9),roadBottom-rr(.015,.04),{r:rr(.006,.013),ink:.5,water:.16,after:.01});
+    }
+    const walkerCount=2+Math.floor(R()*4);
+    for(let i=0;i<walkerCount;i++){
+      const x=.17+i*.66/Math.max(1,walkerCount-1)+rr(-.035,.035),role=pick(['young_man','young_woman','elder_man','elder_woman','traveler']);
+      person(x,roadBottom+rr(.005,.025),rr(.085,.14),R()<.5?-1:1,role);
+    }
+    for(let leaf=0;leaf<15+Math.floor(R()*12);leaf++)ginkgoLeaf(rr(.08,.92),rr(.16,.59),rr(.009,.02),R()<.34);
+    for(let i=0;i<3;i++)bird(rr(.42,.72),rr(.72,.88),rr(.65,.95));
+  }
+
+  function drawGinkgo(){
+    const wide=A>1.1;
+    if(wide&&R()<.62){drawGinkgoSunset();return;}
+    canvas.dataset.sceneView='银杏道-林荫透视';
+    const vanishingX = rr(.38,.62), vanishingY = rr(.55,.69), treeRows = 2 + Math.floor(R()*2);
+    canvas.dataset.sceneView = `银杏道-${vanishingX < .5 ? '左偏' : '右偏'}-${treeRows}排树`;
+    quick([[0,vanishingY],[.22,vanishingY+.02],[.47,vanishingY+.04],[.72,vanishingY+.02],[1,vanishingY]], { ink: .25, water: .6, r: .003, speed: 1.8 });
+    quick([[rr(.08,.18),.08],[rr(.22,.34),.24],[vanishingX-.045,vanishingY]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
+    quick([[rr(.82,.92),.08],[rr(.66,.78),.24],[vanishingX+.045,vanishingY]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
+    for (const y of [.13,.2,.28,.37,.47,.56]) {
+      const t = (y - .08) / Math.max(.2,vanishingY-.08), left = .13 + (vanishingX-.13) * t, right = .87 + (vanishingX-.87) * t;
+      quick([[left,y],[right,y]], { r: .0015, ink: .28, water: .16, dry: .45, speed: 2.2, note: .3 });
+    }
+    for (let i = 0; i < treeRows; i++) {
+      const t = i / Math.max(1,treeRows-1), y = .15 + t*.1, h = (.3-t*.045)*rr(.88,1.12);
+      const left = .055 + (vanishingX-.055)*t*.55, right = .945 + (vanishingX-.945)*t*.55;
+      ginkgoTree(left,y,h); ginkgoTree(right,y,h*rr(.9,1.08));
+    }
+    for (let i = 0, count = 12 + Math.floor(R()*15); i < count; i++) ginkgoLeaf(rr(.18,.82), rr(.14,vanishingY-.05), rr(.012,.022), R() < .52);
+    person(vanishingX+rr(-.035,.035),.1,.17,1,'young_man');
+    person(vanishingX+rr(-.12,.12),.23,.1,-1,'young_woman');
+    if (R() < .7) person(vanishingX+rr(-.2,.2),.32,.075,1,'elder_man');
+    quick([[.22,.11],[.29,.12],[.36,.13]], { r: .002, ink: .4, water: .1, dry: .5, speed: 2 });
+  }
+  function drawLibrary(){
+    const layout = Math.floor(R()*3), center = rr(.46,.54), sx = rr(.9,1.08), sy = rr(.91,1.07), dy = rr(-.018,.018);
+    canvas.dataset.sceneView = ['中轴书院','偏轴院落','开敞讲堂'][layout];
+    const X = x => center + (x-.5)*sx, Y = y => .3 + (y-.3)*sy + dy;
+    const line = (pts,o) => quick(pts.map(([x,y])=>[X(x),Y(y)]),o);
+    const rect = (x,y,w,h,o) => outline(X(x),Y(y),w*sx,h*sy,o);
+    const roof = (x,y,w,h,o) => tiledRoof(X(x),Y(y),w*sx,h*sy,o);
+    const window = (x,y,w,h) => latticeWindow(X(x),Y(y),w*sx,h*sy);
+    const pillar = (x,base,top,red) => timberPillar(X(x),Y(base),Y(top),red);
+    const door = (x,y,w,h) => lacquerDoor(X(x),Y(y),w*sx,h*sy);
+    line([[.08,.53],[.25,.56],[.5,.55],[.76,.57],[.93,.53]], { ink: .3, water: .55, r: .003, speed: 1.7 });
+    roof(.19,.55,.62,.14,{layers:layout===1?1:2,lift:.034,azurite:.2});
+    if (layout !== 2) {
+      roof(.07,.46,.17,.065,{lift:.014,ink:.62,azurite:.08});
+      roof(.76,.46,.17,.065,{lift:.014,ink:.62,azurite:.08});
+    }
+    line([[.25,.3],[.75,.3],[.75,.54],[.25,.54],[.25,.3]], { r: .003, ink: .82, water: .18, speed: 1.1 });
+    line([[.25,.51],[.75,.51]], { r: .0025, ink: .78, water: .14, speed: 1.25 });
+    for (const x of [.27,.42,.58,.73]) pillar(x,.3,.53,.2);
+    window(.3,.35,.1,.13); window(.6,.35,.1,.13);
+    door(.44,.3,.12,.2);
+    rect(.435,.51,.13,.035,{r:.002,ink:.62,water:.1,speed:1.5});
+    line([[.45,.527],[.55,.527]], { r: .0015, ink: .24, ochre: .38, water: .1, speed: 1.6 });
+    stoneSteps(X(.5),Y(.285),.32*sx,layout===0?3:4);
+    for (let i = 0; i < 4; i++) line([[.32+i*.12,.22],[.44+i*.04,.17]], { r: .0018, ink: .42, water: .14, speed: 1.7 });
+    tree(X(rr(.04,.12)),Y(.2),.26*sy,.55,pick(['willow','plum']));
+    tree(X(rr(.88,.96)),Y(.2),.28*sy,.55,pick(['pine','plum']));
+    const visitors = layout===2 ? 3 : 2;
+    for(let i=0;i<visitors;i++) person(X(.36+i*(.28/Math.max(1,visitors-1))+rr(-.025,.025)),.1+rr(.015,.045),rr(.105,.145),i%2?'1':-1,i===0?'scholar':pick(['attendant','young_man','elder_man']));
+    line([[.1,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
+    if(layout===1) for(let i=0;i<4;i++) D(X(rr(.18,.82)),Y(rr(.14,.2)),{r:.004,ink:.35,water:.3,after:.01});
+  }
+  function drawSports(){
+    const layout=Math.floor(R()*3), cx=rr(.44,.56), cy=rr(.31,.38), sx=rr(.84,1.08), sy=rr(.84,1.13);
+    canvas.dataset.sceneView=['环形跑道','斜向球场','远看操场'][layout];
+    quick([[.12,.56+rr(-.035,.025)],[.26,.63+rr(-.025,.025)],[.74,.63+rr(-.025,.025)],[.88,.56+rr(-.035,.025)]], { r: .003, ink: .72, water: .25, speed: 1.2 });
+    const laneCount=2+Math.floor(R()*4);
+    for(let row=0;row<laneCount;row++){
+      const inset=row*.018, y=.55+row*.018+rr(-.008,.008);
+      quick([[.2+inset,y],[.8-inset,y+rr(-.008,.008)]],{r:.0018,ink:.42,water:.12,speed:1.8});
+    }
+    oval(cx,cy,.43*sx,.19*sy,{r:.0026,ink:.72,water:.2,speed:1.4});
+    oval(cx,cy,.38*sx,.155*sy,{r:.0018,ink:.16,cin:-.24,water:.14,speed:1.7});
+    outline(cx-.26*sx,cy-.09*sy,.52*sx,.18*sy,{r:.0022,ink:.62,water:.15,speed:1.6});
+    quick([[cx,cy-.09*sy],[cx,cy+.09*sy]],{r:.0018,ink:.25,cin:-.18,water:.12,speed:1.8});
+    const centerRadius=layout===1?rr(.045,.085):rr(.06,.095);
+    oval(cx,cy,centerRadius,centerRadius*.72,{r:.0018,ink:.52,water:.12,speed:1.8});
+    const goalXs=[cx-.26*sx,cx+.26*sx];
+    for(const [index,gx] of goalXs.entries()){
+      const dir=index===0?-1:1, gy=cy+rr(-.035,.035), gh=rr(.07,.12);
+      quick([[gx,gy-gh*.55],[gx,gy+gh*.5],[gx+dir*.045,gy+gh*.5],[gx+dir*.045,gy-gh*.55]],{r:.002,ink:.7,water:.14,speed:1.4});
+    }
+    const players=2+Math.floor(R()*3), spread=rr(.08,.14);
+    for(let i=0;i<players;i++){
+      const role=i%2?'young_woman':'young_man', side=i%2?1:-1;
+      person(cx+rr(-spread,spread),cy+rr(-.07,.05),rr(.075,.115),side,role);
+    }
+    oval(cx+rr(-.025,.025),cy+rr(-.025,.025),.012,.012,{r:.002,ink:.08,ochre:.48,water:.1,speed:.5});
+    quick([[.08,.16+rr(-.02,.025)],[.92,.16+rr(-.02,.025)]], { r: .003, ink: .46, water: .22, speed: 1.5 });
+  }
+  function drawDormitory(){
+    const layout=Math.floor(R()*3),courtX=rr(.46,.54),baseJitter=rr(-.025,.025);
+    canvas.dataset.sceneView=['三进书院','错落院舍','双院回廊'][layout];
+    const plans=[
+      [[.08,.25,.32,false],[.375,.25,.34,true],[.67,.25,.32,false]],
+      [[.055,.27,.34,false],[.365,.27,.29,true],[.68,.265,.35,false]],
+      [[.035,.285,.33,true],[.38,.235,.37,false],[.68,.285,.31,true]]
+    ];
+    function wing(x,w,base,doubleEave,height){
+      const h=height,top=base+h;
+      tiledRoof(x-.012,top,w+.024,h*.39,{layers:doubleEave?2:1,lift:.017,ink:.88,azurite:.12});
+      quick([[x,base],[x+w,base],[x+w,top],[x,top],[x,base]], { r: .0027, ink: .78, water: .17, speed: 1.1 });
+      quick([[x,base+h*.2],[x+w,base+h*.2]], { r: .0018, ink: .58, water: .12, speed: 1.6 });
+      for (const px of [x+.025,x+w-.025]) timberPillar(px,base,top-.008,.14);
+      latticeWindow(x+w*.09,base+h*.32,w*.25,h*.42);
+      lacquerDoor(x+w*.39,base,w*.22,h*.78);
+      latticeWindow(x+w*.66,base+h*.32,w*.25,h*.42);
+    }
+    for(const [x,w,base,doubleEave] of plans[layout]) wing(x,w,base+baseJitter,doubleEave,rr(.18,.22));
+    const gateBase=.22+baseJitter*.35;
+    quick([[.06,gateBase+.06],[.37,gateBase+.06],[courtX-.07,gateBase+.09],[courtX+.07,gateBase+.09],[.63,gateBase+.06],[.94,gateBase+.06]], { r: .0028, ink: .72, water: .18, speed: 1.2 });
+    quick([[courtX-.07,gateBase],[courtX-.07,gateBase+.08],[courtX-.04,gateBase+.11],[courtX+.04,gateBase+.11],[courtX+.07,gateBase+.08],[courtX+.07,gateBase]], { r: .0025, ink: .84, water: .14, speed: 1.25 });
+    const lanterns=2+Math.floor(R()*4);
+    for(let i=0;i<lanterns;i++){
+      const x=.2+i*.6/Math.max(1,lanterns-1), y=gateBase-.015+rr(-.012,.012);
+      quick([[x,y],[x+W(.018),y+.01],[x+W(.035),y]],{r:.0016,ink:.12,ochre:.3,cin:R()<.35?.22:0,water:.14,speed:1.5});
+    }
+    quick([[courtX,.1],[courtX,.19]], { r: .002, ink: .08, ochre: .34, water: .13, speed: 1.3 });
+    tree(.04+rr(0,.035),.18,.24,.5,pick(['willow','plum'])); tree(.93-rr(0,.035),.18,.27,.5,pick(['pine','plum']));
+    person(courtX+rr(-.13,-.06),.1,rr(.13,.17),-1,'young_man');
+    person(courtX+rr(.06,.14),.1,rr(.13,.17),1,'young_woman');
+    stoneSteps(courtX,.18,.12+layout*.02,3);
+  }
+  function drawGarden(){
+    const layout=Math.floor(R()*3),center=rr(.44,.56),spread=rr(.88,1.1),base=rr(.27,.33),height=rr(.82,1.12);
+    canvas.dataset.sceneView=['月门花庭','曲桥临池','游廊深院'][layout];
+    const X=x=>center+(x-.5)*spread,Y=y=>base+(y-.3)*height;
+    const line=(points,options)=>quick(points.map(([x,y])=>[X(x),Y(y)]),options);
+    const treeLeft=rr(.08,.19),treeRight=rr(.81,.93);
+    tree(treeLeft,.16,rr(.38,.5),.72,pick(['willow','plum','pine']));
+    tree(treeRight,.15,rr(.34,.46),.58,pick(['pine','plum','willow']));
+    bamboo(rr(.72,.82),.16,rr(.34,.44),-1); bamboo(rr(.06,.14),.16,rr(.3,.4),1);
+
+    if(layout===1){
+      line([[.22,.48],[.31,.57],[.43,.63],[.57,.63],[.69,.57],[.78,.48]],{r:.004,ink:.92,water:.18,speed:.95});
+      line([[.24,.46],[.76,.46]],{r:.0025,ink:.7,water:.14,speed:1.2});
+      for(const x of [.29,.42,.58,.71]) line([[x,.46],[x,.57]],{r:.0025,ink:.8,water:.16,speed:1.15});
+      line([[.18,.39],[.28,.46],[.72,.46],[.82,.39]],{r:.002,ink:.55,water:.16,speed:1.5});
+    }else{
+      const gateWidth=layout===0?rr(.38,.52):rr(.29,.4),left=.5-gateWidth*.5,right=.5+gateWidth*.5;
+      line([[left,.51],[left+gateWidth*.12,.62],[center,.69],[right-gateWidth*.12,.62],[right,.51]],{r:.004,ink:1,water:.18,speed:.9});
+      line([[left-.025,.5],[left+gateWidth*.13,.56],[center,.6],[right-gateWidth*.13,.56],[right+.025,.5]],{r:.0025,ink:.72,water:.14,speed:1.2});
+      for(const side of [-1,1]) line([[center+side*gateWidth*.26,.51],[center+side*gateWidth*.26,.3]],{r:.003,ink:.88,water:.16,speed:1.1});
+      line([[center-gateWidth*.26,.43],[center+gateWidth*.26,.43]],{r:.0018,ink:.6,water:.12,speed:1.7});
+      for(let i=0;i<5;i++){const x=center-gateWidth*.22+i*gateWidth*.11;line([[x,.42],[x,.32]],{r:.0015,ink:.48,water:.1,speed:1.8});}
+    }
+    const pondY=rr(.13,.23),pondWidth=rr(.22,.42);
+    if(layout!==1){
+      line([[center-pondWidth,.3],[center-pondWidth*.65,.27],[center-pondWidth*.2,.28],[center+pondWidth*.25,.25],[center+pondWidth,.29]],{r:.003,ink:.58,cin:-.18,water:.3,speed:1.2});
+      for(let ripple=0;ripple<5+Math.floor(R()*4);ripple++){const x=center+rr(-pondWidth*.8,pondWidth*.8),y=pondY+rr(-.025,.025),w=rr(.025,.08);line([[x-w,y],[x,y+.003],[x+w,y]],{r:.0015,ink:.08,cin:-.42,water:.12,dry:.35,speed:1.9});}
+    }else{
+      for(let rock=0;rock<7;rock++){const x=center+rr(-pondWidth,pondWidth),y=pondY+rr(-.025,.025);D(x,y,{r:rr(.009,.018),ink:.62,water:.22,after:.01});}
+    }
+    const blossomCount=4+Math.floor(R()*5);
+    for(let i=0;i<blossomCount;i++){
+      const x=rr(.1,.9),y=rr(.13,.37);
+      line([[x,y],[x+W(rr(.025,.055)),y+rr(.018,.05)],[x+W(rr(.05,.08)),y+rr(-.008,.025)]],{r:.0026,ink:.68,water:.24,speed:1.3});
+      D(x+W(.035),y+.04,{r:.009,ink:.04,cin:R()<.5?.28:0,ochre:R()<.5?0:.48,water:.2,after:.01});
+    }
+    for(let i=0;i<4;i++)line([[.16+i*.18,.08],[.27+i*.13,.1]],{r:.0018,ink:.42,water:.12,dry:.5,speed:1.8});
+    person(center+rr(-.13,-.04),.1,rr(.11,.14),-1,layout===2?'elder_woman':'qin_player');
+    if(R()<.7)person(center+rr(.05,.14),.1,rr(.11,.14),1,'elder_man');
+  }
+  function drawStream(){
+    const layout=Math.floor(R()*3),shift=rr(-.05,.05);
+    canvas.dataset.sceneView=['曲溪过桥','山涧浅滩','瀑布入溪'][layout];
+    const routes=[
+      {left:[[.35,.9],[.29,.75],[.4,.62],[.34,.48],[.48,.34],[.39,.18],[.3,.08]],right:[[.57,.9],[.65,.75],[.58,.62],[.7,.48],[.58,.34],[.72,.18],[.83,.08]]},
+      {left:[[.18,.9],[.32,.76],[.28,.61],[.43,.48],[.38,.32],[.52,.18],[.45,.08]],right:[[.4,.9],[.55,.76],[.5,.61],[.65,.48],[.58,.32],[.75,.18],[.72,.08]]},
+      {left:[[.24,.9],[.37,.78],[.31,.65],[.43,.52],[.39,.36],[.53,.2],[.44,.08]],right:[[.67,.9],[.58,.78],[.69,.65],[.57,.52],[.66,.36],[.55,.2],[.7,.08]]}
+    ][layout];
+    const offset=points=>points.map(([x,y])=>[Math.max(.02,Math.min(.98,x+shift)),y]);
+    quick(offset(routes.left),{r:.004,ink:.68,water:.35,speed:1.05});
+    quick(offset(routes.right),{r:.004,ink:.68,water:.35,speed:1.05});
+    const rippleCount=6+Math.floor(R()*7),streamCenter=.5+shift*.5;
+    for (let i = 0; i < rippleCount; i++) {
+      const y = .12 + i*(.72/rippleCount)+rr(-.018,.018), cx = streamCenter + Math.sin(i*1.7+shift*10)*.045, span = .045 + R()*.07;
+      quick([[cx-span,y],[cx-span*.35,y+.005],[cx+span*.4,y+.003],[cx+span,y]], { r: .0017, ink: .08, cin: -.55, water: .14, dry: .45, speed: 2, note: .28 });
+    }
+    if(layout===0){
+      const bridgeY=rr(.42,.62),bridgeX=.5+shift;
+      quick([[bridgeX-W(.11),bridgeY],[bridgeX-W(.07),bridgeY+.045],[bridgeX,bridgeY+.065],[bridgeX+W(.07),bridgeY+.045],[bridgeX+W(.11),bridgeY]],{r:.0028,ink:.76,water:.16,speed:1.1});
+      quick([[bridgeX-W(.11),bridgeY],[bridgeX+W(.11),bridgeY]],{r:.002,ink:.56,water:.12,speed:1.5});
+    }else if(layout===1){
+      for(let stone=0;stone<5;stone++)D(streamCenter+W((stone-2)*.045),.22+stone*.09,{r:rr(.008,.014),ink:.74,water:.16,after:.01});
+    }else{
+      distantWaterfall(streamCenter+rr(-.04,.04),.68,.31,.045);
+    }
+    for(let i=0;i<4+Math.floor(R()*4);i++){
+      const side=i%2?-1:1,x=streamCenter+W(side*rr(.15,.32)),y=rr(.12,.42);
+      oval(x,y,rr(.018,.042),rr(.01,.024),{r:.0025,ink:.68,water:.2,speed:1.7});
+    }
+    tree(rr(.03,.17),.2,rr(.3,.43),.55,pick(['willow','pine','plum']));
+    bamboo(rr(.83,.96),.12,rr(.38,.52),R()<.5?-1:1);
+    const personY=rr(.13,.24);
+    person(streamCenter+W(rr(-.31,-.16)),personY,rr(.12,.17),1,'elder_man');
+    if(R()<.8)person(streamCenter+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman']));
+    for (let i = 0; i < 4+Math.floor(R()*4); i++) {
+      const x=rr(.025,.16),y=rr(.12,.37);
+      quick([[x,y],[x+W(rr(.008,.035)),y+rr(.06,.12)]], { r:.002,ink:.62,water:.2,speed:1.2 });
+    }
+  }
+  function drawBirds(){
+    const layout=Math.floor(R()*3),treeCount=layout===1?7:3+Math.floor(R()*3),treeXs=[];
+    canvas.dataset.sceneView=['疏林归雁','深林群鸟','坡岭松林'][layout];
+    const ridgeY=layout===0?.34:layout===1?.27:.22;
+    const ridge=[];
+    for(let x=0;x<=1.001;x+=.14)ridge.push([x,ridgeY+Math.sin(x*(layout===2?10:17)+rr(0,6.28))*(layout===1?.045:.025)]);
+    quick(ridge,{r:.003,ink:.22,water:.65,speed:1.8});
+    for(let i=0;i<treeCount;i++){
+      const t=treeCount===1?.5:i/(treeCount-1),x=layout===1?rr(.05,.95):.08+t*.84+rr(-.035,.035);
+      const base=.08+rr(0,.07),height=rr(.4,.58)*(layout===2?.88+.25*t:1);
+      tree(x,base,height,rr(.34,.55),pick(['pine','willow','plum']));treeXs.push(x);
+      const accents=1+Math.floor(R()*3);
+      for(let mark=0;mark<accents;mark++)D(x+W(rr(-.04,.04)),base+height*rr(.45,.86),{r:rr(.004,.008),ink:.04,ochre:.3,water:.28,after:.01});
+      if(R()<.55)D(x+W(rr(-.06,.06)),base+height*rr(.48,.8),{r:.005,ink:.03,cin:-.34,water:.22,after:.01});
+    }
+    const birdCount=4+Math.floor(R()*9), flockCenter=rr(.38,.64), flockHeight=rr(.53,.77);
+    for(let i=0;i<birdCount;i++){
+      let x,y;
+      if(layout===0){const t=i/Math.max(1,birdCount-1);x=flockCenter+(t-.5)*rr(.18,.35);y=flockHeight+Math.sin(t*Math.PI)*.08+rr(-.025,.025);}
+      else if(layout===1){x=rr(.12,.9);y=rr(.62,.87);}
+      else{x=flockCenter+(i-birdCount/2)*.035+rr(-.018,.018);y=flockHeight+(i-birdCount/2)*.04+rr(-.02,.02);}
+      bird(x,y,rr(.6,1.35));
+    }
+    person(treeXs[0]+W(.045),.1,.13,-1,'scholar');
+    if(layout!==0)person(treeXs[treeXs.length-1]-W(.045),.1,.12,1,'attendant');
+    const branchCount=5+Math.floor(R()*6);
+    for(let i=0;i<branchCount;i++){
+      const x=rr(.08,.9),y=rr(.07,.18),length=rr(.035,.09),direction=R()<.5?-1:1;
+      quick([[x,y],[x+W(length*.5*direction),y+rr(.025,.055)],[x+W(length*direction),y+rr(.005,.04)]],{r:.002,ink:.52,water:.16,speed:1.4});
+    }
+  }
+  function horseCarriage(x, base, h){
+    Q.push({ figure: 'horse_carriage', x, y: M(base), h: h * ys, flip: true, ink: .82, cin: .08, water: .7, ochre: .14, after: .06 });
+  }
+  function drawCarriage(){
+    const layout=Math.floor(R()*3),vanish=rr(.43,.59),nearY=rr(.34,.48),horseX=rr(.43,.68),horseSize=rr(.17,.22);
+    canvas.dataset.sceneView=['迎面入巷','侧街停辕','深巷远行'][layout];
+    const leftWidth=rr(.19,.3),rightWidth=rr(.2,.31),leftTop=rr(.58,.72),rightTop=rr(.55,.7);
+    tiledRoof(.015,leftTop,leftWidth,leftTop*.17,{layers:layout===1?1:2,lift:.025,azurite:.14});
+    quick([[.035,nearY],[leftWidth,nearY],[leftWidth,leftTop],[.035,leftTop],[.035,nearY]],{r:.003,ink:.8,water:.17,speed:1.1});
+    for(let i=0;i<3;i++){
+      const x=.055+i*(leftWidth-.07)/2;
+      timberPillar(x,nearY,leftTop-.015,.16);
+      if(i<2){const wx=x+.025,ww=Math.max(.035,(leftWidth-.13)/2);latticeWindow(wx,nearY+.1,ww,.08);}
+    }
+    lacquerDoor(.07+leftWidth*.48,nearY,leftWidth*.25,.15);
+
+    tiledRoof(1-rightWidth-.015,rightTop,rightWidth,rightTop*.14,{layers:layout===0?2:1,lift:.024,ink:.86,azurite:.1});
+    quick([[1-rightWidth,nearY+.025],[.965,nearY+.025],[.965,rightTop],[1-rightWidth,rightTop],[1-rightWidth,nearY+.025]],{r:.0028,ink:.76,water:.16,speed:1.15});
+    for(let i=0;i<3;i++){const x=1-rightWidth+.018+i*(rightWidth-.036)/2;timberPillar(x,nearY+.025,rightTop,.12);}
+    latticeWindow(1-rightWidth+.045,nearY+.11,rightWidth*.34,.07);
+    lacquerDoor(1-rightWidth*.5-.035,nearY+.025,.07,.13);
+
+    const alleyWidth=rr(.12,.2),farY=rr(.58,.68);
+    if(layout!==1){
+      tiledRoof(vanish-alleyWidth*.45,farY,.11,.055,{lift:.018,ink:.62,azurite:.08});
+      for(const x of [vanish-.035,vanish+.035])timberPillar(x,farY-.13,farY+.015,.09);
+      quick([[vanish-.04,farY-.13],[vanish-.04,farY-.055],[vanish-.025,farY-.025],[vanish,farY-.01],[vanish+.025,farY-.025],[vanish+.04,farY-.055],[vanish+.04,farY-.13]],{r:.0018,ink:.62,water:.12,speed:1.4});
+    }
+    const roadY=nearY-.06;
+    quick([[.025,roadY],[vanish-alleyWidth*.5,farY-.12]],{r:.003,ink:.56,water:.22,speed:1.25});
+    quick([[.975,roadY],[vanish+alleyWidth*.5,farY-.12]],{r:.003,ink:.56,water:.22,speed:1.25});
+    quick([[.08,.2],[vanish-alleyWidth*.5,.31]],{r:.002,ink:.38,water:.14,speed:1.7});
+    quick([[.92,.2],[vanish+alleyWidth*.5,.31]],{r:.002,ink:.38,water:.14,speed:1.7});
+    horseCarriage(horseX,.1,horseSize);
+    person(horseX+W(-.16),.12,rr(.1,.14),1,'traveler');
+    if(layout!==2)person(rr(.75,.9),.13,rr(.09,.13),-1,'young_woman');
+    if(R()<.55)person(vanish+rr(-.035,.035),.31,.075,1,'attendant');
+  }
+  function drawKunming(){
+    const layout=Math.floor(R()*3),vanish=rr(.44,.58),streetY=rr(.29,.36),drift=rr(-.018,.018);
+    canvas.dataset.sceneView=['春城街市','院巷深处','花树街口'][layout];
+    const courtyardHouse = (x,base,w,h,variant) => {
+      const roofBase = base + h*.56;
+      quick([[x,base],[x,base+h*.63],[x+w*.1,base+h*.63],[x+w*.1,base+h*.73],[x+w*.22,base+h*.73],[x+w*.22,roofBase],[x+w*.78,roofBase],[x+w*.78,base+h*.73],[x+w*.9,base+h*.73],[x+w*.9,base+h*.63],[x+w,base+h*.63],[x+w,base],[x,base]], { r: .003, ink: .8, water: .17, speed: 1.1 });
+      tiledRoof(x+w*.14,roofBase,w*.72,h*.26,{layers:variant===1?2:1,lift:.012,ink:.86,azurite:variant===1?.22:.14});
+      quick([[x+w*.1,base+h*.12],[x+w*.9,base+h*.12]], { r: .0018, ink: .52, water: .14, speed: 1.6 });
+      latticeWindow(x+w*.13,base+h*.32,w*.17,h*.17);
+      latticeWindow(x+w*.7,base+h*.32,w*.17,h*.17);
+      const doorW = w*.25, doorX = x + w*(variant===1?.38:.375), archTop = base+h*.42;
+      quick([[doorX,base],[doorX,base+h*.3],[doorX+doorW*.16,base+h*.37],[doorX+doorW*.5,archTop],[doorX+doorW*.84,base+h*.37],[doorX+doorW,base+h*.3],[doorX+doorW,base]], { r: .0028, ink: .84, water: .14, speed: 1.1 });
+      quick([[doorX+.012,base],[doorX+.012,base+h*.28],[doorX+doorW*.5,base+h*.38],[doorX+doorW-.012,base+h*.28],[doorX+doorW-.012,base]], { r: .002, ink: .55, cin: .14, water: .12, speed: 1.3 });
+      quick([[doorX+doorW*.5,base],[doorX+doorW*.5,base+h*.36]], { r: .0016, ink: .58, water: .1, speed: 1.5 });
+      stoneSteps(doorX+doorW*.5,base-.01,doorW*.8,2);
+    };
+    const housePlans=[
+      [[.015,.39,.245,.34,0],[.34,.44,.31,.3,1],[.72,.37,.265,.36,2]],
+      [[.015,.37,.19,.39,0],[.23,.43,.235,.32,1],[.51,.48,.19,.27,0],[.74,.35,.24,.4,2]],
+      [[.015,.38,.29,.35,0],[.35,.42,.3,.32,1],[.70,.36,.285,.39,2]]
+    ];
+    const houseXs=[];
+    for(const [x,base,width,height,variant] of housePlans[layout]){
+      const houseX=Math.max(.005,Math.min(.99-width,x+drift+rr(-.012,.012)));
+      const houseBase=Math.max(.34,Math.min(.49,base+rr(-.025,.025)));
+      courtyardHouse(houseX,houseBase,width,height*rr(.9,1.08),variant);houseXs.push(houseX+width*.5);
+    }
+    const horizon=layout===1?streetY+.08:streetY+.13;
+    quick([[0,horizon+rr(-.01,.01)],[vanish-.08,horizon+.1],[vanish+.08,horizon+.1],[1,horizon+rr(-.01,.01)]],{r:.0028,ink:.62,water:.2,speed:1.25});
+    quick([[.03,streetY],[.97,streetY]],{r:.0022,ink:.44,water:.15,speed:1.6});
+    for(let i=0;i<3+Math.floor(R()*3);i++){
+      const x=houseXs[i%houseXs.length]+rr(-.045,.045);
+      tree(Math.max(.035,Math.min(.965,x)),.14+rr(-.025,.025),rr(.2,.33),rr(.28,.46),pick(['willow','plum','pine']));
+      const blossomCount=4+Math.floor(R()*7);
+      for(let j=0;j<blossomCount;j++){
+        const red=R()<.5;
+        D(x+W(rr(-.055,.055)),.35+rr(-.035,.13),{r:rr(.004,.009),ink:.03,cin:red?.2:0,ochre:red?0:.42,water:.42,after:.01});
+      }
+    }
+    quick([[.03,.1],[vanish-.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
+    quick([[.97,.1],[vanish+.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
+    const carriageX=portrait?rr(.45,.55):rr(.5,.72);
+    horseCarriage(carriageX,.08+rr(0,.035),rr(.15,.2));
+    person(Math.max(.08,carriageX-W(.22)),.1,rr(.11,.15),-1,pick(['elder_man','traveler']));
+    person(Math.min(.92,carriageX+W(.24)),.1,rr(.11,.15),1,pick(['young_woman','attendant']));
+  }
+
+  const sceneBuilders = { ginkgo: drawGinkgo, library: drawLibrary, sports: drawSports, dormitory: drawDormitory, garden: drawGarden, stream: drawStream, birds: drawBirds, carriage: drawCarriage, kunming: drawKunming };
+  if (sceneBuilders[scene]) {
+    sceneBuilders[scene]();
+    F(() => showPoem(SCENE_POEMS[scene]), 3.6);
+    F(() => stampSeal(), .4);
+    return Q;
+  }
+
+  const landscapeViews = [
+    { name: '远峰行舟', farBase: [.36,.4], farPeaks: [[.08,.1,.1],[.3,.14,.12],[.63,.09,.09],[.9,.12,.13]], mainBase: [.29,.32], mainPeaks: [[.34,.43,.11],[.46,.25,.08],[.22,.18,.09]], mainX: [0,.78], secondBase: [.26,.29], secondPeaks: [[.72,.23,.08],[.83,.13,.06]], secondX: [.45,1], bankBase: [.07,.1], bankPeaks: [[.11,.08,.15],[.3,.04,.06]], bankX: [0,.46], water: [.09,.25], trees: [[.06,.21,'pine',1],[.16,.17,'willow',.7]], feature: 'boat', mist: 2 },
+    { name: '峡谷飞瀑', farBase: [.42,.47], farPeaks: [[.05,.13,.1],[.28,.12,.1],[.52,.1,.12],[.75,.13,.1],[.98,.1,.08]], mainBase: [.16,.2], mainPeaks: [[.12,.6,.17],[.3,.35,.13]], mainX: [0,.48], secondBase: [.16,.21], secondPeaks: [[.85,.58,.17],[.68,.34,.12]], secondX: [.54,1], bankBase: [.03,.07], bankPeaks: [[.05,.1,.14],[.95,.08,.12]], bankX: [0,1], water: [.1,.29], trees: [[.045,.27,'pine',1],[.95,.23,'plum',.82]], feature: 'waterfall', mist: 3 },
+    { name: '湖心亭影', farBase: [.46,.5], farPeaks: [[.08,.08,.12],[.32,.12,.13],[.68,.1,.12],[.92,.08,.12]], mainBase: [.28,.32], mainPeaks: [[.15,.28,.18],[.39,.23,.14]], mainX: [0,.55], secondBase: [.3,.34], secondPeaks: [[.8,.31,.18],[.94,.17,.08]], secondX: [.52,1], bankBase: [.025,.055], bankPeaks: [[.08,.035,.16],[.9,.055,.16]], bankX: [0,1], water: [.04,.21], trees: [[.08,.18,'willow',.8],[.9,.18,'plum',.8]], feature: 'pavilion', mist: 3 },
+    { name: '近山听泉', farBase: [.4,.45], farPeaks: [[.08,.11,.1],[.33,.09,.1],[.63,.13,.13],[.92,.1,.1]], mainBase: [.16,.2], mainPeaks: [[.09,.67,.18],[.31,.36,.13]], mainX: [0,.48], secondBase: [.22,.26], secondPeaks: [[.8,.48,.16],[.67,.28,.1]], secondX: [.54,1], bankBase: [.04,.07], bankPeaks: [[.09,.12,.17],[.91,.08,.12]], bankX: [0,1], water: [.08,.23], trees: [[.03,.3,'plum',1],[.92,.2,'pine',.8]], feature: 'waterfall', mist: 1 },
+    { name: '层岭云村', farBase: [.35,.39], farPeaks: [[.03,.1,.08],[.2,.14,.1],[.4,.09,.09],[.59,.13,.1],[.8,.1,.09],[.98,.12,.08]], mainBase: [.28,.32], mainPeaks: [[.16,.24,.11],[.36,.33,.12],[.56,.27,.1],[.79,.35,.13]], mainX: [0,1], secondBase: [.25,.29], secondPeaks: [[.1,.14,.1],[.48,.16,.12],[.89,.17,.11]], secondX: [0,1], bankBase: [.08,.12], bankPeaks: [[.1,.08,.12],[.42,.07,.14],[.87,.1,.15]], bankX: [0,1], water: [.08,.22], trees: [[.09,.14,'pine',.8],[.38,.12,'willow',.7],[.85,.16,'plum',.8]], feature: 'village', mist: 2 }
+  ];
+  const view = pick(landscapeViews), jitterPeaks = peaks => peaks.map(([c,h,w]) => ({ c: c + rr(-.025,.025), h: h * rr(.88,1.12), w: w * rr(.9,1.1) }));
+  canvas.dataset.landscapeView = view.name;
+
+  // Distant ridges stay pale; each view changes their height and spacing.
+  const farBase = rr(...view.farBase), far = range(jitterPeaks(view.farPeaks), farBase, .006);
   for (const run of runs(far, farBase, 0, 1, .008, .008)) S(run, { r: .0045, ink: .22, water: .8, speed: .9, note: .14, vel: .35 });
   for (let j = 0; j < 5; j++) {
     const off = .01 + j * .02, ij = .12 * (1 - j / 5.5);
     for (const run of runs(x => far(x) - off, farBase, 0, 1, .02, .004)) S(run, { r: .022, ink: ij, water: .75, speed: 3, note: .3, after: .02, vel: .22 });
   }
-  // 主峰 main peak
-  const c0 = rr(.3, .4), mBase = rr(.29, .32);
-  const main = range([{ c: c0, h: rr(.38, .44), w: rr(.09, .12) }, { c: c0 + rr(.08, .12) * wx, h: rr(.2, .27), w: rr(.06, .08) }, { c: c0 - rr(.09, .13) * wx, h: rr(.15, .22), w: rr(.06, .09) }], mBase, .012);
-  mountain(main, mBase, { ink: 1, s: 1, cun: 26, moss: 14, folds: 5, x0: 0, x1: .78 });
-  // 次峰 second peak
-  const c1 = rr(.68, .78), sBase = .27;
-  const second = range([{ c: c1, h: rr(.2, .26), w: rr(.07, .09) }, { c: c1 + rr(.07, .1) * wx, h: rr(.1, .14), w: .06 }], sBase, .01);
-  mountain(second, sBase, { ink: .7, s: .9, cun: 14, moss: 8, folds: 3, x0: .45, x1: 1 });
-  // 近岸 near bank
-  const bank = range([{ c: rr(.08, .16), h: rr(.07, .1), w: rr(.12, .18) }, { c: rr(.28, .34), h: rr(.03, .05), w: .06 }], .08, .006);
-  mountain(bank, .08, { ink: 1, s: 1.1, cun: 10, moss: 6, folds: 2, x0: 0, x1: .46 });
-  // 树 trees
-  const tx0 = rr(.05, .08), gap = rr(.055, .075) * Math.min(wx, 1.3);
-  for (let i = 0; i < 3; i++) { const tx = tx0 + i * gap + rr(-.01, .01); tree(tx, bank(tx) - .004, rr(.15, .24), i === 1 ? .55 : 1); }
-  // 水 ripples
-  for (let i = 0; i < 6; i++) {
-    const y = rr(.09, .25), xa = rr(.38, .55), xb = Math.min(xa + rr(.15, .4), .98), ph = rr(0, 6), pts = [];
-    for (let x = xa; x <= xb; x += .01) pts.push([x, y + Math.sin(x * 60 + ph) * .002]);
-    S(pts, { r: .0019, ink: .5, water: .1, dry: .5, dryGrow: .3, fade: .6, speed: 1.4, note: .11, after: .05, vel: .35 });
+  const mainBase = rr(...view.mainBase), main = range(jitterPeaks(view.mainPeaks), mainBase, .012);
+  mountain(main, mainBase, { ink: 1, s: 1, cun: 26, moss: 14, folds: 5, x0: view.mainX[0], x1: view.mainX[1] });
+  const secondBase = rr(...view.secondBase), second = range(jitterPeaks(view.secondPeaks), secondBase, .01);
+  mountain(second, secondBase, { ink: .7, s: .9, cun: 14, moss: 8, folds: 3, x0: view.secondX[0], x1: view.secondX[1] });
+  const bankBase = rr(...view.bankBase), bank = range(jitterPeaks(view.bankPeaks), bankBase, .006);
+  mountain(bank, bankBase, { ink: 1, s: 1.1, cun: 10, moss: 6, folds: 2, x0: view.bankX[0], x1: view.bankX[1] });
+  for (const [baseX,height,form,treeInk] of view.trees) {
+    const tx = baseX + rr(-.018,.018);
+    tree(tx, bank(tx) - .004, height * rr(.86,1.12), treeInk, form);
   }
-  // 舟 boat and fisherman
-  const bx = rr(.55, .64), by = rr(.16, .2);
-  S([[bx - W(.04), by + .009], [bx - W(.022), by + .001], [bx, by - .001], [bx + W(.022), by + .001], [bx + W(.045), by + .011]], { r: .0034, ink: 1.2, water: .2, speed: .3, note: .05 });
-  D(bx + W(.004), by + .016, { r: .0045, ink: 1.3, water: .2, after: .15 });
-  S([[bx - W(.008), by + .023], [bx + W(.004), by + .029], [bx + W(.016), by + .023]], { r: .002, ink: 1.1, speed: .3 });
-  S([[bx + W(.014), by + .045], [bx + W(.05), by - .022]], { r: .0016, ink: .9, dry: .3, speed: .5 });
-  S([[bx - W(.055), by - .007], [bx + W(.06), by - .008]], { r: .0015, ink: .35, dry: .4, speed: 1 });
-  // 鸟 birds
-  const sunX = portrait ? rr(.55, .64) : rr(.66, .8), sunY = portrait ? rr(.78, .82) : rr(.76, .84);
-  const bbx = portrait ? rr(.66, .7) : rr(.5, .6), bby = portrait ? rr(.64, .68) : rr(.8, .86);
-  for (let i = 0; i < 3; i++) {
-    const x = bbx + W(i * .03 + rr(-.006, .006)), y = bby + (i % 2) * .012 + rr(-.004, .004), s = rr(.8, 1.2);
-    S([[x - W(.014 * s), y + .005 * s], [x - W(.007 * s), y + .004 * s], [x, y - .002 * s], [x + W(.006 * s), y + .004 * s], [x + W(.013 * s), y + .007 * s]], { r: .0017, ink: 1.2, water: .1, speed: .35, note: .03, after: .12, vel: .3, kind: 'harm' });
+  for (let band = 0; band < view.mist; band++) {
+    const y = farBase + .045 + band * .028, points = [];
+    for (let x = .02; x <= .98; x += .035) points.push([x,y + Math.sin(x*16+band)*.005]);
+    S(points,{r:.012,ink:.09,cin:-.04,water:.78,speed:2.4,note:.28,vel:.2});
   }
-  // 日 a dot of cinnabar
-  D(sunX, sunY, { r: .042, ink: 0, cin: 1.25, water: .15, hard: 1, after: .9, chime: true });
+  function distantPavilion(cx, base, size){
+    const width = size * 1.2, top = base + size * .56;
+    tiledRoof(cx-W(width*.5),top,width,size*.3,{lift:size*.1,ink:.42,azurite:.05});
+    for (const side of [-.34,.34]) timberPillar(cx+W(side*width),base,top,.04);
+    quick([[cx-W(width*.48),base+size*.2],[cx+W(width*.48),base+size*.2]], { r:.0015,ink:.36,water:.2,speed:1.8 });
+    quick([[cx-W(width*.55),base],[cx+W(width*.55),base]], { r:.002,ink:.45,water:.17,speed:1.4 });
+  }
+  function distantVillage(){
+    for (let i = 0; i < 4; i++) {
+      const x = .2 + i*.16 + rr(-.018,.018), base = .32 + (i%2)*.025, width = rr(.055,.085), height = rr(.045,.075);
+      quick([[x,base],[x,base+height*.65],[x+width*.5,base+height],[x+width,base+height*.65],[x+width,base]], { r:.0018,ink:.32,water:.35,speed:1.6 });
+      quick([[x+width*.15,base],[x+width*.15,base+height*.32],[x+width*.35,base+height*.32],[x+width*.35,base]], { r:.0012,ink:.25,water:.2,speed:1.9 });
+      quick([[x+width*.62,base],[x+width*.62,base+height*.28],[x+width*.83,base+height*.28],[x+width*.83,base]], { r:.0012,ink:.25,water:.2,speed:1.9 });
+    }
+  }
+  function distantWaterfall(cx, top, bottom, spread){
+    quick([[cx-W(spread*1.5),top+.015],[cx-W(spread),top],[cx+W(spread),top],[cx+W(spread*1.6),top+.015]], { r:.002,ink:.56,water:.24,speed:1.4 });
+    for (let strand = -2; strand <= 2; strand++) {
+      const startX = cx + W(strand * spread * .2), points = [];
+      for (let step = 0; step <= 8; step++) {
+        const t = step/8, y = top - (top-bottom)*t;
+        points.push([startX+W(Math.sin(t*7+strand)*.004),y]);
+      }
+      S(points,{r:.0028,ink:.12,cin:-.2,water:.72,speed:2.5,note:.18,vel:.2});
+    }
+    for (let rock = -2; rock <= 2; rock++) D(cx+W(rock*spread*.32),bottom-.012,{r:.006,ink:.45,water:.22,after:.01});
+  }
+  // Ripples move with each view's shoreline and water level.
+  const rippleCount = Math.floor(rr(4,10));
+  for (let i = 0; i < rippleCount; i++) {
+    const y = rr(view.water[0], view.water[1]), xa = rr(.2,.55), xb = Math.min(xa+rr(.12,.38),.98), phase = rr(0,6), points = [];
+    for (let x = xa; x <= xb; x += .01) points.push([x,y+Math.sin(x*60+phase)*.002]);
+    S(points,{r:.0019,ink:.12,cin:-.32,water:.1,dry:.5,dryGrow:.3,fade:.6,speed:1.4,note:.11,after:.05,vel:.35});
+  }
+  if (view.feature === 'boat') {
+    const bx = rr(.55,.68), by = rr(view.water[0],view.water[1]);
+    S([[bx-W(.04),by+.009],[bx-W(.022),by+.001],[bx,by-.001],[bx+W(.022),by+.001],[bx+W(.045),by+.011]], { r:.0034,ink:1.2,water:.2,speed:.3,note:.05 });
+    person(bx,by-.015,.075,1,'boatman');
+  } else if (view.feature === 'pavilion') {
+    const islandX = rr(.43,.61), islandY = rr(.15,.2);
+    quick([[islandX-W(.13),islandY],[islandX-W(.07),islandY+.018],[islandX+W(.08),islandY+.018],[islandX+W(.14),islandY]], { r:.002,ink:.42,water:.5,speed:1.8 });
+    distantPavilion(islandX,islandY+.018,.12);
+  } else if (view.feature === 'waterfall') {
+    distantWaterfall(rr(.47,.72),rr(.48,.67),rr(.12,.2),rr(.025,.045));
+  } else {
+    distantVillage();
+  }
+  const skyObject = pick(['sun','sun','moon','moon','cloud']);
+  const skyX = portrait ? rr(.54,.67) : rr(.68,.84), skyY = portrait ? rr(.77,.84) : rr(.77,.88);
+  if (skyObject === 'sun') D(skyX,skyY,{r:.042,ink:0,cin:1.25,water:.15,hard:1,after:.65,chime:true});
+  else if (skyObject === 'moon') {
+    D(skyX,skyY,{r:.026,ink:.03,ochre:.62,water:.12,hard:.8,after:.45});
+    const arc=[];
+    for(let step=0;step<=18;step++){const angle=-1.15+step/18*2.3;arc.push([skyX+W(Math.cos(angle)*.028),skyY+Math.sin(angle)*.028]);}
+    quick(arc,{r:.0018,ink:.36,ochre:.12,water:.12,speed:1.6});
+  }
+  if (skyObject === 'cloud') for(let cloud=0;cloud<3;cloud++){
+    const x=rr(.08,.7),y=rr(.63,.8),width=rr(.12,.24),points=[];
+    for(let step=0;step<=12;step++){const t=step/12;points.push([x+width*t,y+Math.sin(t*Math.PI*2)*.009]);}
+    quick(points,{r:.008,ink:.12,cin:-.08,water:.66,speed:2.4,note:.3,vel:.2});
+  }
+  // Scattered geese make the distant scale explicit without fixing their count or flight path.
+  const birdCount=Math.floor(rr(2,7)),bbx=portrait?rr(.62,.72):rr(.44,.62),bby=portrait?rr(.62,.72):rr(.76,.87);
+  for(let i=0;i<birdCount;i++){
+    const x=bbx+W(i*.022+rr(-.01,.01)),y=bby+rr(-.035,.035),s=rr(.7,1.3);
+    S([[x-W(.014*s),y+.005*s],[x-W(.007*s),y+.004*s],[x,y-.002*s],[x+W(.006*s),y+.004*s],[x+W(.013*s),y+.007*s]],{r:.0017,ink:1.2,water:.1,speed:.35,note:.03,after:.1,vel:.3,kind:'harm'});
+  }
   // 题诗 and 钤印
   const pi = Math.floor(R() * POEMS.length);
   F(() => showPoem(pi), 3.6);
@@ -841,17 +1517,18 @@ function buildLandscape(seed){
 let poemTimers = [];
 function hidePoem(){ poemTimers.forEach(clearTimeout); poemTimers = []; poemEl.classList.remove('on'); poemEl.hidden = true; poemEl.innerHTML = ''; }
 function showPoem(k){
+  const lines = Array.isArray(k) ? k : POEMS[k];
   hidePoem(); poemEl.hidden = false;
   let delay = 0;
-  POEMS[k].forEach((ln, li) => {
+  lines.forEach((ln, li) => {
     const d = document.createElement('div'); d.className = 'ln';
     for (const ch of ln) { const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; s.style.transitionDelay = delay + 'ms'; delay += 140; d.appendChild(s); }
     poemTimers.push(setTimeout(() => play([7, 5, 8, 4][li], .5, -.5, 'pluck', true), delay - 600));
     delay += 240; poemEl.appendChild(d);
   });
-  const seal = document.createElement('div'); seal.className = 'seal'; for (const ch of '德克印勞') { const e = document.createElement('span'); e.textContent = ch; e.setAttribute('aria-hidden', 'true'); seal.appendChild(e); } seal.setAttribute('aria-label', '印章：克劳德印');
+  const seal = document.createElement('div'); seal.className = 'seal'; for (const ch of '岁月如歌') { const e = document.createElement('span'); e.textContent = ch; e.setAttribute('aria-hidden', 'true'); seal.appendChild(e); } seal.setAttribute('aria-label', '印章：岁月如歌');
   poemEl.appendChild(seal);
-  poemEl.setAttribute('aria-label', POEMS[k].join('，') + '。');
+  poemEl.setAttribute('aria-label', lines.join('，') + '。');
   requestAnimationFrame(() => requestAnimationFrame(() => poemEl.classList.add('on')));
 }
 function stampSeal(){
@@ -861,10 +1538,11 @@ function stampSeal(){
 
 /* ───────── controls ───────── */
 let seedCounter = (Math.random() * 1e9) | 0;
-function setPaintBtn(on){ paintBtn.textContent = on ? '停笔' : '落笔山水'; }
+function setPaintBtn(on){ paintBtn.textContent = on ? '停笔' : '落笔' + $('scene').options[$('scene').selectedIndex].textContent; }
 function stopPainting(){ ghost.on = false; ghost.q = []; ghost.cur = null; ghostEl.classList.remove('on'); setPaintBtn(false); }
 function startPainting(){
-  const go = () => { ghost.q = buildLandscape(seedCounter++); ghost.cur = null; ghost.wait = .2; ghost.on = true; ghostEl.classList.add('on'); setPaintBtn(true); };
+  if (!figuresReady) { waitingForFigures = true; return; }
+  const go = () => { ghost.q = buildLandscape(seedCounter++, $('scene').value); ghost.cur = null; ghost.wait = .2; ghost.on = true; ghostEl.classList.add('on'); setPaintBtn(true); };
   if (hasInk) wash(go); else { hidePoem(); go(); }
 }
 function wash(then){
@@ -883,14 +1561,36 @@ function washTick(dt){
 }
 
 paintBtn.addEventListener('click', () => { ensureAudio(); if (ghost.on) stopPainting(); else if (!washing) startPainting(); });
+$('scene').addEventListener('change', () => { if (!ghost.on && !washing) setPaintBtn(false); });
 $('wash').addEventListener('click', () => { ensureAudio(); if (!washing) wash(); });
 soundBtn.addEventListener('click', () => { if (!audio.ctx) ensureAudio(); else setSound(!audio.on); });
 
-let tool = 'ink';
-document.querySelectorAll('.tools button').forEach(b => b.addEventListener('click', () => {
+const PIGMENTS = {
+  ink: { ink: 1, cin: 0, ochre: 0 },
+  cinnabar: { ink: 0, cin: 1, ochre: 0 },
+  azurite: { ink: 0, cin: -1, ochre: 0 },
+  ochre: { ink: 0, cin: 0, ochre: 1 },
+  jade: { ink: 0, cin: 0, ochre: -1 }
+};
+const BRUSH_WIDTHS = { fine: .58, medium: 1, thick: 1.72 };
+let tool = 'ink', brushSize = 'medium';
+document.querySelectorAll('.pigments button').forEach(b => b.addEventListener('click', () => {
   tool = b.dataset.tool;
-  document.querySelectorAll('.tools button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+  document.querySelectorAll('.pigments button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
 }));
+document.querySelectorAll('.sizes button').forEach(b => b.addEventListener('click', () => {
+  brushSize = b.dataset.size;
+  document.querySelectorAll('.sizes button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
+}));
+const paperModeButtons = document.querySelectorAll('.paper-modes button');
+function setPaperTheme(mode){
+  paperTheme = mode === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = paperTheme;
+  paperModeButtons.forEach(b => b.setAttribute('aria-checked', b.dataset.paperTheme === paperTheme ? 'true' : 'false'));
+  try { localStorage.setItem('moyun-paper-theme', paperTheme); } catch (_) {}
+}
+paperModeButtons.forEach(b => b.addEventListener('click', () => setPaperTheme(b.dataset.paperTheme)));
+setPaperTheme(paperTheme);
 const sheet = $('sheet'), aboutBtn = $('about');
 aboutBtn.addEventListener('click', () => { sheet.hidden = !sheet.hidden; aboutBtn.setAttribute('aria-expanded', String(!sheet.hidden)); });
 document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
@@ -910,28 +1610,31 @@ canvas.addEventListener('pointerdown', e => {
   if (!hinted) { hinted = true; hintEl.classList.add('gone'); }
   if (!sheet.hidden) { sheet.hidden = true; aboutBtn.setAttribute('aria-expanded', 'false'); }
   const [x, y] = toUV(e);
+  const widthScale = BRUSH_WIDTHS[brushSize], pigment = PIGMENTS[tool] || PIGMENTS.ink;
   const s = { x, y, t: e.timeStamp || performance.now(), v: 0, load: 1, acc: 0, seed: Math.random() * 900, pen: e.pointerType === 'pen', r: null };
   pointers.set(e.pointerId, s);
-  if (tool === 'water') { dyeQ.push(dab(x, y, .03, 0, 0, .5, 0)); }
-  else { dyeQ.push(dab(x, y, .014, tool === 'ink' ? .55 : 0, tool === 'cinnabar' ? .6 : 0, .9, 0)); hasInk = true; }
-  note(y, .45, x * 2 - 1, tool === 'ink' ? 'pluck' : 'harm');
+  if (tool === 'water') { dyeQ.push(dab(x, y, .03 * widthScale, 0, 0, .5, 0)); }
+  else { dyeQ.push(dab(x, y, .014 * widthScale, pigment.ink * .55, pigment.cin * .6, .9, 0, 0, 1, 0, s.seed, pigment.ochre * .6)); hasInk = true; }
+  note(y, .45, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm');
 });
 function moveTo(s, ev){
   const [x, y] = toUV(ev), A = aspect();
   const len = Math.hypot((x - s.x) * A, y - s.y); if (len < .0008) return;
   const now = ev.timeStamp || performance.now(), dtm = Math.max(4, now - s.t) / 1000; s.t = now;
   s.v = s.v * .75 + (len / dtm) * .25;
+  const widthScale = BRUSH_WIDTHS[brushSize] || 1, pigment = PIGMENTS[tool] || PIGMENTS.ink;
   if (tool === 'water') {
-    brushSeg(s.x, s.y, x, y, { r0: .03, r1: .03, ink: 0, cin: 0, water: .7, dry: 0, seed: s.seed, force: Math.min(s.v * velocity.h * 1.2, 1200) });
+    const radius = .03 * widthScale;
+    brushSeg(s.x, s.y, x, y, { r0: radius, r1: radius, ink: 0, cin: 0, water: .7, dry: 0, seed: s.seed, force: Math.min(s.v * velocity.h * 1.2, 1200) });
     s.acc += len; if (s.acc > .16) { s.acc = 0; note(y, .25, x * 2 - 1, 'harm'); }
   } else {
     const k = Math.min(1, s.v / 2.2), pr = s.pen ? (ev.pressure || .5) : .5;
-    const r = .013 * (1 - .62 * k) * (s.pen ? .4 + pr * 1.3 : 1);
+    const r = .013 * widthScale * (1 - .62 * k) * (s.pen ? .4 + pr * 1.3 : 1);
     s.load = Math.max(0, s.load - len * .75);
     const dry = Math.min(.95, Math.max(0, (.5 - s.load) / .5) * .8 + k * .35), amt = .35 + .75 * s.load;
-    brushSeg(s.x, s.y, x, y, { r0: s.r ?? r, r1: r, ink: tool === 'ink' ? amt : 0, cin: tool === 'cinnabar' ? amt * .9 : 0, water: .3 + .4 * s.load * (1 - k), dry, seed: s.seed, force: Math.min(s.v, 3) * 3 });
+    brushSeg(s.x, s.y, x, y, { r0: s.r ?? r, r1: r, ink: pigment.ink * amt, cin: pigment.cin * amt, ochre: pigment.ochre * amt, water: .3 + .4 * s.load * (1 - k), dry, seed: s.seed, force: Math.min(s.v, 3) * 3 });
     s.r = r;
-    s.acc += len; if (s.acc > .075) { s.acc = 0; note(y, .3 + .45 * k, x * 2 - 1, tool === 'cinnabar' ? 'harm' : 'pluck'); }
+    s.acc += len; if (s.acc > .075) { s.acc = 0; note(y, .3 + .45 * k, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm'); }
   }
   s.x = x; s.y = y;
 }

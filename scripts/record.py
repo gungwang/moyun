@@ -1,4 +1,4 @@
-"""Record the opening sequence of 墨韵 (painting + qin audio) to MP4.
+"""Record the opening sequence of 画与歌 (painting + qin audio) to MP4.
 
 Usage:
   python3 -m http.server 8000          # in the repo root
@@ -49,7 +49,7 @@ async def record(p, name, vw, vh, dpr, maxw, maxh):
     await pg.click("#sound")          # user gesture: turns the qin on before the hand starts painting
     await pg.wait_for_timeout(3000)
     # wait until the painting, poem and seal are finished
-    await pg.wait_for_function("document.querySelector('.seal.on') && document.getElementById('paint').textContent==='落笔山水'", timeout=120000, polling=200)
+    await pg.wait_for_function("document.querySelector('.seal.on') && document.getElementById('paint').textContent==='落笔山水'", timeout=300000, polling=200)
     await pg.wait_for_timeout(4000)
     await cdp.send("Page.stopScreencast")
     await asyncio.sleep(.5)
