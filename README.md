@@ -11,7 +11,7 @@ A sheet of rice paper that breathes. Ink runs on a real-time fluid simulation on
 
 ## What it does
 
-- **Watch**: on load, a brush you can't see paints a fresh landscape. Use the scene menu to choose among a campus ginkgo avenue, library, sports field, dormitory, garden, streamside walkers, birds in woods, a horse carriage in the city, a Kunming streetscape, and the original landscape. Each scene has its own composition and poem.
+- **Watch**: on load, a brush you can't see paints a fresh landscape. Use the scene menu to choose among a campus ginkgo avenue, library, sports field, dormitory, garden, streamside walkers, birds in woods, a horse carriage in the city, a Kunming streetscape, and the original landscape. Every refresh reshuffles the scene's viewpoint, layout and details, with a matching poem.
 - **Paint**: choose ink, cinnabar, azurite, ochre, jade, or clear water; set a fine, medium, or thick brush; then press and drag. Slow strokes are wet and heavy, while fast strokes grow thin and dry into flying-white (飞白) streaks.
 - **Play**: `清水` (clear water) is a fluid brush — stir a finished painting and watch the ink swirl.
 - **Listen**: strokes play a pentatonic guqin, so nothing you draw is ever out of tune.

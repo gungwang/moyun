@@ -1023,153 +1023,338 @@ function buildLandscape(seed, scene = 'landscape'){
     quick([[x-W(.015*s),y],[x-W(.008*s),y+.005*s],[x,y-.002*s],[x+W(.008*s),y+.005*s],[x+W(.015*s),y]], { r: .0018*s, ink: 1.1, water: .1, speed: .45, note: .025, after: .08, kind: 'harm' });
   }
 
+  function drawGinkgoSunset(){
+    const view=Math.floor(R()*3),views=[
+      {name:'横街夕照',farBase:[.48,.54],nearBase:[.39,.44],roadTop:[.29,.34],roadBottom:[.105,.145],trees:[4,7],sunY:[.77,.84],lake:false},
+      {name:'山麓横路',farBase:[.52,.58],nearBase:[.43,.49],roadTop:[.34,.4],roadBottom:[.16,.2],trees:[3,6],sunY:[.76,.84],lake:false},
+      {name:'湖岸暮道',farBase:[.54,.6],nearBase:[.48,.53],roadTop:[.24,.3],roadBottom:[.09,.125],trees:[4,7],sunY:[.82,.9],lake:true}
+    ][view];
+    canvas.dataset.sceneView=`银杏道-${views.name}`;
+    const farBase=rr(...views.farBase),peakCount=3+Math.floor(R()*3),farPeaks=[];
+    for(let i=0;i<peakCount;i++)farPeaks.push({c:.04+i*.92/Math.max(1,peakCount-1)+rr(-.06,.06),h:rr(.065,.15),w:rr(.11,.23)});
+    const far=range(farPeaks,farBase,.004);
+    const nearBase=rr(...views.nearBase),near=range([{c:rr(.08,.28),h:rr(.07,.14),w:rr(.15,.27)},{c:rr(.66,.91),h:rr(.07,.15),w:rr(.16,.29)}],nearBase,.006);
+    for(const run of runs(far,farBase,0,1,.01,.008))S(run,{r:.005,ink:.22,water:.78,speed:1.2,note:.14,vel:.3});
+    for(let band=0;band<3;band++)for(const run of runs(x=>far(x)-.015-band*.025,farBase,0,1,.025,.004))S(run,{r:.018,ink:.09-band*.018,water:.82,speed:2.4,note:.3,vel:.2});
+    for(const run of runs(near,nearBase,0,1,.008,.012))S(run,{r:.004,ink:.55,water:.52,speed:1.1,note:.12,vel:.3});
+    for(let band=0;band<2;band++)for(const run of runs(x=>near(x)-.025-band*.035,nearBase,0,1,.025,.005))S(run,{r:.02,ink:.12-band*.03,water:.78,speed:2.4,note:.3,vel:.2});
+
+    D(rr(.7,.85),rr(...views.sunY),{r:rr(.043,.055),ink:.02,cin:1.08,water:.12,hard:.9,after:.55,chime:true});
+    for(let cloud=0;cloud<3;cloud++){
+      const x=rr(.08,.6),y=rr(.68,.78),span=rr(.1,.22),points=[];
+      for(let step=0;step<=10;step++){const t=step/10;points.push([x+span*t,y+Math.sin(t*Math.PI*2+cloud)*.008]);}
+      quick(points,{r:.006,ink:.09,cin:-.05,water:.68,speed:2.3,note:.3,vel:.2});
+    }
+
+    const roadTop=rr(...views.roadTop),roadBottom=rr(...views.roadBottom),roadWave=rr(.006,.018);
+    const upper=[],lower=[];
+    for(let step=0;step<=8;step++){
+      const x=step/8,undulation=Math.sin(x*13+rr(-.02,.02))*roadWave;
+      upper.push([x,roadTop+undulation]);lower.push([x,roadBottom+undulation*.6]);
+    }
+    S(upper,{r:.0034,ink:.68,water:.22,speed:1.2,note:.11});
+    S(lower,{r:.0028,ink:.47,water:.2,speed:1.45,note:.16});
+    for(let seam=0;seam<3;seam++){
+      const y=roadBottom+.035+seam*(roadTop-roadBottom)*.34,x=rr(.04,.7),length=rr(.08,.24);
+      quick([[x,y],[Math.min(.98,x+length),y+rr(-.008,.008)]],{r:.0013,ink:.22,water:.12,dry:.55,speed:2});
+    }
+
+    if(views.lake){
+      for(let ripple=0;ripple<5+Math.floor(R()*5);ripple++){
+        const y=rr(roadTop+.04,nearBase-.025),x=rr(.08,.78),length=rr(.06,.19),points=[];
+        for(let step=0;step<=5;step++){const t=step/5;points.push([x+length*t,y+Math.sin(t*5+ripple)*.003]);}
+        S(points,{r:.0017,ink:.06,cin:-.42,water:.32,dry:.25,speed:2,note:.2});
+      }
+    }
+    const treeCount=Math.floor(rr(views.trees[0],views.trees[1]+1));
+    for(let i=0;i<treeCount;i++){
+      const x=.05+i*.9/Math.max(1,treeCount-1)+rr(-.025,.025),base=roadTop+rr(.01,.045),height=rr(.23,.4);
+      ginkgoTree(Math.max(.035,Math.min(.965,x)),base,height);
+      if(R()<.4)tree(Math.max(.03,Math.min(.97,x+rr(-.045,.045))),base, height*rr(.7,.95),.38,pick(['pine','willow']));
+    }
+    if(view===1){
+      tree(.025,roadBottom+rr(.02,.05),rr(.23,.31),.55,'willow');
+      tree(.96,roadBottom+rr(.02,.05),rr(.21,.3),.48,'pine');
+    }else if(view===2){
+      for(let rock=0;rock<5;rock++)D(rr(.08,.9),roadBottom-rr(.015,.04),{r:rr(.006,.013),ink:.5,water:.16,after:.01});
+    }
+    const walkerCount=2+Math.floor(R()*4);
+    for(let i=0;i<walkerCount;i++){
+      const x=.17+i*.66/Math.max(1,walkerCount-1)+rr(-.035,.035),role=pick(['young_man','young_woman','elder_man','elder_woman','traveler']);
+      person(x,roadBottom+rr(.005,.025),rr(.085,.14),R()<.5?-1:1,role);
+    }
+    for(let leaf=0;leaf<15+Math.floor(R()*12);leaf++)ginkgoLeaf(rr(.08,.92),rr(.16,.59),rr(.009,.02),R()<.34);
+    for(let i=0;i<3;i++)bird(rr(.42,.72),rr(.72,.88),rr(.65,.95));
+  }
+
   function drawGinkgo(){
-    quick([[0,.62],[.22,.64],[.47,.66],[.72,.64],[1,.62]], { ink: .25, water: .6, r: .003, speed: 1.8 });
-    quick([[.13,.08],[.28,.22],[.4,.4],[.47,.62]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
-    quick([[.87,.08],[.72,.22],[.6,.4],[.53,.62]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
+    const wide=A>1.1;
+    if(wide&&R()<.62){drawGinkgoSunset();return;}
+    canvas.dataset.sceneView='银杏道-林荫透视';
+    const vanishingX = rr(.38,.62), vanishingY = rr(.55,.69), treeRows = 2 + Math.floor(R()*2);
+    canvas.dataset.sceneView = `银杏道-${vanishingX < .5 ? '左偏' : '右偏'}-${treeRows}排树`;
+    quick([[0,vanishingY],[.22,vanishingY+.02],[.47,vanishingY+.04],[.72,vanishingY+.02],[1,vanishingY]], { ink: .25, water: .6, r: .003, speed: 1.8 });
+    quick([[rr(.08,.18),.08],[rr(.22,.34),.24],[vanishingX-.045,vanishingY]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
+    quick([[rr(.82,.92),.08],[rr(.66,.78),.24],[vanishingX+.045,vanishingY]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
     for (const y of [.13,.2,.28,.37,.47,.56]) {
-      const t = (y - .08) / .54, left = .13 + (.47 - .13) * t, right = .87 + (.53 - .87) * t;
+      const t = (y - .08) / Math.max(.2,vanishingY-.08), left = .13 + (vanishingX-.13) * t, right = .87 + (vanishingX-.87) * t;
       quick([[left,y],[right,y]], { r: .0015, ink: .28, water: .16, dry: .45, speed: 2.2, note: .3 });
     }
-    for (let i = 0; i < 3; i++) {
-      const y = .2 + i * .075, h = .3 - i * .045;
-      ginkgoTree(.055 + i*.11,y,h); ginkgoTree(.945 - i*.11,y,h*.96);
+    for (let i = 0; i < treeRows; i++) {
+      const t = i / Math.max(1,treeRows-1), y = .15 + t*.1, h = (.3-t*.045)*rr(.88,1.12);
+      const left = .055 + (vanishingX-.055)*t*.55, right = .945 + (vanishingX-.945)*t*.55;
+      ginkgoTree(left,y,h); ginkgoTree(right,y,h*rr(.9,1.08));
     }
-    for (let i = 0; i < 17; i++) ginkgoLeaf(rr(.22,.78), rr(.16,.56), rr(.012,.022), R() < .52);
-    person(.5,.1,.19,1,'young_man'); person(.42,.25,.12,-1,'young_woman'); person(.6,.34,.085,1,'elder_man');
+    for (let i = 0, count = 12 + Math.floor(R()*15); i < count; i++) ginkgoLeaf(rr(.18,.82), rr(.14,vanishingY-.05), rr(.012,.022), R() < .52);
+    person(vanishingX+rr(-.035,.035),.1,.17,1,'young_man');
+    person(vanishingX+rr(-.12,.12),.23,.1,-1,'young_woman');
+    if (R() < .7) person(vanishingX+rr(-.2,.2),.32,.075,1,'elder_man');
     quick([[.22,.11],[.29,.12],[.36,.13]], { r: .002, ink: .4, water: .1, dry: .5, speed: 2 });
   }
   function drawLibrary(){
-    quick([[.08,.53],[.25,.56],[.5,.55],[.76,.57],[.93,.53]], { ink: .3, water: .55, r: .003, speed: 1.7 });
-    tiledRoof(.19,.55,.62,.14,{layers:2,lift:.034,azurite:.2});
-    tiledRoof(.07,.46,.17,.065,{lift:.014,ink:.62,azurite:.08}); tiledRoof(.76,.46,.17,.065,{lift:.014,ink:.62,azurite:.08});
-    quick([[.25,.3],[.75,.3],[.75,.54],[.25,.54],[.25,.3]], { r: .003, ink: .82, water: .18, speed: 1.1 });
-    quick([[.25,.51],[.75,.51]], { r: .0025, ink: .78, water: .14, speed: 1.25 });
-    for (const x of [.27,.42,.58,.73]) timberPillar(x,.3,.53,.2);
-    latticeWindow(.3,.35,.1,.13); latticeWindow(.6,.35,.1,.13);
-    lacquerDoor(.44,.3,.12,.2);
-    outline(.435,.51,.13,.035,{r:.002,ink:.62,water:.1,speed:1.5});
-    quick([[.45,.527],[.55,.527]], { r: .0015, ink: .24, ochre: .38, water: .1, speed: 1.6 });
-    stoneSteps(.5,.285,.32,3);
-    for (let i = 0; i < 4; i++) quick([[.32+i*.12,.22],[.44+i*.04,.17]], { r: .0018, ink: .42, water: .14, speed: 1.7 });
-    tree(.09,.2,.29,.55); tree(.91,.2,.29,.55);
-    person(.37,.12,.14,-1,'scholar'); person(.65,.12,.14,1,'attendant');
-    quick([[.1,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
+    const layout = Math.floor(R()*3), center = rr(.46,.54), sx = rr(.9,1.08), sy = rr(.91,1.07), dy = rr(-.018,.018);
+    canvas.dataset.sceneView = ['中轴书院','偏轴院落','开敞讲堂'][layout];
+    const X = x => center + (x-.5)*sx, Y = y => .3 + (y-.3)*sy + dy;
+    const line = (pts,o) => quick(pts.map(([x,y])=>[X(x),Y(y)]),o);
+    const rect = (x,y,w,h,o) => outline(X(x),Y(y),w*sx,h*sy,o);
+    const roof = (x,y,w,h,o) => tiledRoof(X(x),Y(y),w*sx,h*sy,o);
+    const window = (x,y,w,h) => latticeWindow(X(x),Y(y),w*sx,h*sy);
+    const pillar = (x,base,top,red) => timberPillar(X(x),Y(base),Y(top),red);
+    const door = (x,y,w,h) => lacquerDoor(X(x),Y(y),w*sx,h*sy);
+    line([[.08,.53],[.25,.56],[.5,.55],[.76,.57],[.93,.53]], { ink: .3, water: .55, r: .003, speed: 1.7 });
+    roof(.19,.55,.62,.14,{layers:layout===1?1:2,lift:.034,azurite:.2});
+    if (layout !== 2) {
+      roof(.07,.46,.17,.065,{lift:.014,ink:.62,azurite:.08});
+      roof(.76,.46,.17,.065,{lift:.014,ink:.62,azurite:.08});
+    }
+    line([[.25,.3],[.75,.3],[.75,.54],[.25,.54],[.25,.3]], { r: .003, ink: .82, water: .18, speed: 1.1 });
+    line([[.25,.51],[.75,.51]], { r: .0025, ink: .78, water: .14, speed: 1.25 });
+    for (const x of [.27,.42,.58,.73]) pillar(x,.3,.53,.2);
+    window(.3,.35,.1,.13); window(.6,.35,.1,.13);
+    door(.44,.3,.12,.2);
+    rect(.435,.51,.13,.035,{r:.002,ink:.62,water:.1,speed:1.5});
+    line([[.45,.527],[.55,.527]], { r: .0015, ink: .24, ochre: .38, water: .1, speed: 1.6 });
+    stoneSteps(X(.5),Y(.285),.32*sx,layout===0?3:4);
+    for (let i = 0; i < 4; i++) line([[.32+i*.12,.22],[.44+i*.04,.17]], { r: .0018, ink: .42, water: .14, speed: 1.7 });
+    tree(X(rr(.04,.12)),Y(.2),.26*sy,.55,pick(['willow','plum']));
+    tree(X(rr(.88,.96)),Y(.2),.28*sy,.55,pick(['pine','plum']));
+    const visitors = layout===2 ? 3 : 2;
+    for(let i=0;i<visitors;i++) person(X(.36+i*(.28/Math.max(1,visitors-1))+rr(-.025,.025)),.1+rr(.015,.045),rr(.105,.145),i%2?'1':-1,i===0?'scholar':pick(['attendant','young_man','elder_man']));
+    line([[.1,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
+    if(layout===1) for(let i=0;i<4;i++) D(X(rr(.18,.82)),Y(rr(.14,.2)),{r:.004,ink:.35,water:.3,after:.01});
   }
   function drawSports(){
-    quick([[.12,.56],[.26,.63],[.74,.63],[.88,.56]], { r: .003, ink: .72, water: .25, speed: 1.2 });
-    for (let row = 0; row < 4; row++) quick([[.2+row*.025,.55+row*.018],[.8-row*.025,.55+row*.018]], { r: .0018, ink: .42, water: .12, speed: 1.8 });
-    oval(.5,.34,.43,.19,{r:.0026,ink:.72,water:.2,speed:1.4});
-    oval(.5,.34,.38,.155,{r:.0018,ink:.16,cin:-.24,water:.14,speed:1.7});
-    outline(.24,.25,.52,.18,{r:.0022,ink:.62,water:.15,speed:1.6});
-    quick([[.5,.25],[.5,.43]], { r: .0018, ink: .25, cin: -.18, water: .12, speed: 1.8 });
-    oval(.5,.34,.075,.055,{r:.0018,ink:.52,water:.12,speed:1.8});
-    for (const gx of [.24,.76]) quick([[gx,.29],[gx,.4],[gx+(gx<.5?-.045:.045),.4],[gx+(gx<.5?-.045:.045),.29]], { r: .002, ink: .7, water: .14, speed: 1.4 });
-    person(.39,.31,.1,-1,'young_man'); person(.6,.29,.105,1,'young_woman'); person(.51,.22,.085,-1,'traveler');
-    oval(.51,.31,.012,.012,{r:.002,ink:.08,ochre:.48,water:.1,speed:.5});
-    quick([[.08,.16],[.92,.16]], { r: .003, ink: .46, water: .22, speed: 1.5 });
+    const layout=Math.floor(R()*3), cx=rr(.44,.56), cy=rr(.31,.38), sx=rr(.84,1.08), sy=rr(.84,1.13);
+    canvas.dataset.sceneView=['环形跑道','斜向球场','远看操场'][layout];
+    quick([[.12,.56+rr(-.035,.025)],[.26,.63+rr(-.025,.025)],[.74,.63+rr(-.025,.025)],[.88,.56+rr(-.035,.025)]], { r: .003, ink: .72, water: .25, speed: 1.2 });
+    const laneCount=2+Math.floor(R()*4);
+    for(let row=0;row<laneCount;row++){
+      const inset=row*.018, y=.55+row*.018+rr(-.008,.008);
+      quick([[.2+inset,y],[.8-inset,y+rr(-.008,.008)]],{r:.0018,ink:.42,water:.12,speed:1.8});
+    }
+    oval(cx,cy,.43*sx,.19*sy,{r:.0026,ink:.72,water:.2,speed:1.4});
+    oval(cx,cy,.38*sx,.155*sy,{r:.0018,ink:.16,cin:-.24,water:.14,speed:1.7});
+    outline(cx-.26*sx,cy-.09*sy,.52*sx,.18*sy,{r:.0022,ink:.62,water:.15,speed:1.6});
+    quick([[cx,cy-.09*sy],[cx,cy+.09*sy]],{r:.0018,ink:.25,cin:-.18,water:.12,speed:1.8});
+    const centerRadius=layout===1?rr(.045,.085):rr(.06,.095);
+    oval(cx,cy,centerRadius,centerRadius*.72,{r:.0018,ink:.52,water:.12,speed:1.8});
+    const goalXs=[cx-.26*sx,cx+.26*sx];
+    for(const [index,gx] of goalXs.entries()){
+      const dir=index===0?-1:1, gy=cy+rr(-.035,.035), gh=rr(.07,.12);
+      quick([[gx,gy-gh*.55],[gx,gy+gh*.5],[gx+dir*.045,gy+gh*.5],[gx+dir*.045,gy-gh*.55]],{r:.002,ink:.7,water:.14,speed:1.4});
+    }
+    const players=2+Math.floor(R()*3), spread=rr(.08,.14);
+    for(let i=0;i<players;i++){
+      const role=i%2?'young_woman':'young_man', side=i%2?1:-1;
+      person(cx+rr(-spread,spread),cy+rr(-.07,.05),rr(.075,.115),side,role);
+    }
+    oval(cx+rr(-.025,.025),cy+rr(-.025,.025),.012,.012,{r:.002,ink:.08,ochre:.48,water:.1,speed:.5});
+    quick([[.08,.16+rr(-.02,.025)],[.92,.16+rr(-.02,.025)]], { r: .003, ink: .46, water: .22, speed: 1.5 });
   }
   function drawDormitory(){
-    const wing = (x,w,base,doubleEave=false) => {
-      const top = base + .2;
-      tiledRoof(x-.012,top,w+.024,.078,{layers:doubleEave?2:1,lift:.017,ink:.88,azurite:.12});
+    const layout=Math.floor(R()*3),courtX=rr(.46,.54),baseJitter=rr(-.025,.025);
+    canvas.dataset.sceneView=['三进书院','错落院舍','双院回廊'][layout];
+    const plans=[
+      [[.08,.25,.32,false],[.375,.25,.34,true],[.67,.25,.32,false]],
+      [[.055,.27,.34,false],[.365,.27,.29,true],[.68,.265,.35,false]],
+      [[.035,.285,.33,true],[.38,.235,.37,false],[.68,.285,.31,true]]
+    ];
+    function wing(x,w,base,doubleEave,height){
+      const h=height,top=base+h;
+      tiledRoof(x-.012,top,w+.024,h*.39,{layers:doubleEave?2:1,lift:.017,ink:.88,azurite:.12});
       quick([[x,base],[x+w,base],[x+w,top],[x,top],[x,base]], { r: .0027, ink: .78, water: .17, speed: 1.1 });
-      quick([[x,base+.04],[x+w,base+.04]], { r: .0018, ink: .58, water: .12, speed: 1.6 });
+      quick([[x,base+h*.2],[x+w,base+h*.2]], { r: .0018, ink: .58, water: .12, speed: 1.6 });
       for (const px of [x+.025,x+w-.025]) timberPillar(px,base,top-.008,.14);
-      latticeWindow(x+w*.09,base+.065,w*.25,.09);
-      lacquerDoor(x+w*.39,base,w*.22,.16);
-      latticeWindow(x+w*.66,base+.065,w*.25,.09);
-    };
-    wing(.08,.25,.32); wing(.375,.25,.34,true); wing(.67,.25,.32);
-    quick([[.06,.28],[.37,.28],[.43,.31],[.57,.31],[.63,.28],[.94,.28]], { r: .0028, ink: .72, water: .18, speed: 1.2 });
-    quick([[.43,.22],[.43,.3],[.46,.33],[.54,.33],[.57,.3],[.57,.22]], { r: .0025, ink: .84, water: .14, speed: 1.25 });
-    for (let i = 0; i < 4; i++) quick([[.24+i*.17,.19],[.32+i*.11,.19]], { r: .0016, ink: .42, water: .1, speed: 1.7 });
-    quick([[.5,.1],[.5,.2]], { r: .002, ink: .08, ochre: .34, water: .13, speed: 1.3 });
-    tree(.06,.18,.27,.5); tree(.94,.18,.27,.5);
-    person(.39,.1,.16,-1,'young_man'); person(.62,.1,.16,1,'young_woman');
-    stoneSteps(.5,.18,.12,3);
+      latticeWindow(x+w*.09,base+h*.32,w*.25,h*.42);
+      lacquerDoor(x+w*.39,base,w*.22,h*.78);
+      latticeWindow(x+w*.66,base+h*.32,w*.25,h*.42);
+    }
+    for(const [x,w,base,doubleEave] of plans[layout]) wing(x,w,base+baseJitter,doubleEave,rr(.18,.22));
+    const gateBase=.22+baseJitter*.35;
+    quick([[.06,gateBase+.06],[.37,gateBase+.06],[courtX-.07,gateBase+.09],[courtX+.07,gateBase+.09],[.63,gateBase+.06],[.94,gateBase+.06]], { r: .0028, ink: .72, water: .18, speed: 1.2 });
+    quick([[courtX-.07,gateBase],[courtX-.07,gateBase+.08],[courtX-.04,gateBase+.11],[courtX+.04,gateBase+.11],[courtX+.07,gateBase+.08],[courtX+.07,gateBase]], { r: .0025, ink: .84, water: .14, speed: 1.25 });
+    const lanterns=2+Math.floor(R()*4);
+    for(let i=0;i<lanterns;i++){
+      const x=.2+i*.6/Math.max(1,lanterns-1), y=gateBase-.015+rr(-.012,.012);
+      quick([[x,y],[x+W(.018),y+.01],[x+W(.035),y]],{r:.0016,ink:.12,ochre:.3,cin:R()<.35?.22:0,water:.14,speed:1.5});
+    }
+    quick([[courtX,.1],[courtX,.19]], { r: .002, ink: .08, ochre: .34, water: .13, speed: 1.3 });
+    tree(.04+rr(0,.035),.18,.24,.5,pick(['willow','plum'])); tree(.93-rr(0,.035),.18,.27,.5,pick(['pine','plum']));
+    person(courtX+rr(-.13,-.06),.1,rr(.13,.17),-1,'young_man');
+    person(courtX+rr(.06,.14),.1,rr(.13,.17),1,'young_woman');
+    stoneSteps(courtX,.18,.12+layout*.02,3);
   }
   function drawGarden(){
-    tree(.15,.16,.48,.72); tree(.87,.15,.42,.58); bamboo(.77,.16,.42,-1); bamboo(.08,.16,.35,1);
-    quick([[.29,.51],[.36,.62],[.5,.69],[.64,.62],[.71,.51]], { r: .004, ink: 1, water: .18, speed: .9 });
-    quick([[.26,.5],[.36,.56],[.5,.6],[.64,.56],[.74,.5]], { r: .0025, ink: .72, water: .14, speed: 1.2 });
-    for (const x of [.37,.63]) quick([[x,.51],[x,.3]], { r: .003, ink: .88, water: .16, speed: 1.1 });
-    quick([[.37,.43],[.63,.43]], { r: .0018, ink: .6, water: .12, speed: 1.7 });
-    for (let i = 0; i < 5; i++) quick([[.39+i*.045,.42],[.39+i*.045,.32]], { r: .0015, ink: .48, water: .1, speed: 1.8 });
-    quick([[.24,.3],[.32,.34],[.42,.37],[.5,.38],[.58,.37],[.68,.34],[.76,.3]], { r: .003, ink: .84, water: .16, speed: 1.15 });
-    quick([[.2,.28],[.8,.28]], { r: .0025, ink: .75, water: .14, speed: 1.4 });
-    for (let i = 0; i < 7; i++) quick([[.21+i*.095,.28],[.21+i*.095,.24]], { r: .0016, ink: .52, water: .1, speed: 1.8 });
-    for (let i = 0; i < 6; i++) {
-      const x = .12 + i*.15, y = .13 + (i%2)*.045;
-      quick([[x,y],[x+W(.035),y+.035],[x+W(.065),y+.022],[x+W(.08),y]], { r: .003, ink: .72, water: .28, speed: 1.35 });
-      D(x+W(.035),y+.04,{r:.009,ink:.04,cin:i%2===0?.28:0,ochre:i%2===0?0:.52,water:.2,after:.01});
+    const layout=Math.floor(R()*3),center=rr(.44,.56),spread=rr(.88,1.1),base=rr(.27,.33),height=rr(.82,1.12);
+    canvas.dataset.sceneView=['月门花庭','曲桥临池','游廊深院'][layout];
+    const X=x=>center+(x-.5)*spread,Y=y=>base+(y-.3)*height;
+    const line=(points,options)=>quick(points.map(([x,y])=>[X(x),Y(y)]),options);
+    const treeLeft=rr(.08,.19),treeRight=rr(.81,.93);
+    tree(treeLeft,.16,rr(.38,.5),.72,pick(['willow','plum','pine']));
+    tree(treeRight,.15,rr(.34,.46),.58,pick(['pine','plum','willow']));
+    bamboo(rr(.72,.82),.16,rr(.34,.44),-1); bamboo(rr(.06,.14),.16,rr(.3,.4),1);
+
+    if(layout===1){
+      line([[.22,.48],[.31,.57],[.43,.63],[.57,.63],[.69,.57],[.78,.48]],{r:.004,ink:.92,water:.18,speed:.95});
+      line([[.24,.46],[.76,.46]],{r:.0025,ink:.7,water:.14,speed:1.2});
+      for(const x of [.29,.42,.58,.71]) line([[x,.46],[x,.57]],{r:.0025,ink:.8,water:.16,speed:1.15});
+      line([[.18,.39],[.28,.46],[.72,.46],[.82,.39]],{r:.002,ink:.55,water:.16,speed:1.5});
+    }else{
+      const gateWidth=layout===0?rr(.38,.52):rr(.29,.4),left=.5-gateWidth*.5,right=.5+gateWidth*.5;
+      line([[left,.51],[left+gateWidth*.12,.62],[center,.69],[right-gateWidth*.12,.62],[right,.51]],{r:.004,ink:1,water:.18,speed:.9});
+      line([[left-.025,.5],[left+gateWidth*.13,.56],[center,.6],[right-gateWidth*.13,.56],[right+.025,.5]],{r:.0025,ink:.72,water:.14,speed:1.2});
+      for(const side of [-1,1]) line([[center+side*gateWidth*.26,.51],[center+side*gateWidth*.26,.3]],{r:.003,ink:.88,water:.16,speed:1.1});
+      line([[center-gateWidth*.26,.43],[center+gateWidth*.26,.43]],{r:.0018,ink:.6,water:.12,speed:1.7});
+      for(let i=0;i<5;i++){const x=center-gateWidth*.22+i*gateWidth*.11;line([[x,.42],[x,.32]],{r:.0015,ink:.48,water:.1,speed:1.8});}
     }
-    for (let i = 0; i < 5; i++) quick([[.2+i*.14,.08],[.34+i*.08,.1]], { r: .0018, ink: .42, water: .12, dry: .5, speed: 1.8 });
-    person(.43,.1,.12,-1,'elder_woman'); person(.58,.1,.13,1,'qin_player');
+    const pondY=rr(.13,.23),pondWidth=rr(.22,.42);
+    if(layout!==1){
+      line([[center-pondWidth,.3],[center-pondWidth*.65,.27],[center-pondWidth*.2,.28],[center+pondWidth*.25,.25],[center+pondWidth,.29]],{r:.003,ink:.58,cin:-.18,water:.3,speed:1.2});
+      for(let ripple=0;ripple<5+Math.floor(R()*4);ripple++){const x=center+rr(-pondWidth*.8,pondWidth*.8),y=pondY+rr(-.025,.025),w=rr(.025,.08);line([[x-w,y],[x,y+.003],[x+w,y]],{r:.0015,ink:.08,cin:-.42,water:.12,dry:.35,speed:1.9});}
+    }else{
+      for(let rock=0;rock<7;rock++){const x=center+rr(-pondWidth,pondWidth),y=pondY+rr(-.025,.025);D(x,y,{r:rr(.009,.018),ink:.62,water:.22,after:.01});}
+    }
+    const blossomCount=4+Math.floor(R()*5);
+    for(let i=0;i<blossomCount;i++){
+      const x=rr(.1,.9),y=rr(.13,.37);
+      line([[x,y],[x+W(rr(.025,.055)),y+rr(.018,.05)],[x+W(rr(.05,.08)),y+rr(-.008,.025)]],{r:.0026,ink:.68,water:.24,speed:1.3});
+      D(x+W(.035),y+.04,{r:.009,ink:.04,cin:R()<.5?.28:0,ochre:R()<.5?0:.48,water:.2,after:.01});
+    }
+    for(let i=0;i<4;i++)line([[.16+i*.18,.08],[.27+i*.13,.1]],{r:.0018,ink:.42,water:.12,dry:.5,speed:1.8});
+    person(center+rr(-.13,-.04),.1,rr(.11,.14),-1,layout===2?'elder_woman':'qin_player');
+    if(R()<.7)person(center+rr(.05,.14),.1,rr(.11,.14),1,'elder_man');
   }
   function drawStream(){
-    quick([[.35,.9],[.29,.75],[.4,.62],[.34,.48],[.48,.34],[.39,.18],[.3,.08]], { r: .004, ink: .68, water: .35, speed: 1.05 });
-    quick([[.57,.9],[.65,.75],[.58,.62],[.7,.48],[.58,.34],[.72,.18],[.83,.08]], { r: .004, ink: .68, water: .35, speed: 1.05 });
-    for (let i = 0; i < 9; i++) {
-      const y = .15 + i*.075, cx = .49 + Math.sin(i*1.7)*.045, span = .06 + (i%3)*.035;
+    const layout=Math.floor(R()*3),shift=rr(-.05,.05);
+    canvas.dataset.sceneView=['曲溪过桥','山涧浅滩','瀑布入溪'][layout];
+    const routes=[
+      {left:[[.35,.9],[.29,.75],[.4,.62],[.34,.48],[.48,.34],[.39,.18],[.3,.08]],right:[[.57,.9],[.65,.75],[.58,.62],[.7,.48],[.58,.34],[.72,.18],[.83,.08]]},
+      {left:[[.18,.9],[.32,.76],[.28,.61],[.43,.48],[.38,.32],[.52,.18],[.45,.08]],right:[[.4,.9],[.55,.76],[.5,.61],[.65,.48],[.58,.32],[.75,.18],[.72,.08]]},
+      {left:[[.24,.9],[.37,.78],[.31,.65],[.43,.52],[.39,.36],[.53,.2],[.44,.08]],right:[[.67,.9],[.58,.78],[.69,.65],[.57,.52],[.66,.36],[.55,.2],[.7,.08]]}
+    ][layout];
+    const offset=points=>points.map(([x,y])=>[Math.max(.02,Math.min(.98,x+shift)),y]);
+    quick(offset(routes.left),{r:.004,ink:.68,water:.35,speed:1.05});
+    quick(offset(routes.right),{r:.004,ink:.68,water:.35,speed:1.05});
+    const rippleCount=6+Math.floor(R()*7),streamCenter=.5+shift*.5;
+    for (let i = 0; i < rippleCount; i++) {
+      const y = .12 + i*(.72/rippleCount)+rr(-.018,.018), cx = streamCenter + Math.sin(i*1.7+shift*10)*.045, span = .045 + R()*.07;
       quick([[cx-span,y],[cx-span*.35,y+.005],[cx+span*.4,y+.003],[cx+span,y]], { r: .0017, ink: .08, cin: -.55, water: .14, dry: .45, speed: 2, note: .28 });
     }
-    for (let i = 0; i < 7; i++) {
-      const x = i%2 ? .2 + i*.025 : .73 - i*.018, y = .14 + i*.095;
-      oval(x,y,.035,.018,{r:.0025,ink:.68,water:.2,speed:1.7});
+    if(layout===0){
+      const bridgeY=rr(.42,.62),bridgeX=.5+shift;
+      quick([[bridgeX-W(.11),bridgeY],[bridgeX-W(.07),bridgeY+.045],[bridgeX,bridgeY+.065],[bridgeX+W(.07),bridgeY+.045],[bridgeX+W(.11),bridgeY]],{r:.0028,ink:.76,water:.16,speed:1.1});
+      quick([[bridgeX-W(.11),bridgeY],[bridgeX+W(.11),bridgeY]],{r:.002,ink:.56,water:.12,speed:1.5});
+    }else if(layout===1){
+      for(let stone=0;stone<5;stone++)D(streamCenter+W((stone-2)*.045),.22+stone*.09,{r:rr(.008,.014),ink:.74,water:.16,after:.01});
+    }else{
+      distantWaterfall(streamCenter+rr(-.04,.04),.68,.31,.045);
     }
-    tree(.08,.2,.38,.55); bamboo(.91,.12,.48,-1);
-    quick([[.68,.39],[.74,.42],[.8,.43],[.86,.41]], { r: .003, ink: .82, water: .2, speed: 1.2 });
-    person(.2,.2,.15,1,'elder_man'); person(.82,.23,.12,-1,'traveler');
-    for (let i = 0; i < 5; i++) quick([[.04+i*.035,.14],[.06+i*.035,.24+(i%2)*.04]], { r: .002, ink: .62, water: .2, speed: 1.2 });
+    for(let i=0;i<4+Math.floor(R()*4);i++){
+      const side=i%2?-1:1,x=streamCenter+W(side*rr(.15,.32)),y=rr(.12,.42);
+      oval(x,y,rr(.018,.042),rr(.01,.024),{r:.0025,ink:.68,water:.2,speed:1.7});
+    }
+    tree(rr(.03,.17),.2,rr(.3,.43),.55,pick(['willow','pine','plum']));
+    bamboo(rr(.83,.96),.12,rr(.38,.52),R()<.5?-1:1);
+    const personY=rr(.13,.24);
+    person(streamCenter+W(rr(-.31,-.16)),personY,rr(.12,.17),1,'elder_man');
+    if(R()<.8)person(streamCenter+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman']));
+    for (let i = 0; i < 4+Math.floor(R()*4); i++) {
+      const x=rr(.025,.16),y=rr(.12,.37);
+      quick([[x,y],[x+W(rr(.008,.035)),y+rr(.06,.12)]], { r:.002,ink:.62,water:.2,speed:1.2 });
+    }
   }
   function drawBirds(){
-    quick([[0,.32],[.18,.38],[.36,.34],[.58,.39],[.8,.35],[1,.4]], { r: .003, ink: .22, water: .65, speed: 1.8 });
-    for (let i = 0; i < 5; i++) {
-      const x = .04+i*.22;
-      tree(x,.08,.48+(i%3)*.08,.42+(i%2)*.12);
-      D(x+W(.025),.43+(i%2)*.025,{r:.007,ink:.04,ochre:.3,water:.28,after:.01});
-      if (i%2===0) D(x+W(.055),.47,{r:.005,ink:.03,cin:-.34,water:.22,after:.01});
+    const layout=Math.floor(R()*3),treeCount=layout===1?7:3+Math.floor(R()*3),treeXs=[];
+    canvas.dataset.sceneView=['疏林归雁','深林群鸟','坡岭松林'][layout];
+    const ridgeY=layout===0?.34:layout===1?.27:.22;
+    const ridge=[];
+    for(let x=0;x<=1.001;x+=.14)ridge.push([x,ridgeY+Math.sin(x*(layout===2?10:17)+rr(0,6.28))*(layout===1?.045:.025)]);
+    quick(ridge,{r:.003,ink:.22,water:.65,speed:1.8});
+    for(let i=0;i<treeCount;i++){
+      const t=treeCount===1?.5:i/(treeCount-1),x=layout===1?rr(.05,.95):.08+t*.84+rr(-.035,.035);
+      const base=.08+rr(0,.07),height=rr(.4,.58)*(layout===2?.88+.25*t:1);
+      tree(x,base,height,rr(.34,.55),pick(['pine','willow','plum']));treeXs.push(x);
+      const accents=1+Math.floor(R()*3);
+      for(let mark=0;mark<accents;mark++)D(x+W(rr(-.04,.04)),base+height*rr(.45,.86),{r:rr(.004,.008),ink:.04,ochre:.3,water:.28,after:.01});
+      if(R()<.55)D(x+W(rr(-.06,.06)),base+height*rr(.48,.8),{r:.005,ink:.03,cin:-.34,water:.22,after:.01});
     }
-    for (let i = 0; i < 9; i++) bird(.36+(i%3)*.075+rr(-.012,.012),.57+Math.floor(i/3)*.07+rr(-.015,.015),rr(.65,1.2));
-    person(.23,.12,.13,-1,'scholar'); person(.78,.1,.12,1,'attendant');
-    for (let i = 0; i < 8; i++) {
-      const x = .13+i*.105, y = .08+rr(.02,.09);
-      quick([[x,y],[x+W(.035),y+rr(.025,.055)],[x+W(.07),y+rr(.01,.035)]], { r: .002, ink: .52, water: .16, speed: 1.4 });
+    const birdCount=4+Math.floor(R()*9), flockCenter=rr(.38,.64), flockHeight=rr(.53,.77);
+    for(let i=0;i<birdCount;i++){
+      let x,y;
+      if(layout===0){const t=i/Math.max(1,birdCount-1);x=flockCenter+(t-.5)*rr(.18,.35);y=flockHeight+Math.sin(t*Math.PI)*.08+rr(-.025,.025);}
+      else if(layout===1){x=rr(.12,.9);y=rr(.62,.87);}
+      else{x=flockCenter+(i-birdCount/2)*.035+rr(-.018,.018);y=flockHeight+(i-birdCount/2)*.04+rr(-.02,.02);}
+      bird(x,y,rr(.6,1.35));
+    }
+    person(treeXs[0]+W(.045),.1,.13,-1,'scholar');
+    if(layout!==0)person(treeXs[treeXs.length-1]-W(.045),.1,.12,1,'attendant');
+    const branchCount=5+Math.floor(R()*6);
+    for(let i=0;i<branchCount;i++){
+      const x=rr(.08,.9),y=rr(.07,.18),length=rr(.035,.09),direction=R()<.5?-1:1;
+      quick([[x,y],[x+W(length*.5*direction),y+rr(.025,.055)],[x+W(length*direction),y+rr(.005,.04)]],{r:.002,ink:.52,water:.16,speed:1.4});
     }
   }
   function horseCarriage(x, base, h){
     Q.push({ figure: 'horse_carriage', x, y: M(base), h: h * ys, flip: true, ink: .82, cin: .08, water: .7, ochre: .14, after: .06 });
   }
   function drawCarriage(){
-    tiledRoof(.035,.68,.29,.12,{layers:2,lift:.032,azurite:.16});
-    quick([[.06,.39],[.31,.39],[.31,.66],[.06,.66],[.06,.39]], { r: .003, ink: .8, water: .17, speed: 1.1 });
-    quick([[.06,.53],[.31,.53]], { r: .0022, ink: .66, water: .13, speed: 1.4 });
-    for (const x of [.08,.18,.29]) timberPillar(x,.39,.66,.18);
-    latticeWindow(.1,.55,.07,.085); latticeWindow(.205,.55,.07,.085);
-    latticeWindow(.1,.415,.07,.09); lacquerDoor(.205,.39,.07,.14);
-    outline(.14,.665,.09,.035,{r:.002,ink:.55,water:.1,speed:1.5});
+    const layout=Math.floor(R()*3),vanish=rr(.43,.59),nearY=rr(.34,.48),horseX=rr(.43,.68),horseSize=rr(.17,.22);
+    canvas.dataset.sceneView=['迎面入巷','侧街停辕','深巷远行'][layout];
+    const leftWidth=rr(.19,.3),rightWidth=rr(.2,.31),leftTop=rr(.58,.72),rightTop=rr(.55,.7);
+    tiledRoof(.015,leftTop,leftWidth,leftTop*.17,{layers:layout===1?1:2,lift:.025,azurite:.14});
+    quick([[.035,nearY],[leftWidth,nearY],[leftWidth,leftTop],[.035,leftTop],[.035,nearY]],{r:.003,ink:.8,water:.17,speed:1.1});
+    for(let i=0;i<3;i++){
+      const x=.055+i*(leftWidth-.07)/2;
+      timberPillar(x,nearY,leftTop-.015,.16);
+      if(i<2){const wx=x+.025,ww=Math.max(.035,(leftWidth-.13)/2);latticeWindow(wx,nearY+.1,ww,.08);}
+    }
+    lacquerDoor(.07+leftWidth*.48,nearY,leftWidth*.25,.15);
 
-    tiledRoof(.68,.63,.29,.09,{lift:.026,ink:.88,azurite:.08});
-    quick([[.71,.41],[.96,.41],[.96,.61],[.71,.61],[.71,.41]], { r: .0028, ink: .76, water: .16, speed: 1.15 });
-    for (const x of [.72,.835,.95]) timberPillar(x,.41,.61,.12);
-    quick([[.7,.52],[.97,.52]], { r: .0022, ink: .65, water: .14, speed: 1.3 });
-    latticeWindow(.75,.54,.16,.055); lacquerDoor(.765,.41,.13,.1);
+    tiledRoof(1-rightWidth-.015,rightTop,rightWidth,rightTop*.14,{layers:layout===0?2:1,lift:.024,ink:.86,azurite:.1});
+    quick([[1-rightWidth,nearY+.025],[.965,nearY+.025],[.965,rightTop],[1-rightWidth,rightTop],[1-rightWidth,nearY+.025]],{r:.0028,ink:.76,water:.16,speed:1.15});
+    for(let i=0;i<3;i++){const x=1-rightWidth+.018+i*(rightWidth-.036)/2;timberPillar(x,nearY+.025,rightTop,.12);}
+    latticeWindow(1-rightWidth+.045,nearY+.11,rightWidth*.34,.07);
+    lacquerDoor(1-rightWidth*.5-.035,nearY+.025,.07,.13);
 
-    tiledRoof(.415,.59,.17,.065,{lift:.021,ink:.65,azurite:.1});
-    for (const x of [.43,.57]) timberPillar(x,.43,.58,.1);
-    quick([[.43,.43],[.43,.51],[.45,.55],[.5,.57],[.55,.55],[.57,.51],[.57,.43]], { r: .0022, ink: .72, water: .13, speed: 1.2 });
-    quick([[.08,.31],[.45,.47],[.55,.47],[.92,.31]], { r: .003, ink: .56, water: .22, speed: 1.25 });
-    quick([[.08,.22],[.92,.22]], { r: .0024, ink: .42, water: .16, speed: 1.6 });
-    quick([[.08,.12],[.45,.24]], { r: .002, ink: .38, water: .14, speed: 1.7 });
-    quick([[.92,.12],[.55,.24]], { r: .002, ink: .38, water: .14, speed: 1.7 });
-    quick([[.34,.52],[.38,.52],[.38,.47]], { r: .0021, ink: .68, water: .13, speed: 1.3 });
-    outline(.35,.43,.06,.045,{r:.002,ink:.65,cin:.12,water:.13,speed:1.2});
-    horseCarriage(portrait ? .5 : .59,.12,.2);
-    person(.28,.14,.13,1,'traveler'); person(.83,.16,.11,-1,'young_woman');
+    const alleyWidth=rr(.12,.2),farY=rr(.58,.68);
+    if(layout!==1){
+      tiledRoof(vanish-alleyWidth*.45,farY,.11,.055,{lift:.018,ink:.62,azurite:.08});
+      for(const x of [vanish-.035,vanish+.035])timberPillar(x,farY-.13,farY+.015,.09);
+      quick([[vanish-.04,farY-.13],[vanish-.04,farY-.055],[vanish-.025,farY-.025],[vanish,farY-.01],[vanish+.025,farY-.025],[vanish+.04,farY-.055],[vanish+.04,farY-.13]],{r:.0018,ink:.62,water:.12,speed:1.4});
+    }
+    const roadY=nearY-.06;
+    quick([[.025,roadY],[vanish-alleyWidth*.5,farY-.12]],{r:.003,ink:.56,water:.22,speed:1.25});
+    quick([[.975,roadY],[vanish+alleyWidth*.5,farY-.12]],{r:.003,ink:.56,water:.22,speed:1.25});
+    quick([[.08,.2],[vanish-alleyWidth*.5,.31]],{r:.002,ink:.38,water:.14,speed:1.7});
+    quick([[.92,.2],[vanish+alleyWidth*.5,.31]],{r:.002,ink:.38,water:.14,speed:1.7});
+    horseCarriage(horseX,.1,horseSize);
+    person(horseX+W(-.16),.12,rr(.1,.14),1,'traveler');
+    if(layout!==2)person(rr(.75,.9),.13,rr(.09,.13),-1,'young_woman');
+    if(R()<.55)person(vanish+rr(-.035,.035),.31,.075,1,'attendant');
   }
   function drawKunming(){
-    quick([[0,.65],[.2,.7],[.38,.66],[.61,.7],[.8,.66],[1,.69]], { r: .003, ink: .26, water: .6, speed: 1.8 });
+    const layout=Math.floor(R()*3),vanish=rr(.44,.58),streetY=rr(.29,.36),drift=rr(-.018,.018);
+    canvas.dataset.sceneView=['春城街市','院巷深处','花树街口'][layout];
     const courtyardHouse = (x,base,w,h,variant) => {
       const roofBase = base + h*.56;
       quick([[x,base],[x,base+h*.63],[x+w*.1,base+h*.63],[x+w*.1,base+h*.73],[x+w*.22,base+h*.73],[x+w*.22,roofBase],[x+w*.78,roofBase],[x+w*.78,base+h*.73],[x+w*.9,base+h*.73],[x+w*.9,base+h*.63],[x+w,base+h*.63],[x+w,base],[x,base]], { r: .003, ink: .8, water: .17, speed: 1.1 });
@@ -1183,23 +1368,35 @@ function buildLandscape(seed, scene = 'landscape'){
       quick([[doorX+doorW*.5,base],[doorX+doorW*.5,base+h*.36]], { r: .0016, ink: .58, water: .1, speed: 1.5 });
       stoneSteps(doorX+doorW*.5,base-.01,doorW*.8,2);
     };
-    courtyardHouse(.015,.39,.245,.34,0);
-    courtyardHouse(.34,.44,.31,.3,1);
-    courtyardHouse(.72,.37,.265,.36,2);
-    quick([[.04,.29],[.42,.4],[.58,.4],[.96,.29]], { r: .0028, ink: .62, water: .2, speed: 1.25 });
-    quick([[.05,.22],[.95,.22]], { r: .0022, ink: .44, water: .15, speed: 1.6 });
-    for (let i = 0; i < 4; i++) {
-      const x = .08+i*.25;
-      tree(x,.17,.28,.36);
-      for (let j = 0; j < 8; j++) {
-        const red = R() < .5;
-        D(x+W(rr(-.05,.05)),.37+rr(-.02,.11),{r:rr(.004,.009),ink:.03,cin:red?.2:0,ochre:red?0:.42,water:.42,after:.01});
+    const housePlans=[
+      [[.015,.39,.245,.34,0],[.34,.44,.31,.3,1],[.72,.37,.265,.36,2]],
+      [[.015,.37,.19,.39,0],[.23,.43,.235,.32,1],[.51,.48,.19,.27,0],[.74,.35,.24,.4,2]],
+      [[.015,.38,.29,.35,0],[.35,.42,.3,.32,1],[.70,.36,.285,.39,2]]
+    ];
+    const houseXs=[];
+    for(const [x,base,width,height,variant] of housePlans[layout]){
+      const houseX=Math.max(.005,Math.min(.99-width,x+drift+rr(-.012,.012)));
+      const houseBase=Math.max(.34,Math.min(.49,base+rr(-.025,.025)));
+      courtyardHouse(houseX,houseBase,width,height*rr(.9,1.08),variant);houseXs.push(houseX+width*.5);
+    }
+    const horizon=layout===1?streetY+.08:streetY+.13;
+    quick([[0,horizon+rr(-.01,.01)],[vanish-.08,horizon+.1],[vanish+.08,horizon+.1],[1,horizon+rr(-.01,.01)]],{r:.0028,ink:.62,water:.2,speed:1.25});
+    quick([[.03,streetY],[.97,streetY]],{r:.0022,ink:.44,water:.15,speed:1.6});
+    for(let i=0;i<3+Math.floor(R()*3);i++){
+      const x=houseXs[i%houseXs.length]+rr(-.045,.045);
+      tree(Math.max(.035,Math.min(.965,x)),.14+rr(-.025,.025),rr(.2,.33),rr(.28,.46),pick(['willow','plum','pine']));
+      const blossomCount=4+Math.floor(R()*7);
+      for(let j=0;j<blossomCount;j++){
+        const red=R()<.5;
+        D(x+W(rr(-.055,.055)),.35+rr(-.035,.13),{r:rr(.004,.009),ink:.03,cin:red?.2:0,ochre:red?0:.42,water:.42,after:.01});
       }
     }
-    quick([[.07,.1],[.45,.22]], { r: .0022, ink: .48, water: .17, speed: 1.4 });
-    quick([[.93,.1],[.55,.22]], { r: .0022, ink: .48, water: .17, speed: 1.4 });
-    horseCarriage(portrait ? .51 : .62,.1,.18);
-    person(.26,.12,.13,-1,'elder_man'); person(.82,.12,.14,1,'young_woman');
+    quick([[.03,.1],[vanish-.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
+    quick([[.97,.1],[vanish+.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
+    const carriageX=portrait?rr(.45,.55):rr(.5,.72);
+    horseCarriage(carriageX,.08+rr(0,.035),rr(.15,.2));
+    person(Math.max(.08,carriageX-W(.22)),.1,rr(.11,.15),-1,pick(['elder_man','traveler']));
+    person(Math.min(.92,carriageX+W(.24)),.1,rr(.11,.15),1,pick(['young_woman','attendant']));
   }
 
   const sceneBuilders = { ginkgo: drawGinkgo, library: drawLibrary, sports: drawSports, dormitory: drawDormitory, garden: drawGarden, stream: drawStream, birds: drawBirds, carriage: drawCarriage, kunming: drawKunming };
