@@ -1631,16 +1631,20 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
     }
   }
   function distantWaterfall(cx, top, bottom, spread){
-    quick([[cx-W(spread*1.5),top+.015],[cx-W(spread),top],[cx+W(spread),top],[cx+W(spread*1.6),top+.015]], { r:.002,ink:.56,water:.24,speed:1.4 });
-    for (let strand = -2; strand <= 2; strand++) {
-      const startX = cx + W(strand * spread * .2), points = [];
+    quick([[cx-W(spread*1.65),top+.02],[cx-W(spread*1.08),top+.006],[cx-W(spread*.58),top+.012]], { r:.0021,ink:.3,water:.18,speed:1.6 });
+    quick([[cx-W(spread*.28),top+.006],[cx+W(spread*.18),top-.002],[cx+W(spread*.74),top+.008],[cx+W(spread*1.5),top+.02]], { r:.0021,ink:.27,water:.2,speed:1.6 });
+    for (let strand = -3; strand <= 3; strand++) {
+      const edge = Math.abs(strand) === 3, startT = edge ? .16 : 0, endT = edge ? .88 : 1, points = [];
       for (let step = 0; step <= 8; step++) {
-        const t = step/8, y = top - (top-bottom)*t;
-        points.push([startX+W(Math.sin(t*7+strand)*.004),y]);
+        const t = startT+(endT-startT)*step/8, y = top - (top-bottom)*t;
+        const bend = Math.sin(t*9+strand*.8)*spread*.15 + (t-.5)*strand*spread*.025;
+        points.push([cx+W(strand*spread*.16+bend),y]);
       }
-      S(points,{r:.0028,ink:.12,cin:-.2,water:.72,speed:2.5,note:.18,vel:.2});
+      S(points,{r:Math.abs(strand)<2?.0028:.0018,ink:Math.abs(strand)>2?.07:.12,cin:-.16,water:.48,speed:2.7,note:.18,vel:.2});
     }
-    for (let rock = -2; rock <= 2; rock++) D(cx+W(rock*spread*.32),bottom-.012,{r:.006,ink:.45,water:.22,after:.01});
+    S([[cx-W(spread*.55),top-.005],[cx-W(spread*.28),top-(top-bottom)*.3],[cx+W(spread*.12),top-(top-bottom)*.66],[cx+W(spread*.44),bottom+.003]], { r:spread*.14,ink:.018,cin:-.08,water:.45,speed:3,note:.22,vel:.18 });
+    quick([[cx-W(spread*1.4),bottom-.005],[cx-W(spread*.7),bottom-.001],[cx-W(spread*.22),bottom+.004],[cx+W(spread*.42),bottom],[cx+W(spread*1.2),bottom+.006]], { r:.0018,ink:.17,water:.38,speed:2.2,note:.12 });
+    for (let rock = -2; rock <= 2; rock++) D(cx+W(rock*spread*.32),bottom+rr(-.008,.007),{r:rr(.0018,.003),ink:.16,water:.42,after:.01});
   }
   if (cameraView === 'side') {
     // The side elevation opens into a vertically meandering, widening stream.
@@ -1663,8 +1667,10 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
   }
   if (view.feature === 'boat') {
     const bx = cameraView === 'side' ? .5 : rr(.55,.68), by = cameraView === 'side' ? .23 : rr(view.water[0],view.water[1]);
-    S([[bx-W(.04),by+.009],[bx-W(.022),by+.001],[bx,by-.001],[bx+W(.022),by+.001],[bx+W(.045),by+.011]], { r:.0034,ink:1.2,water:.2,speed:.3,note:.05 });
-    person(bx,by-.015,.075,1,'boatman');
+    quick([[bx-W(.074),by+.018],[bx-W(.04),by+.021],[bx,by+.018],[bx+W(.038),by+.021],[bx+W(.072),by+.018]], { r:.0012,ink:.2,water:.2,speed:1.3,note:.04 });
+    S([[bx-W(.062),by+.009],[bx-W(.048),by-.001],[bx-W(.024),by-.009],[bx+W(.02),by-.009],[bx+W(.046),by-.002],[bx+W(.062),by+.01]], { r:.0032,ink:1.08,water:.2,speed:.3,note:.05 });
+    quick([[bx-W(.045),by+.001],[bx-W(.018),by+.003],[bx+W(.018),by+.003],[bx+W(.047),by+.006]], { r:.0015,ink:.54,water:.12,speed:.6,note:.05 });
+    person(bx,by-.0175,.035,1,'boatman');
   } else if (view.feature === 'pavilion') {
     const islandX = rr(.43,.61), islandY = rr(.15,.2);
     quick([[islandX-W(.13),islandY],[islandX-W(.07),islandY+.018],[islandX+W(.08),islandY+.018],[islandX+W(.14),islandY]], { r:.002,ink:.42,water:.5,speed:1.8 });
