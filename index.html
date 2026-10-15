@@ -1099,9 +1099,9 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
     for (let b = 0; b < 5; b++) {
       const t = .43 + b * .095, by = base + h * t, side = b % 2 ? 1 : -1, endX = x + W(side * h * (.24 - b*.012)), endY = by + h * (.13 + (b%2)*.025);
       quick([[x,by],[x+W(side*h*.09),by+h*.07],[endX,endY]], { r: .0024, ink: .86, water: .16, speed: 1.1 });
-      for (let j = 0; j < 4; j++) ginkgoLeaf(endX + W((j-1.5)*h*.07), endY + h*((j%2)*.045), h*.075, R() < .42);
+      for (let j = 0; j < 4; j++) ginkgoLeaf(endX + W((j-1.5)*h*.07), endY + h*((j%2)*.045), h*.075, R() < .04);
     }
-    for (let j = 0; j < 5; j++) ginkgoLeaf(x + W((j-2)*h*.065), top - h*.015 + h*(j%2)*.025, h*.08, R() < .48);
+    for (let j = 0; j < 5; j++) ginkgoLeaf(x + W((j-2)*h*.065), top - h*.015 + h*(j%2)*.025, h*.08, R() < .04);
     cameraAnchorY = previousCameraAnchorY;
   }
   function bamboo(x, base, h, lean = 1){
@@ -1156,9 +1156,9 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
 
   function drawGinkgoSunset(){
     const view=Math.floor(R()*3),views=[
-      {name:'横街夕照',farBase:[.48,.54],nearBase:[.39,.44],roadTop:[.29,.34],roadBottom:[.105,.145],trees:[4,7],sunY:[.77,.84],lake:false},
-      {name:'山麓横路',farBase:[.52,.58],nearBase:[.43,.49],roadTop:[.34,.4],roadBottom:[.16,.2],trees:[3,6],sunY:[.76,.84],lake:false},
-      {name:'湖岸暮道',farBase:[.54,.6],nearBase:[.48,.53],roadTop:[.24,.3],roadBottom:[.09,.125],trees:[4,7],sunY:[.82,.9],lake:true}
+      {name:'金叶林荫道',farBase:[.48,.54],nearBase:[.39,.44],trees:[4,7],sunY:[.77,.84]},
+      {name:'山麓银杏径',farBase:[.52,.58],nearBase:[.43,.49],trees:[3,6],sunY:[.76,.84]},
+      {name:'湖岸金秋道',farBase:[.54,.6],nearBase:[.48,.53],trees:[4,7],sunY:[.82,.9]}
     ][view];
     canvas.dataset.sceneView=`银杏道-${views.name}`;
     const farBase=rr(...views.farBase),peakCount=3+Math.floor(R()*3),farPeaks=[];
@@ -1177,44 +1177,53 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
       quick(points,{r:.006,ink:.09,cin:-.05,water:.68,speed:2.3,note:.3,vel:.2});
     }
 
-    const roadTop=rr(...views.roadTop),roadBottom=rr(...views.roadBottom),roadWave=rr(.006,.018);
-    const upper=[],lower=[];
-    for(let step=0;step<=8;step++){
-      const x=step/8,undulation=Math.sin(x*13+rr(-.02,.02))*roadWave;
-      upper.push([x,roadTop+undulation]);lower.push([x,roadBottom+undulation*.6]);
+    const vanishX=rr(.45,.55),vanishY=rr(.48,.59),roadBottom=.085;
+    for(const side of [-1,1]){
+      const edge=[];
+      for(let step=0;step<=12;step++){
+        const t=step/12,y=roadBottom+(vanishY-roadBottom)*t,half=.48*(1-t)+.018*t;
+        edge.push([vanishX+side*half,y+Math.sin(t*9+side)*.003]);
+      }
+      S(edge,{r:side<0?.0034:.0028,ink:side<0?.58:.46,water:.22,speed:1.25,note:.12});
     }
-    S(upper,{r:.0034,ink:.68,water:.22,speed:1.2,note:.11});
-    S(lower,{r:.0028,ink:.47,water:.2,speed:1.45,note:.16});
-    for(let seam=0;seam<3;seam++){
-      const y=roadBottom+.035+seam*(roadTop-roadBottom)*.34,x=rr(.04,.7),length=rr(.08,.24);
-      quick([[x,y],[Math.min(.98,x+length),y+rr(-.008,.008)]],{r:.0013,ink:.22,water:.12,dry:.55,speed:2});
+    for(let seam=0;seam<5;seam++){
+      const t=.16+seam*.14,y=roadBottom+(vanishY-roadBottom)*t,half=.48*(1-t)+.018*t;
+      quick([[vanishX-half,y],[vanishX+half,y]],{r:.0015,ink:.2,water:.16,dry:.48,speed:1.9});
+    }
+    for(const side of [-1,1])for(let stone=0;stone<5;stone++){
+      const t=.08+stone*.1,y=roadBottom+(vanishY-roadBottom)*t,half=.48*(1-t)+.018*t;
+      const x=Math.max(.025,Math.min(.975,vanishX+side*(half+.014)));
+      quick([[x,y],[Math.max(.025,Math.min(.975,x+side*rr(.012,.028))),y+rr(-.004,.004)]],{r:.002,ink:.42,water:.2,dry:.28,speed:1.6});
     }
 
-    if(views.lake){
-      for(let ripple=0;ripple<5+Math.floor(R()*5);ripple++){
-        const y=rr(roadTop+.04,nearBase-.025),x=rr(.08,.78),length=rr(.06,.19),points=[];
-        for(let step=0;step<=5;step++){const t=step/5;points.push([x+length*t,y+Math.sin(t*5+ripple)*.003]);}
-        S(points,{r:.0017,ink:.06,cin:-.42,water:.32,dry:.25,speed:2,note:.2});
-      }
-    }
     const treeCount=Math.floor(rr(views.trees[0],views.trees[1]+1));
     for(let i=0;i<treeCount;i++){
-      const x=.05+i*.9/Math.max(1,treeCount-1)+rr(-.025,.025),base=roadTop+rr(.01,.045),height=rr(.23,.4);
-      ginkgoTree(Math.max(.035,Math.min(.965,x)),base,height);
-      if(R()<.4)tree(Math.max(.03,Math.min(.97,x+rr(-.045,.045))),base, height*rr(.7,.95),.38,pick(['pine','cypress','willow']));
+      const depth=(i+.5)/treeCount,base=roadBottom+.035+depth*(vanishY-roadBottom-.06);
+      const half=.47*(1-depth)+.035,height=.42*(1-depth)+.16;
+      for(const side of [-1,1]){
+        const x=Math.max(.035,Math.min(.965,vanishX+side*(half+rr(.012,.035))));
+        ginkgoTree(x,base,height*rr(.86,1.12));
+        if(i===0&&R()<.35)tree(x+W(side*.025),base,height*.82,.36,pick(['pine','cypress','willow']));
+      }
     }
     if(view===1){
       tree(.025,roadBottom+rr(.02,.05),rr(.23,.31),.55,'willow');
       tree(.96,roadBottom+rr(.02,.05),rr(.21,.3),.48,'pine');
     }else if(view===2){
-      for(let rock=0;rock<5;rock++)D(rr(.08,.9),roadBottom-rr(.015,.04),{r:rr(.006,.013),ink:.5,water:.16,after:.01});
+      for(let rock=0;rock<8;rock++)D(rr(.08,.9),roadBottom-rr(.015,.04),{r:rr(.006,.013),ink:.5,water:.16,after:.01});
+    }
+    for(let leaf=0;leaf<28+Math.floor(R()*18);leaf++){
+      const depth=rr(.02,.78),half=.46*(1-depth)+.02;
+      ginkgoLeaf(vanishX+rr(-half,half),roadBottom+(vanishY-roadBottom)*depth+rr(-.012,.012),rr(.006,.015),R()<.04);
     }
     const walkerCount=2+Math.floor(R()*4);
     for(let i=0;i<walkerCount;i++){
-      const x=.17+i*.66/Math.max(1,walkerCount-1)+rr(-.035,.035),role=pick(['young_man','young_woman','elder_man','elder_woman','traveler','child','merchant']);
-      person(x,roadBottom+rr(.005,.025),rr(.085,.14),R()<.5?-1:1,role);
+      const depth=.18+i*.58/Math.max(1,walkerCount-1)+rr(-.035,.035);
+      const half=.43*(1-depth)+.025,x=vanishX+rr(-half*.55,half*.55),y=roadBottom+(vanishY-roadBottom)*depth;
+      const role=pick(['young_man','young_woman','elder_man','elder_woman','traveler','child','merchant']);
+      person(x,y,.055+.085*(1-depth),R()<.5?-1:1,role);
     }
-    for(let leaf=0;leaf<15+Math.floor(R()*12);leaf++)ginkgoLeaf(rr(.08,.92),rr(.16,.59),rr(.009,.02),R()<.34);
+    for(let leaf=0;leaf<15+Math.floor(R()*12);leaf++)ginkgoLeaf(rr(.08,.92),rr(.16,.59),rr(.009,.02),R()<.04);
     for(let i=0;i<3;i++)bird(rr(.42,.72),rr(.72,.88),rr(.65,.95));
   }
 
@@ -1222,7 +1231,7 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
     const wide=A>1.1;
     if(wide&&R()<.62){drawGinkgoSunset();return;}
     canvas.dataset.sceneView='银杏道-林荫透视';
-    const vanishingX = rr(.38,.62), vanishingY = rr(.55,.69), treeRows = 2 + Math.floor(R()*2);
+    const vanishingX = rr(.38,.62), vanishingY = rr(.55,.69), treeRows = 4 + Math.floor(R()*3);
     canvas.dataset.sceneView = `银杏道-${vanishingX < .5 ? '左偏' : '右偏'}-${treeRows}排树`;
     quick([[0,vanishingY],[.22,vanishingY+.02],[.47,vanishingY+.04],[.72,vanishingY+.02],[1,vanishingY]], { ink: .25, water: .6, r: .003, speed: 1.8 });
     quick([[rr(.08,.18),.08],[rr(.22,.34),.24],[vanishingX-.045,vanishingY]], { r: .0035, ink: .75, water: .28, speed: 1.05 });
@@ -1232,11 +1241,27 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
       quick([[left,y],[right,y]], { r: .0015, ink: .28, water: .16, dry: .45, speed: 2.2, note: .3 });
     }
     for (let i = 0; i < treeRows; i++) {
-      const t = i / Math.max(1,treeRows-1), y = .15 + t*.1, h = (.3-t*.045)*rr(.88,1.12);
-      const left = .055 + (vanishingX-.055)*t*.55, right = .945 + (vanishingX-.945)*t*.55;
+      const t = i / Math.max(1,treeRows-1), y = .12 + t*.28, h = (.44-t*.18)*rr(.88,1.12);
+      const left = .055 + (vanishingX-.055)*t*.8, right = .945 + (vanishingX-.945)*t*.8;
       ginkgoTree(left,y,h); ginkgoTree(right,y,h*rr(.9,1.08));
     }
-    for (let i = 0, count = 12 + Math.floor(R()*15); i < count; i++) ginkgoLeaf(rr(.18,.82), rr(.14,vanishingY-.05), rr(.012,.022), R() < .52);
+    for(const side of [-1,1]){
+      const canopy=[];
+      for(let step=0;step<=8;step++){
+        const t=step/8;
+        canopy.push([vanishingX+side*(.44*(1-t)+.025),.36+t*.19]);
+      }
+      quick(canopy,{r:.003,ink:.46,water:.2,speed:1.1});
+    }
+    for (let i = 0, count = 22 + Math.floor(R()*15); i < count; i++) ginkgoLeaf(rr(.18,.82), rr(.14,vanishingY-.02), rr(.012,.022), R() < .04);
+    for(let i=0;i<24;i++){
+      const depth=R(),side=R()<.5?-1:1;
+      ginkgoLeaf(vanishingX+side*(.42*(1-depth)+.03)+W(rr(-.04,.04)),.39+depth*.16+rr(-.035,.035),rr(.009,.018),R()<.04);
+    }
+    for (let i = 0, count = 18 + Math.floor(R()*14); i < count; i++) {
+      const depth=R()*.78,half=.42*(1-depth)+.025;
+      ginkgoLeaf(vanishingX+rr(-half,half),.1+depth*(vanishingY-.1),rr(.006,.015),R()<.04);
+    }
     person(vanishingX+rr(-.035,.035),.1,.17,1,'young_man');
     person(vanishingX+rr(-.12,.12),.23,.1,-1,'young_woman');
     if (R() < .7) person(vanishingX+rr(-.2,.2),.32,.075,1,'elder_man');
@@ -1268,11 +1293,18 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
     line([[.45,.527],[.55,.527]], { r: .0015, ink: .24, ochre: .38, water: .1, speed: 1.6 });
     stoneSteps(X(.5),Y(.285),.32*sx,layout===0?3:4);
     for (let i = 0; i < 4; i++) line([[.32+i*.12,.22],[.44+i*.04,.17]], { r: .0018, ink: .42, water: .14, speed: 1.7 });
+    line([[.43,.11],[.46,.16],[.49,.22],[.5,.28]], { r:.0022,ink:.42,water:.2,speed:1.45 });
+    line([[.57,.11],[.54,.16],[.51,.22],[.5,.28]], { r:.0022,ink:.42,water:.2,speed:1.45 });
+    for(let step=0;step<5;step++){
+      const y=.12+step*.032,half=.024+step*.004;
+      line([[.5-half,y],[.5+half,y+rr(-.003,.003)]],{r:.0016,ink:.32,water:.18,dry:.32,speed:1.7});
+    }
     tree(X(rr(.04,.12)),Y(.2),.26*sy,.55,pick(['willow','plum','shrub']));
     tree(X(rr(.88,.96)),Y(.2),.28*sy,.55,pick(['pine','cypress','plum']));
     const visitors = layout===2 ? 4 : 3;
     for(let i=0;i<visitors;i++) person(X(.2+i*(.6/Math.max(1,visitors-1))+rr(-.025,.025)),.1+rr(.015,.045),rr(.095,.135),i%2?1:-1,i===0?'scholar':pick(['attendant','young_man','young_woman','elder_man','child']));
-    line([[.1,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
+    line([[.1,.11],[.31,.11],[.4,.14]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
+    line([[.6,.14],[.69,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
     if(layout===1) for(let i=0;i<4;i++) D(X(rr(.18,.82)),Y(rr(.14,.2)),{r:.004,ink:.35,water:.3,after:.01});
   }
   function drawSports(){
@@ -1382,48 +1414,66 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
   function drawStream(){
     const layout=Math.floor(R()*3),shift=rr(-.05,.05);
     canvas.dataset.sceneView=['曲溪过桥','山涧浅滩','瀑布入溪'][layout];
-    const routes=[
-      {left:[[.35,.9],[.29,.75],[.4,.62],[.34,.48],[.48,.34],[.39,.18],[.3,.08]],right:[[.57,.9],[.65,.75],[.58,.62],[.7,.48],[.58,.34],[.72,.18],[.83,.08]]},
-      {left:[[.18,.9],[.32,.76],[.28,.61],[.43,.48],[.38,.32],[.52,.18],[.45,.08]],right:[[.4,.9],[.55,.76],[.5,.61],[.65,.48],[.58,.32],[.75,.18],[.72,.08]]},
-      {left:[[.24,.9],[.37,.78],[.31,.65],[.43,.52],[.39,.36],[.53,.2],[.44,.08]],right:[[.67,.9],[.58,.78],[.69,.65],[.57,.52],[.66,.36],[.55,.2],[.7,.08]]}
-    ][layout];
-    const offset=points=>points.map(([x,y])=>[Math.max(.02,Math.min(.98,x+shift)),y]);
+    const phase=rr(0,6.28),amplitude=layout===0?.055:layout===1?.035:.045;
+    const centerAt=y=>{
+      const t=(.9-y)/.82;
+      return .5+shift+Math.sin(t*(layout===0?4.8:5.6)+phase)*amplitude*(.4+t);
+    };
     if(cameraView==='side'){
       const left=[],right=[];
       for(let step=0;step<=28;step++){
-        const t=step/28,y=.91-t*.83,cx=.5+shift+Math.sin(t*5.1+layout)*(.04+.07*t),width=.075+.035*t;
+        const t=step/28,y=.91-t*.83,cx=centerAt(y),width=.075+.035*t;
         left.push([cx-width,y]);right.push([cx+width,y]);
       }
       quick(left,{r:.004,ink:.68,water:.35,speed:1.05});
       quick(right,{r:.004,ink:.68,water:.35,speed:1.05});
     }else{
-      quick(offset(routes.left),{r:.004,ink:.68,water:.35,speed:1.05});
-      quick(offset(routes.right),{r:.004,ink:.68,water:.35,speed:1.05});
+      const left=[],right=[];
+      for(let step=0;step<=32;step++){
+        const t=step/32,y=.9-t*.82,cx=centerAt(y),width=(layout===1?.06:.078)+.028*t;
+        left.push([Math.max(.02,cx-width),y]);
+        right.push([Math.min(.98,cx+width),y]);
+      }
+      quick(left,{r:.004,ink:.68,water:.35,speed:1.05});
+      quick(right,{r:.004,ink:.68,water:.35,speed:1.05});
     }
-    const rippleCount=6+Math.floor(R()*7),streamCenter=.5+shift*.5;
+    const rippleCount=6+Math.floor(R()*7);
     for (let i = 0; i < rippleCount; i++) {
-      const y = .12 + i*(.72/rippleCount)+rr(-.018,.018), cx = streamCenter + Math.sin(i*1.7+shift*10)*.045, span = .045 + R()*.07;
+      const y = .12 + i*(.72/rippleCount)+rr(-.018,.018), cx = centerAt(y) + Math.sin(i*1.7+shift*10)*.025, span = .045 + R()*.07;
       quick([[cx-span,y],[cx-span*.35,y+.005],[cx+span*.4,y+.003],[cx+span,y]], { r: .0017, ink: .08, cin: -.55, water: .14, dry: .45, speed: 2, note: .28 });
     }
     if(layout===0){
-      const bridgeY=rr(.42,.62),bridgeX=.5+shift;
+      const bridgeY=rr(.42,.62),bridgeX=centerAt(bridgeY);
       quick([[bridgeX-W(.11),bridgeY],[bridgeX-W(.07),bridgeY+.045],[bridgeX,bridgeY+.065],[bridgeX+W(.07),bridgeY+.045],[bridgeX+W(.11),bridgeY]],{r:.0028,ink:.76,water:.16,speed:1.1});
       quick([[bridgeX-W(.11),bridgeY],[bridgeX+W(.11),bridgeY]],{r:.002,ink:.56,water:.12,speed:1.5});
     }else if(layout===1){
-      for(let stone=0;stone<5;stone++)D(streamCenter+W((stone-2)*.045),.22+stone*.09,{r:rr(.008,.014),ink:.74,water:.16,after:.01});
+      for(let stone=0;stone<5;stone++){
+        const y=.22+stone*.09;
+        D(centerAt(y)+W((stone-2)*.045),y,{r:rr(.008,.014),ink:.74,water:.16,after:.01});
+      }
     }else{
-      distantWaterfall(streamCenter+rr(-.04,.04),.68,.31,.045);
+      distantWaterfall(centerAt(.52)+rr(-.04,.04),.68,.31,.045);
+      const cliff=[];
+      for(let step=0;step<=14;step++){
+        const t=step/14;
+        cliff.push([.76+.045*Math.sin(t*5.4+phase)+.018*Math.sin(t*13),.08+t*.82]);
+      }
+      S(cliff,{r:.008,ink:.66,water:.28,dry:.16,speed:.66,note:.08});
+      for(let ledge=0;ledge<5;ledge++){
+        const y=.16+ledge*.14,x=.72+.035*Math.sin((y-.08)*6+phase);
+        quick([[x,y],[x+W(.05),y+.02],[x+W(.11),y+.01]],{r:.0028,ink:.55,water:.18,dry:.42,speed:1.1});
+      }
     }
     for(let i=0;i<4+Math.floor(R()*4);i++){
-      const side=i%2?-1:1,x=streamCenter+W(side*rr(.15,.32)),y=rr(.12,.42);
-      oval(x,y,rr(.018,.042),rr(.01,.024),{r:.0025,ink:.68,water:.2,speed:1.7});
+      const side=i%2?-1:1,y=rr(.12,.42),x=centerAt(y)+W(side*rr(.15,.32));
+      D(x,y,{r:rr(.008,.016),ink:.54,water:.24,after:.01});
     }
     tree(rr(.03,.17),.2,rr(.3,.43),.55,pick(['willow','pine','cypress','shrub','plum']));
-    bamboo(rr(.83,.96),.12,rr(.38,.52),R()<.5?-1:1);
+    if(layout!==2)bamboo(rr(.83,.96),.12,rr(.38,.52),R()<.5?-1:1);
     const personY=rr(.13,.24);
-    person(streamCenter+W(rr(-.31,-.16)),personY,rr(.12,.17),1,'elder_man');
-    if(R()<.8)person(streamCenter+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman','fisherman','woodcutter']));
-    if(R()<.45)person(streamCenter+W(rr(-.08,.08)),personY+rr(.06,.12),rr(.075,.1),R()<.5?-1:1,'child');
+    person(centerAt(personY)+W(rr(-.31,-.16)),personY,rr(.12,.17),1,'elder_man');
+    if(R()<.8)person(centerAt(personY)+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman','fisherman','woodcutter']));
+    if(R()<.45)person(centerAt(personY)+W(rr(-.08,.08)),personY+rr(.06,.12),rr(.075,.1),R()<.5?-1:1,'child');
     for (let i = 0; i < 4+Math.floor(R()*4); i++) {
       const x=rr(.025,.16),y=rr(.12,.37);
       quick([[x,y],[x+W(rr(.008,.035)),y+rr(.06,.12)]], { r:.002,ink:.62,water:.2,speed:1.2 });
@@ -1444,7 +1494,41 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
       for(let mark=0;mark<accents;mark++)D(x+W(rr(-.04,.04)),base+height*rr(.45,.86),{r:rr(.004,.008),ink:.04,ochre:.3,water:.28,after:.01});
       if(R()<.55)D(x+W(rr(-.06,.06)),base+height*rr(.48,.8),{r:.005,ink:.03,cin:-.34,water:.22,after:.01});
     }
-    const birdCount=4+Math.floor(R()*9), flockCenter=rr(.38,.64), flockHeight=rr(.53,.77);
+    const direction=R()<.5?1:-1;
+    const branchPoint=t=>[direction>0?.12+.76*t:.88-.76*t,.28+.16*t+.06*Math.sin(t*Math.PI)];
+    const branch=[];
+    for(let step=0;step<=10;step++)branch.push(branchPoint(step/10));
+    quick(branch,{r:.004,ink:.76,water:.22,dry:.2,speed:.85,note:.1});
+    for(const t of [.16,.38,.72,.86]){
+      const [x,y]=branchPoint(t),tipX=x+W(direction*.08),tipY=y+.09;
+      quick([[x,y],[x+W(direction*.035),y+.045],[tipX,tipY]],{r:.0024,ink:.68,water:.15,speed:1.05});
+      for(let leaf=0;leaf<3;leaf++){
+        const lx=x+W(direction*(.035+leaf*.018)),ly=y+.04+leaf*.018;
+        D(lx,ly,{r:.0045,ink:.42,ochre:R()<.25?.28:0,water:.3,after:.01});
+      }
+    }
+    for(let flower=0;flower<10;flower++){
+      const [x,y]=branchPoint(rr(.16,.9)),cx=x+W(rr(-.025,.025)),cy=y+rr(.025,.09);
+      for(let petal=0;petal<5;petal++){
+        const angle=petal*Math.PI*2/5;
+        D(cx+W(Math.cos(angle)*.009),cy+Math.sin(angle)*.009,{r:.0045,ink:.06,cin:R()<.78?.4:0,ochre:R()<.22?.34:0,water:.25,after:.01});
+      }
+      D(cx,cy,{r:.003,ink:.34,ochre:.28,water:.16,after:.01});
+    }
+    const perchedBird=(x,y,size,facing)=>{
+      const bodyY=y+size*.018,headX=x+W(facing*size*.018);
+      D(x,bodyY,{r:.011*size,ink:.9,water:.14,after:.01});
+      D(headX,bodyY+size*.009,{r:.007*size,ink:.94,water:.12,after:.01});
+      quick([[x-W(size*.012),bodyY+size*.004],[x,bodyY+size*.013],[x+W(facing*size*.006),bodyY+size*.003]],{r:.0026,ink:.76,water:.1,speed:.9});
+      quick([[x-W(facing*size*.012),bodyY],[x-W(facing*size*.032),bodyY-size*.009],[x-W(facing*size*.036),bodyY-size*.014]],{r:.0024,ink:.8,water:.1,speed:1});
+      quick([[headX+W(facing*size*.004),bodyY+size*.009],[headX+W(facing*size*.014),bodyY+size*.006]],{r:.002,ink:.16,ochre:.3,water:.1,speed:1.2});
+      quick([[x-W(size*.003),bodyY-size*.006],[x-W(size*.003),y],[x+W(size*.005),y]],{r:.0018,ink:.82,water:.1,speed:1.1});
+    };
+    for(const t of [.43,.7]){
+      const [x,y]=branchPoint(t);
+      perchedBird(x,y,rr(1.35,1.65),R()<.5?-1:1);
+    }
+    const birdCount=3+Math.floor(R()*6), flockCenter=rr(.38,.64), flockHeight=rr(.53,.77);
     for(let i=0;i<birdCount;i++){
       let x,y;
       if(layout===0){const t=i/Math.max(1,birdCount-1);x=flockCenter+(t-.5)*rr(.18,.35);y=flockHeight+Math.sin(t*Math.PI)*.08+rr(-.025,.025);}
@@ -1540,6 +1624,17 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
     }
     quick([[.03,.1],[vanish-.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
     quick([[.97,.1],[vanish+.05,streetY]],{r:.0022,ink:.48,water:.17,speed:1.4});
+    const stallCount=2+Math.floor(R()*2);
+    for(let i=0;i<stallCount;i++){
+      const x=.12+i*.76/Math.max(1,stallCount-1)+rr(-.025,.025),width=rr(.055,.09),base=streetY-rr(.04,.09);
+      quick([[x,base+.045],[x+width*.5,base+.065],[x+width,base+.045]],{r:.0025,ink:.62,cin:-.08,water:.18,speed:1.2});
+      quick([[x+.008,base],[x+.008,base+.045],[x+width-.008,base+.045],[x+width-.008,base]],{r:.0018,ink:.5,water:.14,speed:1.35});
+      quick([[x-.008,base+.04],[x+width+.008,base+.04]],{r:.0016,ink:.44,cin:.12,water:.12,speed:1.5});
+    }
+    for(let i=0,crowd=4+Math.floor(R()*4);i<crowd;i++){
+      const x=rr(.18,.82),y=streetY+rr(-.1,.08);
+      person(x,y,rr(.045,.075),R()<.5?-1:1,pick(['merchant','traveler','young_man','young_woman','child']));
+    }
     const carriageX=portrait?rr(.45,.55):rr(.5,.72);
     horseCarriage(carriageX,.08+rr(0,.035),rr(.15,.2));
     person(Math.max(.08,carriageX-W(.22)),.1,rr(.11,.15),-1,pick(['elder_man','traveler']));

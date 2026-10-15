@@ -29,6 +29,8 @@ The painter is a single HTML file with fifteen original local transparent figure
 | Qin | Karplus–Strong plucked-string synthesis into AudioBuffers; slides and vibrato via `playbackRate` automation; procedural reverb impulse |
 | Scenes | Ten seeded scenes, each available in front/top-down, 45° overhead, and side projections, with changing mountains, steep cliffs, windswept pines, sun or moon, clouds, birds, boats, pavilions, villages, waterfalls, distant rooftops, and pine/cypress/willow/plum/shrub forms; portrait and landscape layouts are composed separately |
 
+Images in `src_images/` are composition references matched by their Chinese filename prefixes: `山水` → landscape, `银杏道` → ginkgo path, `图书馆` → library, `溪畔` → stream, `林间飞鸟` → birds, and `昆明` → Kunming street. They are not loaded at runtime.
+
 Light and dark themes follow the system: dark turns the paper to night and the ink to moonlight.
 
 ## Run locally
