@@ -9,6 +9,8 @@
 - `elder_man.png`、`elder_woman.png`：老年男女主角，分别配长须/手杖与发髻/披帛。
 - `scholar.png`、`attendant.png`、`traveler.png`、`qin_player.png`：学者、侍从、行旅者、携琴者。
 - `boatman.png`、`horse_carriage.png`：舟中人物与马车、车夫。
+- `monk.png`、`child.png`：僧人与孩童。
+- `woodcutter.png`、`fisherman.png`、`merchant.png`：樵夫、渔夫和商贩，配斗笠、扁担/桨与行囊等随身物件。
 
 重新生成需要 Pillow：
 

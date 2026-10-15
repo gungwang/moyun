@@ -42,7 +42,12 @@ def draw_head(draw, role):
     draw_line(draw, [(101, 57), (107, 59), (112, 57)], width=1.0, opacity=125)
     draw_line(draw, [(99, 67), (98, 78), (104, 83)], width=1.7, opacity=170)
 
-    if role in {"young_man", "scholar", "attendant", "traveler", "qin_player", "boatman"}:
+    if role == "monk":
+        draw_line(draw, [(94, 36), (99, 26), (108, 22), (117, 27), (121, 37)], width=1.7, opacity=178)
+    elif role == "child":
+        draw_ellipse(draw, (100, 16, 116, 30), fill=148, outline=192, width=1.4)
+        draw_line(draw, [(105, 25), (107, 19), (112, 25)], width=1.3, opacity=175)
+    elif role in {"young_man", "scholar", "attendant", "traveler", "qin_player", "boatman", "merchant", "woodcutter", "fisherman"}:
         draw_polygon(draw, [(91, 39), (91, 25), (98, 18), (117, 18), (124, 25), (123, 36), (116, 31), (99, 32)], 148, 198, 1.5)
         draw_line(draw, [(88, 36), (126, 35)], width=2.1, opacity=175)
     elif role in {"elder_man"}:
@@ -55,10 +60,20 @@ def draw_head(draw, role):
         draw_line(draw, [(98, 24), (103, 17), (111, 17), (117, 24)], width=2.2, opacity=185)
         draw_line(draw, [(119, 25), (132, 21), (137, 26)], width=1.1, opacity=150)
 
+    if role == "woodcutter":
+        draw_polygon(draw, [(81, 40), (93, 27), (111, 15), (130, 29), (141, 41)], 52, 180, 1.6)
+        draw_line(draw, [(91, 34), (112, 20), (132, 35)], width=1.1, opacity=150)
+    elif role == "fisherman":
+        draw_polygon(draw, [(75, 42), (91, 30), (111, 18), (132, 31), (149, 44)], 42, 165, 1.5)
+        draw_line(draw, [(84, 42), (113, 22), (142, 42)], width=1.1, opacity=145)
+    elif role == "merchant":
+        draw_line(draw, [(93, 30), (101, 20), (117, 20), (124, 30)], width=2.2, opacity=188)
 
 def draw_robes(draw, role):
     if role == "young_woman":
         robe = [(99, 72), (83, 77), (73, 96), (50, 111), (30, 145), (47, 157), (72, 137), (77, 126), (77, 183), (57, 291), (73, 306), (108, 296), (146, 308), (163, 292), (132, 182), (132, 126), (141, 138), (166, 157), (183, 144), (156, 104), (132, 83), (117, 73)]
+    elif role == "child":
+        robe = [(99, 72), (84, 79), (74, 101), (54, 116), (39, 146), (54, 158), (78, 139), (82, 132), (82, 180), (76, 235), (90, 248), (108, 242), (129, 248), (143, 235), (132, 182), (132, 132), (145, 143), (165, 158), (181, 145), (155, 111), (131, 84), (117, 74)]
     elif role == "elder_man":
         robe = [(100, 74), (82, 80), (73, 104), (52, 118), (36, 154), (51, 166), (75, 144), (80, 135), (79, 189), (65, 289), (82, 307), (108, 298), (138, 306), (154, 290), (130, 186), (131, 132), (142, 146), (163, 166), (179, 152), (151, 111), (128, 84), (117, 73)]
     elif role == "elder_woman":
@@ -93,6 +108,30 @@ def draw_robes(draw, role):
         draw_line(draw, [(53, 155), (29, 185), (45, 211), (70, 195)], width=2.0, opacity=165)
         draw_line(draw, [(169, 155), (193, 178), (177, 199)], width=2.0, opacity=165)
         draw_line(draw, [(137, 82), (164, 97), (181, 120), (188, 132)], width=1.8, opacity=140)
+    if role == "child":
+        draw_line(draw, [(82, 185), (108, 194), (132, 185)], width=2.0, opacity=185)
+        draw_line(draw, [(89, 248), (101, 267), (101, 302)], width=2.2, opacity=180)
+        draw_line(draw, [(128, 248), (118, 267), (119, 302)], width=2.2, opacity=180)
+        draw_line(draw, [(108, 108), (101, 119), (113, 130)], width=1.5, opacity=170)
+    if role == "monk":
+        draw_line(draw, [(92, 91), (108, 108), (124, 91)], width=1.6, opacity=168)
+        for bead in range(7):
+            x = 95 + bead * 4
+            y = 112 + abs(3 - bead) * 2
+            draw_ellipse(draw, (x, y, x + 2.5, y + 2.5), fill=54, outline=185, width=.8)
+        draw_line(draw, [(83, 155), (106, 171), (132, 155)], width=1.4, opacity=148)
+    if role == "woodcutter":
+        draw_line(draw, [(159, 91), (183, 253)], width=2.6, opacity=190)
+        draw_polygon(draw, [(176, 99), (194, 96), (187, 111), (171, 113)], 58, 188, 1.5)
+        draw_line(draw, [(44, 116), (61, 101), (77, 118), (61, 139), (44, 116)], width=1.7, opacity=168)
+    if role == "fisherman":
+        draw_line(draw, [(152, 112), (188, 273)], width=2.2, opacity=188)
+        draw_line(draw, [(47, 252), (74, 241), (102, 252), (132, 242)], width=1.6, opacity=145)
+        draw_line(draw, [(51, 262), (77, 252), (104, 262), (132, 251)], width=1.2, opacity=132)
+    if role == "merchant":
+        draw_polygon(draw, [(37, 129), (59, 117), (77, 129), (73, 167), (43, 167)], 50, 188, 1.8)
+        draw_line(draw, [(41, 130), (58, 124), (76, 132)], width=1.2, opacity=168)
+        draw_line(draw, [(47, 145), (69, 145)], width=1.2, opacity=142)
     if role == "elder_man":
         draw_line(draw, [(136, 104), (176, 310)], width=2.4, opacity=205)
         draw_line(draw, [(101, 68), (98, 83), (104, 92), (111, 81), (114, 68)], width=3.4, opacity=190)
@@ -195,7 +234,8 @@ def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     roles = (
         "young_man", "young_woman", "elder_man", "elder_woman", "scholar",
-        "attendant", "traveler", "qin_player", "boatman",
+        "attendant", "traveler", "qin_player", "boatman", "monk", "child",
+        "woodcutter", "fisherman", "merchant",
     )
     for role in roles:
         draw_figure(role).save(OUTPUT / f"{role}.png", optimize=True)

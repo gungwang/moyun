@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
+<meta name="description" content="GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="画与歌">
-<meta property="og:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
+<meta property="og:description" content="GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta property="og:url" content="https://axtonliu.github.io/moyun/">
 <meta property="og:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="画与歌">
-<meta name="twitter:description" content="一张会呼吸的宣纸：GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
+<meta name="twitter:description" content="GPU 实时流动的水墨、五声音阶古琴，以及山水、校园、园林与城市街景等十种水墨场景。">
 <meta name="twitter:image" content="https://axtonliu.github.io/moyun/media/og.jpg">
 <meta name="theme-color" content="#ECE8DD">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%23B03A2A'/%3E%3C/svg%3E">
@@ -55,11 +55,10 @@
 html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overflow:hidden;-webkit-font-smoothing:antialiased}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+#dry{position:fixed;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 
 .mast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 22px);right:22px;writing-mode:vertical-rl;display:flex;gap:10px;align-items:flex-start;pointer-events:none;user-select:none}
 .mast h1{margin:0;font-family:var(--font-brush);font-weight:400;font-size:clamp(34px,5vmin,52px);line-height:1;letter-spacing:.08em;color:var(--ink)}
-.mast p{margin:0;padding-top:.5em;font-size:13px;letter-spacing:.42em;color:var(--ink-soft)}
-
 .poem{position:fixed;top:calc(env(safe-area-inset-top,0px) + 30px);left:26px;writing-mode:vertical-rl;font-family:var(--font-brush);font-size:clamp(21px,3.3vmin,34px);line-height:1.62;letter-spacing:.2em;color:var(--ink);pointer-events:none;user-select:none}
 .poem .ln{display:block}
 .poem .ch{display:inline-block;opacity:0;filter:blur(6px);transform:translateY(-.08em);transition:opacity 1s ease,filter 1.3s ease,transform 1.3s ease}
@@ -77,28 +76,12 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .bar button{appearance:none;background:none;border:0;margin:0;min-height:40px;padding:0 10px;font:inherit;font-size:15px;letter-spacing:.1em;color:var(--ink-soft);cursor:pointer;background-repeat:no-repeat;background-position:50% calc(100% - 6px);background-size:0 2px;transition:color .2s,background-size .25s}
 .bar button:hover{color:var(--ink)}
 .bar button:focus-visible,.bar select:focus-visible,.sheet button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
-.bar select{appearance:none;height:40px;min-width:112px;max-width:140px;box-sizing:border-box;padding:0 22px 0 8px;border:0;background-color:transparent;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 11px) 18px,calc(100% - 7px) 18px;background-size:4px 4px;background-repeat:no-repeat;font:inherit;font-size:14px;letter-spacing:.05em;color:var(--ink-soft);cursor:pointer}
+.control{display:inline-flex;align-items:center;gap:4px;min-height:40px;color:var(--ink-faint);font-size:12px;letter-spacing:.04em;white-space:nowrap}
+.bar select{appearance:none;height:36px;min-width:0;max-width:none;box-sizing:border-box;padding:0 18px 0 5px;border:0;background-color:transparent;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 8px) 16px,calc(100% - 4px) 16px;background-size:4px 4px;background-repeat:no-repeat;font:inherit;font-size:13px;letter-spacing:.03em;color:var(--ink-soft);cursor:pointer}
+#scene{width:122px}#view{width:116px}#brush-type{width:96px}#pigment{width:88px}#brush-size{width:72px}#paper-theme{width:76px}
 .bar select:hover{color:var(--ink)}
 .bar .primary{color:var(--ink);font-weight:600;display:inline-flex;align-items:center;gap:8px}
 .bar .primary::before{content:"";width:8px;height:8px;background:var(--cinnabar);border-radius:1px}
-.tools{display:flex;flex-wrap:wrap;justify-content:center}
-.tools button{display:inline-flex;align-items:center;gap:5px;background-image:linear-gradient(var(--ink),var(--ink))}
-.tools button[data-tool]::before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:var(--ink)}
-.tools button[data-tool="ink"]::before{background:var(--ink)}
-.tools button[data-tool="cinnabar"]{background-image:linear-gradient(var(--cinnabar),var(--cinnabar))}
-.tools button[data-tool="cinnabar"]::before{background:var(--cinnabar)}
-.tools button[data-tool="azurite"]{background-image:linear-gradient(var(--azurite),var(--azurite))}
-.tools button[data-tool="azurite"]::before{background:var(--azurite)}
-.tools button[data-tool="ochre"]{background-image:linear-gradient(var(--ochre),var(--ochre))}
-.tools button[data-tool="ochre"]::before{background:var(--ochre)}
-.tools button[data-tool="jade"]{background-image:linear-gradient(var(--jade),var(--jade))}
-.tools button[data-tool="jade"]::before{background:var(--jade)}
-.tools button[data-tool="water"]::before{background:transparent;border:1px solid var(--azurite)}
-.tools button[aria-checked="true"]{color:var(--ink);background-size:55% 2px}
-.tools button[data-size]::before{content:"";width:12px;height:var(--size-mark,2px);flex:none;background:var(--ink);border-radius:4px}
-.tools button[data-size="fine"]{--size-mark:1px}
-.tools button[data-size="thick"]{--size-mark:4px}
-.sizes button{min-width:34px;justify-content:center;padding:0 6px}
 .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
 #sound[aria-pressed="true"]{color:var(--ink)}
 
@@ -118,15 +101,11 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 @media (max-width:520px){
   .bar{row-gap:2px;padding:5px 7px}
   .bar button{font-size:13px;padding:0 3px;letter-spacing:.02em}
-  .tools{max-width:calc(100vw - 48px);gap:0}
-  .tools button{min-height:36px;gap:3px}
-  .tools button[data-tool]::before{width:7px;height:7px}
-  .tools button[data-size]::before{width:10px}
-  .sizes button{min-width:31px;padding:0 4px}
+  .control{gap:2px;font-size:11px}
+  .bar .control select{height:34px;padding-left:3px;font-size:12px}
   .sep{display:none}
-  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 210px)}
-  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);max-height:min(52vh,420px)}
-  .mast p{display:none}
+  .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 260px)}
+  .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 250px);max-height:min(48vh,380px)}
 }
 .fallback{position:fixed;inset:0;display:grid;place-items:center;padding:0 24px;text-align:center;font-size:16px;line-height:1.9;color:var(--ink-soft)}
 @media (prefers-reduced-motion: reduce){.poem .ch,.seal{transition-duration:.01s}}
@@ -135,47 +114,39 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 <body>
 
 <canvas id="c" aria-label="水墨画纸，按住拖动即可作画"></canvas>
+<canvas id="dry" aria-hidden="true"></canvas>
 
-<header class="mast"><h1>画与歌</h1><p>一张会呼吸的纸</p></header>
+<header class="mast"><h1>画与歌</h1></header>
 <div class="poem" id="poem" hidden></div>
 <div class="ghost" id="ghost"></div>
-<p class="hint" id="hint">选择场景后点「落笔」｜也可按住拖动作画｜慢则墨浓，快则笔枯</p>
+<p class="hint" id="hint">选择场景与视角后点「落笔」｜按住拖动作画｜慢则墨浓，快则笔枯</p>
 <p class="corner" id="corner"></p>
 
 <nav class="bar" aria-label="工具">
   <button id="paint" class="primary">落笔山水</button>
-  <select id="scene" aria-label="选择水墨场景">
-    <option value="landscape">山水</option>
-    <option value="ginkgo">银杏道</option>
-    <option value="library">图书馆</option>
-    <option value="sports">操场</option>
-    <option value="dormitory">学生宿舍</option>
-    <option value="garden">花园</option>
-    <option value="stream">溪畔行人</option>
-    <option value="birds">林间飞鸟</option>
-    <option value="carriage">街头马车</option>
-    <option value="kunming">昆明街景</option>
-  </select>
+  <label class="control"><span>场景</span><select id="scene" aria-label="选择水墨场景">
+    <option value="landscape">山水</option><option value="ginkgo">银杏道</option><option value="library">图书馆</option>
+    <option value="sports">操场</option><option value="dormitory">学生宿舍</option><option value="garden">花园</option>
+    <option value="stream">溪畔行人</option><option value="birds">林间飞鸟</option><option value="carriage">街头马车</option><option value="kunming">昆明街景</option>
+  </select></label>
+  <label class="control"><span>视角</span><select id="view" aria-label="选择绘画视角">
+    <option value="front">正面俯视</option><option value="overhead">45°俯视</option><option value="side">侧面视角</option>
+  </select></label>
   <span class="sep"></span>
-  <div class="tools pigments" role="radiogroup" aria-label="笔刷颜色与模式">
-    <button role="radio" aria-checked="true" data-tool="ink">浓墨</button>
-    <button role="radio" aria-checked="false" data-tool="cinnabar">朱砂</button>
-    <button role="radio" aria-checked="false" data-tool="azurite">蓝色</button>
-    <button role="radio" aria-checked="false" data-tool="ochre">黄色</button>
-    <button role="radio" aria-checked="false" data-tool="jade">绿色</button>
-    <button role="radio" aria-checked="false" data-tool="water">清水</button>
-  </div>
+  <label class="control"><span>笔</span><select id="brush-type" aria-label="选择笔型">
+    <option value="brush">毛笔</option><option value="pencil">硬笔</option><option value="hard">硬毛笔</option>
+  </select></label>
+  <label class="control"><span>色</span><select id="pigment" aria-label="选择笔刷颜色">
+    <option value="ink">浓墨</option><option value="cinnabar">朱砂</option><option value="azurite">蓝色</option>
+    <option value="ochre">黄色</option><option value="jade">绿色</option><option value="water">清水</option>
+  </select></label>
+  <label class="control"><span>粗细</span><select id="brush-size" aria-label="选择笔锋粗细">
+    <option value="fine">细</option><option value="medium" selected>中</option><option value="thick">粗</option>
+  </select></label>
   <span class="sep"></span>
-  <div class="tools sizes" role="radiogroup" aria-label="笔锋粗细">
-    <button role="radio" aria-checked="false" data-size="fine">细</button>
-    <button role="radio" aria-checked="true" data-size="medium">中</button>
-    <button role="radio" aria-checked="false" data-size="thick">粗</button>
-  </div>
-  <span class="sep"></span>
-  <div class="tools paper-modes" role="radiogroup" aria-label="画纸颜色">
-    <button role="radio" aria-checked="true" data-paper-theme="light">白色</button>
-    <button role="radio" aria-checked="false" data-paper-theme="dark">黑色</button>
-  </div>
+  <label class="control"><span>纸</span><select id="paper-theme" aria-label="选择画纸颜色">
+    <option value="light">白纸</option><option value="dark">黑纸</option>
+  </select></label>
   <span class="sep"></span>
   <button id="wash">洗纸</button>
   <button id="sound" aria-pressed="false">琴 · 静</button>
@@ -191,18 +162,23 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   <div class="pane" data-pane="kid">
     <p>这张纸是活的。</p>
     <p>你的手指一划过去，电脑就把屏幕分成五万多个小格子，每个格子都要算清楚：水往哪儿流，墨往哪儿散。一秒钟算六十遍，所以墨会像真的滴在纸上一样，慢慢晕开。</p>
+    <p>毛笔会洇墨，硬笔像铅笔一样干爽，硬毛笔只留一点点水墨痕。三种笔都能选细、中、粗。</p>
+    <p>每幅画还可以切换正面俯视、45°俯视或侧面视角。</p>
     <p class="try">试试看：先点「落笔山水」，等画好了，选「清水」，在画上用力搅一搅。</p>
   </div>
   <div class="pane" data-pane="arts" hidden>
-    <p>国画讲「墨分五色」：同一锭墨，水多水少，就分出焦、浓、重、淡、清。这支笔也是这样。刚蘸的墨是饱的，越写越干，写到后来自然露出「飞白」。走得慢，墨在纸上洇开；走得快，笔锋就细，就枯。</p>
+    <p>国画讲「墨分五色」：同一锭墨，水多水少，就分出焦、浓、重、淡、清。毛笔会洇墨、飞白；硬笔像铅笔，留在独立纸层上，不搅动水墨；硬毛笔少水、少扰动，只在边缘微微洇开。三种笔都可选细、中、粗。</p>
+    <p>诗句优先采用与场景相合的古典诗词；没有合适篇章时，再用原创短诗。</p>
     <p>琴声只用宫、商、角、徵、羽五个音。五声音阶里没有半音，任何两个音碰在一起都不刺耳，所以你怎么画都不会走调。约三成的音从下方滑上来，那是古琴的「上」。</p>
-    <p>「落笔山水」每次从远峰行舟、峡谷飞瀑、湖心亭影、近山听泉、层岭云村五种构图中随机择一，再逐笔皴染。松、柳、梅有不同树形，天象与远景会在日月、云鸟、舟亭村瀑间变化；横竖屏也会调整留白和景深。</p>
+    <p>每种场景都能切换正面俯视、45°俯视和侧面视角。「落笔」会按所选视角重新生成带种子的构图；山水新添绝壁松风构图，树种包括松、柏、柳、梅与灌木，人物增加僧人、渔夫、樵夫、商贩和孩童。诗句优先采用与场景相合的古典诗词。</p>
   </div>
   <div class="pane" data-pane="eng" hidden>
     <ul>
       <li><b>流体</b>：不可压缩 Navier–Stokes，全部在片元着色器里求解。每帧依次是旋度、涡量约束、散度、24 次 Jacobi 压力迭代、梯度相减投影，最后半拉格朗日平流。</li>
-      <li><b>洇墨</b>：RGBA 四通道分别存游离墨、带符号色素（朱砂/花青）、水分和带符号色素（赭黄/石绿）。四种颜色随纸纤维噪声扩散，水分按指数蒸发；笔刷可选浓墨、朱砂、蓝、黄、绿、清水和细中粗三档。</li>
+      <li><b>洇墨</b>：RGBA 四通道分别存游离墨、带符号色素（朱砂/花青）、水分和带符号色素（赭黄/石绿）。四种颜色随纸纤维噪声扩散，水分按指数蒸发；毛笔与低水量硬毛笔使用流体层，硬笔绘制在独立透明层。三种笔都支持细中粗。</li>
       <li><b>笔</b>：沿路径等距盖高斯印章，墨量按间距归一化。行笔速度决定笔径，墨量随行笔距离衰减；墨将尽时，沿笔触法向用一维噪声切出刷毛条纹，就是飞白。</li>
+      <li><b>视角</b>：每个带种子的场景都可选正面俯视、45°俯视或侧面；竖直物体保持竖直，45°视角压缩景深，侧面山水加入纵向河道。</li>
+      <li><b>人物与树木</b>：人物素材由本地脚本原创绘制，以淡墨衣纹、冠帽和随身物件区分身份；松、柏、垂柳、梅与灌木使用不同枝干结构。</li>
       <li><b>琴</b>：Karplus–Strong 拨弦物理模型，12 个音离线合成进 AudioBuffer；上滑与吟用 playbackRate 自动化实现；混响是程序生成的指数衰减脉冲响应。</li>
       <li><b>整页</b>：一个 HTML 文件和 media/figures 下的本地人物位图。无需运行时 JS 库、外链图片或录音文件。</li>
     </ul>
@@ -214,6 +190,8 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 (() => {
 'use strict';
 const canvas = document.getElementById('c');
+const dryCanvas = document.getElementById('dry');
+const dryCtx = dryCanvas.getContext('2d');
 const $ = id => document.getElementById(id);
 let paperTheme = 'light';
 try { if (localStorage.getItem('moyun-paper-theme') === 'dark') paperTheme = 'dark'; } catch (_) {}
@@ -292,7 +270,7 @@ void main(){
   vec2 uv=(vUv-(center-size*.5))/max(size,vec2(1e-5));
   float inside=step(0.,uv.x)*step(0.,uv.y)*step(uv.x,1.)*step(uv.y,1.);
   if(flipX>.5) uv.x=1.-uv.x;
-  float mask=texture(uFigure,clamp(uv,0.,1.)).a*inside;
+  float mask=pow(texture(uFigure,clamp(uv,0.,1.)).a,1.55)*inside;
   vec4 base=texture(uTarget,vUv);
   o=clamp(base+vec4(ink,cin,water,ochre)*mask,vec4(-4.),vec4(4.));
 }`,
@@ -428,7 +406,7 @@ try {
   P = {}; for (const k in FS) P[k] = mk(FS[k]);
 } catch (e) { console.error(e); fallback('着色器编译失败：' + e.message); return; }
 
-const FIGURE_NAMES = ['young_man','young_woman','elder_man','elder_woman','scholar','attendant','traveler','qin_player','boatman','horse_carriage'];
+const FIGURE_NAMES = ['young_man','young_woman','elder_man','elder_woman','scholar','attendant','traveler','qin_player','boatman','monk','child','woodcutter','fisherman','merchant','horse_carriage'];
 const figureTextures = new Map();
 let figuresReady = false, waitingForFigures = false;
 const figuresLoaded = Promise.all(FIGURE_NAMES.map(name => new Promise(resolve => {
@@ -514,6 +492,17 @@ function resize(){
   dpr = Math.min(window.devicePixelRatio || 1, 2);
   const w = Math.max(2, Math.round(canvas.clientWidth * dpr)), h = Math.max(2, Math.round(canvas.clientHeight * dpr));
   if (w !== canvas.width || h !== canvas.height) { canvas.width = w; canvas.height = h; initFBOs(); }
+  if (w !== dryCanvas.width || h !== dryCanvas.height) {
+    let previous = null;
+    if (dryCanvas.width && dryCanvas.height) {
+      previous = document.createElement('canvas');
+      previous.width = dryCanvas.width; previous.height = dryCanvas.height;
+      previous.getContext('2d').drawImage(dryCanvas, 0, 0);
+    }
+    dryCanvas.width = w; dryCanvas.height = h;
+    dryCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (previous) dryCtx.drawImage(previous, 0, 0, previous.width, previous.height, 0, 0, canvas.clientWidth, canvas.clientHeight);
+  }
 }
 const aspect = () => canvas.width / canvas.height;
 
@@ -546,7 +535,7 @@ new MutationObserver(readTheme).observe(document.documentElement, { attributes: 
 /* ───────── splats ───────── */
 const MAXS = 32, posA = new Float32Array(MAXS * 4), valA = new Float32Array(MAXS * 4), dirA = new Float32Array(MAXS * 4);
 const dyeQ = [], velQ = [];
-let hasInk = false;
+let hasInk = false, hasDryInk = false;
 const dab = (x, y, r, ink, cin, water, dry, hard = 0, dx = 1, dy = 0, seed = 0, ochre = 0) =>
   ({ x, y, r2: r * r, hard, a: ink, c: cin, w: water, dry, dx, dy, seed, ochre });
 const vsplat = (x, y, r2, fx, fy) => ({ x, y, r2, hard: 0, a: fx, c: fy, w: 0, dry: 0, dx: 1, dy: 0, seed: 0, ochre: 0 });
@@ -641,10 +630,14 @@ function clearDye(){
   const u = P.clear.use(); gl.uniform1f(u.value, 0);
   gl.uniform1i(u.uTexture, dye.read.bind(0)); blit(dye.write); dye.swap();
 }
+function clearDry(){
+  dryCtx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  hasDryInk = false;
+}
 function stampFigure(item){
   const sprite = figureTextures.get(item.figure);
   if (!sprite) return;
-  const height = item.h, width = height * sprite.width / sprite.height / aspect();
+  const height = item.h, width = height * sprite.width / sprite.height / aspect() * (item.scaleX || 1);
   const u = P.figure.use();
   gl.uniform1i(u.uTarget, dye.read.bind(0)); gl.uniform1i(u.uFigure, sprite.bind(1));
   gl.uniform2f(u.center, item.x, item.y + height * .5); gl.uniform2f(u.size, width, height);
@@ -714,7 +707,7 @@ function ensureAudio(){
 }
 function setSound(on){
   audio.on = !!on && !!audio.ctx;
-  if (audio.master) audio.master.gain.setTargetAtTime(audio.on ? .9 : 0, audio.ctx.currentTime, .05);
+  if (audio.master) audio.master.gain.setTargetAtTime(audio.on ? .45 : 0, audio.ctx.currentTime, .05);
   soundBtn.setAttribute('aria-pressed', audio.on ? 'true' : 'false');
   soundBtn.textContent = audio.on ? '琴 · 鸣' : '琴 · 静';
 }
@@ -828,32 +821,78 @@ function ghostTick(dt){
 function rng(seed){ let a = seed >>> 0; return () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
 const POEMS = [
-  ['一笔落空山', '云从墨里还', '无人知此意', '流水自潺潺'],
-  ['青山不说话', '白水自东西', '一棹归何处', '云深鸟亦迷'],
-  ['千峰藏一色', '万壑写无声', '偶落朱砂点', '人间日又生']
+  { lines: ['一笔落空山', '云从墨里还', '无人知此意', '流水自潺潺'], source: 'AI原创' },
+  { lines: ['青山不说话', '白水自东西', '一棹归何处', '云深鸟亦迷'], source: 'AI原创' },
+  { lines: ['千峰藏一色', '万壑写无声', '偶落朱砂点', '人间日又生'], source: 'AI原创' }
 ];
 const SCENE_POEMS = {
-  ginkgo: ['金叶铺长路', '书声出树梢', '行人秋色里', '一叶落肩头'],
-  library: ['窗含千卷静', '檐下过微风', '少年寻字句', '灯火到黄昏'],
-  sports: ['白线分新绿', '风从跑道生', '少年追一球', '云影过看台'],
-  dormitory: ['灯影连书页', '晚风入小楼', '归人穿树下', '月色落窗钩'],
-  garden: ['曲径藏花影', '竹露滴清池', '闲亭听风过', '一园自有诗'],
-  stream: ['石上清溪转', '行人过小桥', '云来山影动', '水去落花飘'],
-  birds: ['林深初见鸟', '枝静不惊人', '一羽穿云去', '松风满旧襟'],
-  carriage: ['马蹄穿巷过', '篷影映长街', '车中人未语', '风送晚钟来'],
-  kunming: ['春城街树暖', '花影落长街', '车声穿巷去', '云在远山开']
+  landscape: { lines: ['白日依山尽', '黄河入海流', '欲穷千里目', '更上一层楼'], source: '唐·王之涣《登鹳雀楼》' },
+  ginkgo: { lines: ['远上寒山石径斜', '白云生处有人家', '停车坐爱枫林晚', '霜叶红于二月花'], source: '唐·杜牧《山行》' },
+  library: { lines: ['三更灯火五更鸡', '正是男儿读书时', '黑发不知勤学早', '白首方悔读书迟'], source: '唐·颜真卿《劝学》' },
+  sports: { lines: ['白线分新绿', '风从跑道生', '少年追一球', '云影过看台'], source: 'AI原创' },
+  dormitory: { lines: ['床前明月光', '疑是地上霜', '举头望明月', '低头思故乡'], source: '唐·李白《静夜思》' },
+  garden: { lines: ['人间四月芳菲尽', '山寺桃花始盛开', '长恨春归无觅处', '不知转入此中来'], source: '唐·白居易《大林寺桃花》' },
+  stream: { lines: ['空山新雨后', '天气晚来秋', '明月松间照', '清泉石上流'], source: '唐·王维《山居秋暝》' },
+  birds: { lines: ['人闲桂花落', '夜静春山空', '月出惊山鸟', '时鸣春涧中'], source: '唐·王维《鸟鸣涧》' },
+  carriage: { lines: ['昔日龌龊不足夸', '今朝放荡思无涯', '春风得意马蹄疾', '一日看尽长安花'], source: '唐·孟郊《登科后》' },
+  kunming: { lines: ['春城无处不飞花', '寒食东风御柳斜', '日暮汉宫传蜡烛', '轻烟散入五侯家'], source: '唐·韩翃《寒食》' }
 };
 
-function buildLandscape(seed, scene = 'landscape'){
+function buildLandscape(seed, scene = 'landscape', camera = 'front'){
   const R = rng(seed), rr = (a, b) => a + (b - a) * R();
+  const cameraView = ['front', 'overhead', 'side'].includes(camera) ? camera : 'front';
   const A = aspect(), portrait = A < .85;
   const yb = portrait ? .1 : .085, ys = portrait ? .88 : .9, M = y => yb + y * ys;
   const wx = A < 1 ? Math.min(1.6, .75 / A) : 1;
   const W = d => d / A;
   const Q = [];
-  const S = (pts, o) => Q.push(Object.assign({ pts: pts.map(p => [p[0], M(p[1])]), speed: 1, r: .005, ink: 1, cin: 0, ochre: 0, water: .3, dry: 0, dryGrow: 0, fade: 0, hard: 0, seed: rr(0, 900), force: 0, after: .08, note: .09, vel: .45, kind: 'pluck' }, o));
-  const D = (x, y, o) => Q.push(Object.assign({ dot: true, x, y: M(y), r: .005, ink: 1, cin: 0, ochre: 0, water: .4, hard: 0, after: .03 }, o));
+  let cameraAnchorY = null;
+  const S = (pts, o) => Q.push(Object.assign({ pts: pts.map(p => [p[0], M(p[1])]), speed: 1, r: .005, ink: 1, cin: 0, ochre: 0, water: .3, dry: 0, dryGrow: 0, fade: 0, hard: 0, seed: rr(0, 900), force: 0, after: .08, note: .09, vel: .45, kind: 'pluck', cameraAnchorY }, o));
+  const D = (x, y, o) => Q.push(Object.assign({ dot: true, x, y: M(y), r: .005, ink: 1, cin: 0, ochre: 0, water: .4, hard: 0, after: .03, cameraAnchorY }, o));
   const F = (fn, after = 0) => Q.push({ fn, after });
+  function projectPoint(x, y, depth = y){
+    if (cameraView === 'overhead') {
+      const sx = .72 + .34 * (1 - Math.max(0, Math.min(1, depth)));
+      return { x: .5 + (x - .5) * sx, y: .16 + y * .66, sx, sy: .66 };
+    }
+    if (cameraView === 'side') {
+      return { x: .5 + (x - .5) * .66, y: .12 + y * .78, sx: .66, sy: .78 };
+    }
+    return { x, y, sx: 1, sy: 1 };
+  }
+  function finishScene(){
+    canvas.dataset.cameraView = cameraView;
+    canvas.dataset.generatedScene = scene;
+    const cliffScene = scene === 'landscape' && canvas.dataset.landscapeView === '绝壁松风';
+    for (const item of Q) {
+      if (cliffScene) {
+        if (item.pts) item.speed *= 5;
+        if (item.after) item.after *= .35;
+      }
+      if (cameraView !== 'front') {
+        if (item.pts) {
+          const centerY = item.pts.reduce((sum, point) => sum + point[1], 0) / item.pts.length;
+          // A single depth scale per stroke prevents vertical features from shearing.
+          const depth = item.cameraAnchorY ?? centerY, scale = projectPoint(.5, centerY, depth);
+          item.pts = item.pts.map(([x, y]) => {
+            const point = projectPoint(x, y, depth);
+            return [point.x, point.y];
+          });
+          item.r *= Math.sqrt(scale.sx * scale.sy);
+        } else if (item.dot) {
+          const point = projectPoint(item.x, item.y, item.cameraAnchorY ?? item.y);
+          item.x = point.x; item.y = point.y;
+          item.r *= Math.sqrt(point.sx * point.sy);
+        } else if (item.figure) {
+          const point = projectPoint(item.x, item.y, item.cameraAnchorY ?? item.y);
+          item.x = point.x; item.y = point.y;
+          item.h *= point.sy; item.scaleX = point.sx / point.sy;
+        }
+      }
+      delete item.cameraAnchorY;
+    }
+    return Q;
+  }
   const wave = () => { const k = [rr(0, 6.28), rr(0, 6.28), rr(0, 6.28)]; return x => Math.sin(x * 23 + k[0]) * .5 + Math.sin(x * 57 + k[1]) * .3 + Math.sin(x * 131 + k[2]) * .2; };
   const range = (peaks, base, nAmp) => { const n = wave(); return x => { let h = 0; for (const p of peaks) { const u = Math.abs(x - p.c) / (p.w * wx); h = Math.max(h, p.h * Math.exp(-Math.pow(u, 1.5))); } return base + h + nAmp * n(x) * Math.min(1, h / .05); }; };
   const runs = (f, base, x0, x1, dx, th) => {
@@ -865,6 +904,7 @@ function buildLandscape(seed, scene = 'landscape'){
 
   function mountain(f, base, o){
     const rs = runs(f, base, o.x0, o.x1, .006, .012); if (!rs.length) return;
+    const shadeBands = o.bands ?? 7;
     for (const run of rs) S(run, { r: .0042 * o.s, ink: 1.05 * o.ink, water: .25, dry: .05, dryGrow: .5, fade: .35, speed: .5, note: .085, vel: .5 });
     const pk = [];
     for (const run of rs) for (let i = 2; i < run.length - 2; i++) if (run[i][1] > run[i-1][1] && run[i][1] >= run[i+1][1] && run[i][1] - base > .06) pk.push(run[i]);
@@ -882,7 +922,7 @@ function buildLandscape(seed, scene = 'landscape'){
       for (let k = 1; k <= 3; k++) pts.push([x + W(side * L * k / 3 * .55 + rr(-.002, .002)), y - L * k / 3]);
       S(pts, { r: .0026 * o.s, ink: .6 * o.ink, water: .12, dry: .45, dryGrow: .3, speed: 1.3, note: .06, after: .015, vel: .35 });
     }
-    for (let j = 0; j < 7; j++) {
+    for (let j = 0; j < shadeBands; j++) {
       const off = .008 + j * .018, ij = .2 * o.ink * (1 - j / 7.5);
       for (const run of runs(x => f(x) - off, base, o.x0, o.x1, .02, .006))
         S(run.map(p => [p[0], p[1]]), { r: .02, ink: ij, water: .8, speed: 2.8, note: .3, after: .02, vel: .25 });
@@ -892,59 +932,103 @@ function buildLandscape(seed, scene = 'landscape'){
       D(q[0] + W(rr(-.004, .004)), q[1] + rr(-.002, .006), { r: rr(.003, .0055) * o.s, ink: rr(.9, 1.4) * o.ink, water: .3, after: .05 });
     }
   }
-  function tree(x, y, h, ink, form = pick(['pine','willow','plum'])){
-    const ph = rr(0, 6.28), sway = W(rr(.004, .013)), trunk = [];
-    for (let i = 0; i <= 12; i++) {
-      const t = i / 12;
-      trunk.push([x + Math.sin(t * 3 + ph) * sway * t, y + h * t]);
+  function tree(x, y, h, ink, form = pick(['pine','cypress','shrub','willow','plum'])){
+    const previousCameraAnchorY = cameraAnchorY;
+    cameraAnchorY = M(y);
+    const phase = rr(0, 6.28), wind = form === 'cliff-pine' ? (R() < .5 ? -1 : 1) : 0, sway = W(rr(.002, .008)), trunk = [];
+    for (let i = 0; i <= 14; i++) {
+      const t = i / 14;
+      const bend = wind ? W(wind * h * .13 * t * t) : 0;
+      trunk.push([x + bend + Math.sin(t * 2.7 + phase) * sway * t, y + h * t]);
     }
-    S(trunk, { r: .0048, ink: 1.1 * ink, water: .2, dry: .2, dryGrow: .5, fade: .3, speed: .55, note: .07, vel: .5 });
-    const tips = [trunk[12]];
-    if (form === 'pine') {
-      for (let tier = 0; tier < 5; tier++) {
-        const t = .3 + tier * .13, p = trunk[Math.round(t * 12)], span = h * (.34 - tier * .035);
+    S(trunk, { r: form === 'cliff-pine' ? .006 : .0042, ink: 1.1 * ink, water: .18, dry: .24, dryGrow: .35, fade: .24, speed: .6, note: .07, vel: .45 });
+    if (form === 'cliff-pine') for (const side of [-1,1])
+      S([[x,y],[x+W(side*h*.08),y-h*.018]], { r:.003,ink:1.05*ink,water:.12,dry:.35,speed:.8,note:.12 });
+    for (let mark = 2; mark < 12; mark += 3) {
+      const p = trunk[mark];
+      S([[p[0] - W(.004), p[1]], [p[0] + W(.004), p[1] + h*.012]], { r: .0013, ink: .42 * ink, water: .1, dry: .35, speed: 1.2, note: .14 });
+    }
+
+    if (form === 'cliff-pine') {
+      for (let tier = 0; tier < 6; tier++) {
+        const t = .23 + tier*.105, p = trunk[Math.round(t*14)], span = h*(.62-tier*.052);
+        const tip = [p[0]+W(wind*span),p[1]+h*.025];
+        S([[p[0],p[1]],[p[0]+W(wind*span*.32),p[1]+h*.07],[tip[0],tip[1]]], { r:.0036,ink:.98*ink,water:.12,dry:.28,speed:.78,note:.07 });
+        for (let cluster = 1; cluster <= 3; cluster++) {
+          const u=cluster/4,cx=p[0]+W(wind*span*u),cy=p[1]+h*.07*u;
+          S([[cx-W(wind*.028),cy-.004],[cx,cy+.006],[cx+W(wind*.035),cy]], { r:.0025,ink:.88*ink,water:.12,dry:.24,speed:1,note:.12 });
+          D(cx,cy,{r:rr(.006,.01),ink:.62*ink,water:.3,after:.01});
+        }
+        if(tier%2===0)S([[p[0],p[1]],[p[0]-W(wind*span*.2),p[1]+h*.035]], { r:.0025,ink:.78*ink,water:.12,dry:.3,speed:.9,note:.1 });
+      }
+    } else if (form === 'pine') {
+      for (let tier = 0; tier < 6; tier++) {
+        const t = .2 + tier * .12, p = trunk[Math.round(t * 14)], span = h * (.34 - tier * .034);
         for (const side of [-1, 1]) {
-          const tip = [p[0] + W(side * span), p[1] + h * .045];
-          S([[p[0],p[1]],[p[0]+W(side*span*.45),p[1]+h*.13],[tip[0],tip[1]]], { r: .003, ink: .92 * ink, water: .14, dry: .2, speed: .8, note: .07 });
-          for (let spray = 1; spray <= 4; spray++) {
-            const u = spray / 5, sx = p[0] + W(side * span * u), sy = p[1] + h * (.13 * u + .008);
-            S([[sx,sy],[sx+W(side*rr(.012,.022)),sy+h*rr(.018,.035)],[sx+W(side*rr(.022,.04)),sy+h*rr(.022,.042)]], { r: .0018, ink: .68 * ink, water: .12, dry: .35, speed: 1.3, note: .12 });
+          const tip = [p[0] + W(side * span), p[1] + h*.01];
+          S([[p[0],p[1]],[p[0]+W(side*span*.55),p[1]+h*.055],[tip[0],tip[1]]], { r: .0028, ink: .88 * ink, water: .12, dry: .25, speed: .85, note: .08 });
+          for (let needle = 1; needle <= 4; needle++) {
+            const u = needle / 5, nx = p[0] + W(side * span * u), ny = p[1] + h * (.055 * u);
+            S([[nx,ny],[nx+W(side*.012),ny-h*.012],[nx+W(side*.025),ny+h*.002]], { r: .0016, ink: .7 * ink, water: .08, dry: .38, speed: 1.4, note: .12 });
           }
-          tips.push(tip);
+          for (let cluster = 1; cluster <= 3; cluster++) {
+            const u = cluster / 4, cx = p[0] + W(side * span * u), cy = p[1] + h * (.055 * u);
+            D(cx,cy,{r:rr(.006,.009),ink:.58*ink,water:.42,after:.01});
+          }
+          D(tip[0],tip[1],{r:rr(.005,.008),ink:.42*ink,water:.48,after:.01});
+        }
+      }
+    } else if (form === 'cypress') {
+      for (let tier = 0; tier < 8; tier++) {
+        const t = .16 + tier * .095, p = trunk[Math.round(t * 14)], span = h * (.075 + .045 * Math.sin(t * Math.PI));
+        for (const side of [-1, 1]) {
+          const tip = [p[0] + W(side * span), p[1] + h*.025];
+          S([[p[0],p[1]],[p[0]+W(side*span*.6),p[1]+h*.04],[tip[0],tip[1]]], { r: .0024, ink: .8 * ink, water: .12, dry: .28, speed: .95, note: .08 });
+          S([[tip[0],tip[1]],[tip[0]+W(side*.014),tip[1]-h*.018]], { r: .0014, ink: .6 * ink, water: .08, dry: .42, speed: 1.4, note: .14 });
+          for (let cluster = 0; cluster < 3; cluster++) {
+            const u = .35 + cluster * .3, cx = p[0] + W(side * span * u), cy = p[1] + h*.035*u;
+            D(cx,cy,{r:rr(.006,.009),ink:.54*ink,water:.42,after:.01});
+          }
         }
       }
     } else if (form === 'willow') {
       for (let branch = 0; branch < 6; branch++) {
-        const t = .38 + branch * .09, p = trunk[Math.round(t * 12)], side = branch % 2 ? 1 : -1;
-        const length = rr(.09,.17) * (1.15 - t), ex = p[0] + W(side * length), ey = p[1] + h * rr(-.05,.035);
-        S([[p[0],p[1]],[p[0]+W(side*length*.55),p[1]+h*.08],[ex,ey]], { r: .0026, ink: .78 * ink, water: .17, speed: .85, note: .08 });
+        const t = .38 + branch * .085, p = trunk[Math.round(t * 14)], side = branch % 2 ? 1 : -1;
+        const length = rr(.09,.16) * (1.12 - t), ex = p[0] + W(side * length), ey = p[1] + h * .035;
+        S([[p[0],p[1]],[p[0]+W(side*length*.55),p[1]+h*.075],[ex,ey]], { r: .0025, ink: .76 * ink, water: .16, speed: .85, note: .08 });
         for (let strand = 0; strand < 3; strand++) {
-          const sx = ex + W((strand-1)*length*.2), sy = ey - h * rr(.1,.22), points = [[sx,ey]];
-          for (let step = 1; step <= 4; step++) points.push([sx+W(Math.sin(step+branch)*.008), ey+(sy-ey)*step/4]);
-          S(points, { r: .0018, ink: .65 * ink, water: .2, dry: .18, speed: 1, note: .1 });
-          D(sx,sy,{r:.0042,ink:.42*ink,water:.5,after:.01});
+          const sx = ex + W((strand-1)*length*.18), sy = ey - h * rr(.11,.23), points = [[sx,ey]];
+          for (let step = 1; step <= 5; step++) points.push([sx+W(Math.sin(step+branch)*.006), ey+(sy-ey)*step/5]);
+          S(points, { r: .0017, ink: .63 * ink, water: .17, dry: .2, speed: 1, note: .1 });
+          for (let leaf = 0; leaf < 4; leaf++) D(sx+W(rr(-.009,.009)), sy+rr(-.012,.012), { r: rr(.0025,.0045), ink: .42 * ink, water: .38, after: .01 });
         }
-        tips.push([ex,ey]);
+      }
+    } else if (form === 'shrub') {
+      for (let stem = 0; stem < 5; stem++) {
+        const sx = x + W((stem - 2) * .025), top = y + h * rr(.55,.78);
+        S([[sx,y],[sx+W(rr(-.02,.02)),y+h*.24],[sx+W(rr(-.045,.045)),top]], { r: .0022, ink: .72 * ink, water: .16, dry: .28, speed: .95, note: .1 });
+      }
+      for (let leaf = 0; leaf < 28; leaf++) {
+        const lx = x + W(rr(-.14,.14)), ly = y + h * rr(.48,.94);
+        D(lx,ly,{r:rr(.004,.009),ink:rr(.34,.72)*ink,water:.48,after:.015});
+        if (leaf % 2 === 0) S([[lx-W(.009),ly],[lx+W(.008),ly+rr(.006,.016)]], { r:.0014, ink:.38*ink, water:.12, dry:.25, speed:1.3, note:.2 });
       }
     } else {
       for (let branch = 0; branch < 5; branch++) {
-        const t = .35 + branch * .115, p = trunk[Math.round(t * 12)], side = branch % 2 ? 1 : -1;
-        const length = rr(.045,.105), pts = [[p[0],p[1]]];
-        for (let step = 1; step <= 5; step++) pts.push([p[0]+W(side*length*step/5)+W(Math.sin(step+ph)*.008),p[1]+h*.16*step/5]);
-        S(pts, { r: .0027, ink: .9 * ink, water: .14, dry: .3, speed: .9, note: .06 });
-        tips.push(pts[5]);
-      }
-      for (const tip of tips) for (let blossom = 0; blossom < 3; blossom++) {
-        D(tip[0]+W(rr(-.02,.02)),tip[1]+rr(-.015,.018),{r:rr(.0035,.006),ink:.03,cin:R()<.55?.34:0,ochre:R()<.55?0:.36,water:.3,after:.01});
-      }
-    }
-    if (form !== 'plum') for (const tip of tips) {
-      const count = Math.floor(rr(4, 8));
-      for (let mark = 0; mark < count; mark++) {
-        const angle = rr(0, 6.28), radius = rr(.004, .018);
-        D(tip[0]+W(Math.cos(angle)*radius),tip[1]+Math.sin(angle)*radius*.7,{r:rr(.0035,.006),ink:rr(.5,1.05)*ink,water:.48,after:.02});
+        const t = .3 + branch * .12, p = trunk[Math.round(t * 14)], side = branch % 2 ? 1 : -1;
+        const length = rr(.055,.12), pts = [[p[0],p[1]]];
+        for (let step = 1; step <= 5; step++) pts.push([p[0]+W(side*length*step/5)+W(Math.sin(step+phase)*.006),p[1]+h*.2*step/5]);
+        S(pts, { r:.0027, ink:.86*ink, water:.12, dry:.32, speed:.9, note:.07 });
+        for (const [tipX,tipY] of [pts[3],pts[5]]) {
+          for (let petal = 0; petal < 5; petal++) {
+            const angle = petal * Math.PI * 2 / 5, radius = rr(.004,.008);
+            D(tipX+W(Math.cos(angle)*radius),tipY+Math.sin(angle)*radius,{r:.0028,ink:.035,cin:R()<.65?.38:0,ochre:R()<.35?.34:0,water:.28,after:.01});
+          }
+          D(tipX,tipY,{r:.0022,ink:.3,ochre:.3,water:.15,after:.01});
+        }
       }
     }
+    cameraAnchorY = previousCameraAnchorY;
   }
 
   const quick = (pts, o = {}) => S(pts, Object.assign({ speed: 1.5, r: .0025, ink: .9, water: .22, note: .17, vel: .34, after: .015 }, o));
@@ -961,6 +1045,12 @@ function buildLandscape(seed, scene = 'landscape'){
       const inset = level * .09, rx = x + w * inset / 2, rw = w * (1 - inset);
       const ey = y + level * rise * .46, rh = rise * (level ? .64 : 1);
       const roof = [[rx-.018,ey],[rx-.006,ey+lift],[rx+rw*.14,ey+rh*.58],[rx+rw*.5,ey+rh],[rx+rw*.86,ey+rh*.58],[rx+rw+.006,ey+lift],[rx+rw+.018,ey]];
+      if (cameraView === 'overhead') {
+        // Extrude the roof profile along depth to reveal its isometric top plane.
+        const depth = Math.max(.022, rise*.62), shift = W(depth*.62), rear = roof.map(([px,py])=>[px+shift,py+depth]);
+        quick(rear, { r:.002,ink:(options.ink ?? .8)*.55,cin:-azurite*.4,water:.24,speed:1.4,note:.3 });
+        for (const edge of [0,3,6]) quick([roof[edge],rear[edge]], { r:.0017,ink:(options.ink ?? .8)*.62,cin:-azurite*.35,water:.18,speed:1.5,note:.3 });
+      }
       quick(roof, { r: .0032, ink: options.ink ?? 1, cin: -azurite, water: .16, speed: .95, note: .1 });
       quick(roof.map((p,i)=>[p[0],p[1]-(i===0||i===6?.01:.015)]), { r: .0018, ink: .62, cin: -azurite*.35, water: .13, speed: 1.35 });
       quick([[rx+rw*.46,ey+rh*.96],[rx+rw*.5,ey+rh*1.08],[rx+rw*.54,ey+rh*.96]], { r: .0018, ink: .72, water: .12, speed: 1.3 });
@@ -994,7 +1084,7 @@ function buildLandscape(seed, scene = 'landscape'){
     }
   }
   function person(x, y, h, stride = 1, role = 'scholar'){
-    Q.push({ figure: role, x, y: M(y), h: h * ys, flip: stride < 0, ink: .92, cin: 0, water: .72, ochre: 0, after: .045 });
+    Q.push({ figure: role, x, y: M(y), h: h * ys, flip: stride < 0, ink: .92, cin: 0, water: .42, ochre: 0, after: .045, cameraAnchorY: M(y) });
   }
   function ginkgoLeaf(x, y, r, red = false){
     const dx = Math.min(W(r), .075), shade = red ? { ink: .08, cin: .76, ochre: 0 } : { ink: .08, cin: 0, ochre: .76 };
@@ -1002,6 +1092,8 @@ function buildLandscape(seed, scene = 'landscape'){
     quick([[x,y],[x,y+r*.68]], { r: r*.07, ink: .3, cin: red ? .28 : 0, ochre: red ? 0 : .3, water: .1, speed: 2 });
   }
   function ginkgoTree(x, base, h){
+    const previousCameraAnchorY = cameraAnchorY;
+    cameraAnchorY = M(base);
     const top = base + h;
     quick([[x,base],[x+W(h*.015),base+h*.38],[x-W(h*.012),base+h*.72],[x,top]], { r: .0045, ink: 1.05, water: .2, dry: .18, speed: .8 });
     for (let b = 0; b < 5; b++) {
@@ -1010,17 +1102,56 @@ function buildLandscape(seed, scene = 'landscape'){
       for (let j = 0; j < 4; j++) ginkgoLeaf(endX + W((j-1.5)*h*.07), endY + h*((j%2)*.045), h*.075, R() < .42);
     }
     for (let j = 0; j < 5; j++) ginkgoLeaf(x + W((j-2)*h*.065), top - h*.015 + h*(j%2)*.025, h*.08, R() < .48);
+    cameraAnchorY = previousCameraAnchorY;
   }
   function bamboo(x, base, h, lean = 1){
+    const previousCameraAnchorY = cameraAnchorY;
+    cameraAnchorY = M(base);
     quick([[x,base],[x+W(lean*h*.025),base+h*.35],[x-W(lean*h*.018),base+h*.68],[x+W(lean*h*.012),base+h]], { r: .0032, ink: .8, water: .2, speed: .9 });
     for (let i = 1; i < 5; i++) {
       const y = base + h * i / 5, bx = x + W(lean*h*.01*Math.sin(i));
       quick([[bx-W(h*.012),y],[bx+W(h*.012),y]], { r: .0017, ink: .7, water: .12, speed: 1.8 });
       for (const side of [-1,1]) quick([[bx,y],[bx+W(side*h*.12),y+h*.08],[bx+W(side*h*.19),y+h*.13]], { r: .0018, ink: .66, water: .13, speed: 1.5 });
     }
+    cameraAnchorY = previousCameraAnchorY;
   }
   function bird(x, y, s = 1){
     quick([[x-W(.015*s),y],[x-W(.008*s),y+.005*s],[x,y-.002*s],[x+W(.008*s),y+.005*s],[x+W(.015*s),y]], { r: .0018*s, ink: 1.1, water: .1, speed: .45, note: .025, after: .08, kind: 'harm' });
+  }
+
+  function distantBackdrop(scene){
+    const farBase = rr(.53,.59), count = 4 + Math.floor(R()*3), peaks = [];
+    for (let i = 0; i < count; i++) peaks.push({ c: .04 + i*.92/Math.max(1,count-1) + rr(-.04,.04), h: rr(.065,.13), w: rr(.12,.22) });
+    const ridge = range(peaks, farBase, .004);
+    for (const run of runs(ridge, farBase, 0, 1, .012, .007))
+      S(run, { r: .0038, ink: .16, water: .82, speed: 1.3, note: .22, vel: .25 });
+    for (let band = 0; band < 3; band++) {
+      const offset = .016 + band*.024;
+      for (const run of runs(x => ridge(x)-offset, farBase, 0, 1, .025, .004))
+        S(run, { r: .018, ink: .075-band*.014, water: .86, speed: 2.7, note: .3, after: .02, vel: .2 });
+    }
+    const haze = [];
+    for (let x = .02; x <= .98; x += .04) haze.push([x, farBase+.025+Math.sin(x*12)*.004]);
+    S(haze, { r: .013, ink: .035, cin: -.025, water: .9, speed: 2.8, note: .3, vel: .18 });
+
+    if (['library','dormitory','carriage','kunming'].includes(scene)) {
+      for (let i = 0; i < 5; i++) {
+        const x = .04 + i*.19 + rr(-.015,.015), width = rr(.055,.09), height = rr(.035,.06), base = ridge(x)-.005;
+        quick([[x,base],[x,base+height*.58],[x+width*.5,base+height],[x+width,base+height*.58],[x+width,base]], { r: .0015, ink: .16, water: .62, speed: 1.7, note: .3 });
+        quick([[x+width*.24,base],[x+width*.24,base+height*.34],[x+width*.43,base+height*.34],[x+width*.43,base]], { r: .0011, ink: .12, water: .58, speed: 2, note: .3 });
+      }
+    } else {
+      for (const x of [.1,.88]) tree(x, ridge(x)-.008, rr(.09,.14), .2, 'pine');
+      for (let i = 0; i < 3; i++) bird(rr(.43,.7), rr(.73,.83), rr(.45,.65));
+    }
+    if (cameraView === 'overhead' && ['ginkgo','library','dormitory','garden','carriage','kunming'].includes(scene)) {
+      const center = .5 + rr(-.035,.035);
+      for (let row = 0; row < 4; row++) {
+        const t = row / 3, y = .09 + t*.16, half = .1 + t*.22, depth = .016 + t*.014;
+        quick([[center-half,y],[center-half*.48,y+depth],[center+half*.48,y+depth],[center+half,y]], { r:.0015,ink:.09,water:.34,dry:.38,speed:2,note:.3 });
+        quick([[center-half*.48,y+depth],[center,y+depth*1.55],[center+half*.48,y+depth]], { r:.0012,ink:.075,water:.32,dry:.4,speed:2,note:.3 });
+      }
+    }
   }
 
   function drawGinkgoSunset(){
@@ -1070,7 +1201,7 @@ function buildLandscape(seed, scene = 'landscape'){
     for(let i=0;i<treeCount;i++){
       const x=.05+i*.9/Math.max(1,treeCount-1)+rr(-.025,.025),base=roadTop+rr(.01,.045),height=rr(.23,.4);
       ginkgoTree(Math.max(.035,Math.min(.965,x)),base,height);
-      if(R()<.4)tree(Math.max(.03,Math.min(.97,x+rr(-.045,.045))),base, height*rr(.7,.95),.38,pick(['pine','willow']));
+      if(R()<.4)tree(Math.max(.03,Math.min(.97,x+rr(-.045,.045))),base, height*rr(.7,.95),.38,pick(['pine','cypress','willow']));
     }
     if(view===1){
       tree(.025,roadBottom+rr(.02,.05),rr(.23,.31),.55,'willow');
@@ -1080,7 +1211,7 @@ function buildLandscape(seed, scene = 'landscape'){
     }
     const walkerCount=2+Math.floor(R()*4);
     for(let i=0;i<walkerCount;i++){
-      const x=.17+i*.66/Math.max(1,walkerCount-1)+rr(-.035,.035),role=pick(['young_man','young_woman','elder_man','elder_woman','traveler']);
+      const x=.17+i*.66/Math.max(1,walkerCount-1)+rr(-.035,.035),role=pick(['young_man','young_woman','elder_man','elder_woman','traveler','child','merchant']);
       person(x,roadBottom+rr(.005,.025),rr(.085,.14),R()<.5?-1:1,role);
     }
     for(let leaf=0;leaf<15+Math.floor(R()*12);leaf++)ginkgoLeaf(rr(.08,.92),rr(.16,.59),rr(.009,.02),R()<.34);
@@ -1109,6 +1240,7 @@ function buildLandscape(seed, scene = 'landscape'){
     person(vanishingX+rr(-.035,.035),.1,.17,1,'young_man');
     person(vanishingX+rr(-.12,.12),.23,.1,-1,'young_woman');
     if (R() < .7) person(vanishingX+rr(-.2,.2),.32,.075,1,'elder_man');
+    if (R() < .55) person(vanishingX+rr(-.24,.24),.36,.08,R()<.5?-1:1,'child');
     quick([[.22,.11],[.29,.12],[.36,.13]], { r: .002, ink: .4, water: .1, dry: .5, speed: 2 });
   }
   function drawLibrary(){
@@ -1136,10 +1268,10 @@ function buildLandscape(seed, scene = 'landscape'){
     line([[.45,.527],[.55,.527]], { r: .0015, ink: .24, ochre: .38, water: .1, speed: 1.6 });
     stoneSteps(X(.5),Y(.285),.32*sx,layout===0?3:4);
     for (let i = 0; i < 4; i++) line([[.32+i*.12,.22],[.44+i*.04,.17]], { r: .0018, ink: .42, water: .14, speed: 1.7 });
-    tree(X(rr(.04,.12)),Y(.2),.26*sy,.55,pick(['willow','plum']));
-    tree(X(rr(.88,.96)),Y(.2),.28*sy,.55,pick(['pine','plum']));
-    const visitors = layout===2 ? 3 : 2;
-    for(let i=0;i<visitors;i++) person(X(.36+i*(.28/Math.max(1,visitors-1))+rr(-.025,.025)),.1+rr(.015,.045),rr(.105,.145),i%2?'1':-1,i===0?'scholar':pick(['attendant','young_man','elder_man']));
+    tree(X(rr(.04,.12)),Y(.2),.26*sy,.55,pick(['willow','plum','shrub']));
+    tree(X(rr(.88,.96)),Y(.2),.28*sy,.55,pick(['pine','cypress','plum']));
+    const visitors = layout===2 ? 4 : 3;
+    for(let i=0;i<visitors;i++) person(X(.2+i*(.6/Math.max(1,visitors-1))+rr(-.025,.025)),.1+rr(.015,.045),rr(.095,.135),i%2?1:-1,i===0?'scholar':pick(['attendant','young_man','young_woman','elder_man','child']));
     line([[.1,.11],[.9,.11]], { r: .0025, ink: .48, water: .2, speed: 1.5 });
     if(layout===1) for(let i=0;i<4;i++) D(X(rr(.18,.82)),Y(rr(.14,.2)),{r:.004,ink:.35,water:.3,after:.01});
   }
@@ -1165,7 +1297,7 @@ function buildLandscape(seed, scene = 'landscape'){
     }
     const players=2+Math.floor(R()*3), spread=rr(.08,.14);
     for(let i=0;i<players;i++){
-      const role=i%2?'young_woman':'young_man', side=i%2?1:-1;
+      const role=pick(['young_woman','young_man','child']), side=i%2?1:-1;
       person(cx+rr(-spread,spread),cy+rr(-.07,.05),rr(.075,.115),side,role);
     }
     oval(cx+rr(-.025,.025),cy+rr(-.025,.025),.012,.012,{r:.002,ink:.08,ochre:.48,water:.1,speed:.5});
@@ -1199,9 +1331,10 @@ function buildLandscape(seed, scene = 'landscape'){
       quick([[x,y],[x+W(.018),y+.01],[x+W(.035),y]],{r:.0016,ink:.12,ochre:.3,cin:R()<.35?.22:0,water:.14,speed:1.5});
     }
     quick([[courtX,.1],[courtX,.19]], { r: .002, ink: .08, ochre: .34, water: .13, speed: 1.3 });
-    tree(.04+rr(0,.035),.18,.24,.5,pick(['willow','plum'])); tree(.93-rr(0,.035),.18,.27,.5,pick(['pine','plum']));
+    tree(.04+rr(0,.035),.18,.24,.5,pick(['willow','plum','shrub'])); tree(.93-rr(0,.035),.18,.27,.5,pick(['pine','cypress','plum']));
     person(courtX+rr(-.13,-.06),.1,rr(.13,.17),-1,'young_man');
     person(courtX+rr(.06,.14),.1,rr(.13,.17),1,'young_woman');
+    if(R()<.55)person(courtX+rr(-.2,.2),.1,.09,R()<.5?-1:1,'child');
     stoneSteps(courtX,.18,.12+layout*.02,3);
   }
   function drawGarden(){
@@ -1210,8 +1343,8 @@ function buildLandscape(seed, scene = 'landscape'){
     const X=x=>center+(x-.5)*spread,Y=y=>base+(y-.3)*height;
     const line=(points,options)=>quick(points.map(([x,y])=>[X(x),Y(y)]),options);
     const treeLeft=rr(.08,.19),treeRight=rr(.81,.93);
-    tree(treeLeft,.16,rr(.38,.5),.72,pick(['willow','plum','pine']));
-    tree(treeRight,.15,rr(.34,.46),.58,pick(['pine','plum','willow']));
+    tree(treeLeft,.16,rr(.38,.5),.72,pick(['willow','plum','pine','shrub']));
+    tree(treeRight,.15,rr(.34,.46),.58,pick(['pine','cypress','plum','willow']));
     bamboo(rr(.72,.82),.16,rr(.34,.44),-1); bamboo(rr(.06,.14),.16,rr(.3,.4),1);
 
     if(layout===1){
@@ -1243,6 +1376,8 @@ function buildLandscape(seed, scene = 'landscape'){
     for(let i=0;i<4;i++)line([[.16+i*.18,.08],[.27+i*.13,.1]],{r:.0018,ink:.42,water:.12,dry:.5,speed:1.8});
     person(center+rr(-.13,-.04),.1,rr(.11,.14),-1,layout===2?'elder_woman':'qin_player');
     if(R()<.7)person(center+rr(.05,.14),.1,rr(.11,.14),1,'elder_man');
+    if(R()<.45)person(center+rr(-.18,.18),.1,.085,R()<.5?-1:1,'child');
+    if(layout===2&&R()<.4)person(center+rr(-.2,.2),.1,.12,R()<.5?-1:1,'monk');
   }
   function drawStream(){
     const layout=Math.floor(R()*3),shift=rr(-.05,.05);
@@ -1253,8 +1388,18 @@ function buildLandscape(seed, scene = 'landscape'){
       {left:[[.24,.9],[.37,.78],[.31,.65],[.43,.52],[.39,.36],[.53,.2],[.44,.08]],right:[[.67,.9],[.58,.78],[.69,.65],[.57,.52],[.66,.36],[.55,.2],[.7,.08]]}
     ][layout];
     const offset=points=>points.map(([x,y])=>[Math.max(.02,Math.min(.98,x+shift)),y]);
-    quick(offset(routes.left),{r:.004,ink:.68,water:.35,speed:1.05});
-    quick(offset(routes.right),{r:.004,ink:.68,water:.35,speed:1.05});
+    if(cameraView==='side'){
+      const left=[],right=[];
+      for(let step=0;step<=28;step++){
+        const t=step/28,y=.91-t*.83,cx=.5+shift+Math.sin(t*5.1+layout)*(.04+.07*t),width=.075+.035*t;
+        left.push([cx-width,y]);right.push([cx+width,y]);
+      }
+      quick(left,{r:.004,ink:.68,water:.35,speed:1.05});
+      quick(right,{r:.004,ink:.68,water:.35,speed:1.05});
+    }else{
+      quick(offset(routes.left),{r:.004,ink:.68,water:.35,speed:1.05});
+      quick(offset(routes.right),{r:.004,ink:.68,water:.35,speed:1.05});
+    }
     const rippleCount=6+Math.floor(R()*7),streamCenter=.5+shift*.5;
     for (let i = 0; i < rippleCount; i++) {
       const y = .12 + i*(.72/rippleCount)+rr(-.018,.018), cx = streamCenter + Math.sin(i*1.7+shift*10)*.045, span = .045 + R()*.07;
@@ -1273,11 +1418,12 @@ function buildLandscape(seed, scene = 'landscape'){
       const side=i%2?-1:1,x=streamCenter+W(side*rr(.15,.32)),y=rr(.12,.42);
       oval(x,y,rr(.018,.042),rr(.01,.024),{r:.0025,ink:.68,water:.2,speed:1.7});
     }
-    tree(rr(.03,.17),.2,rr(.3,.43),.55,pick(['willow','pine','plum']));
+    tree(rr(.03,.17),.2,rr(.3,.43),.55,pick(['willow','pine','cypress','shrub','plum']));
     bamboo(rr(.83,.96),.12,rr(.38,.52),R()<.5?-1:1);
     const personY=rr(.13,.24);
     person(streamCenter+W(rr(-.31,-.16)),personY,rr(.12,.17),1,'elder_man');
-    if(R()<.8)person(streamCenter+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman']));
+    if(R()<.8)person(streamCenter+W(rr(.16,.31)),personY+rr(.02,.08),rr(.1,.14),-1,pick(['traveler','young_man','young_woman','fisherman','woodcutter']));
+    if(R()<.45)person(streamCenter+W(rr(-.08,.08)),personY+rr(.06,.12),rr(.075,.1),R()<.5?-1:1,'child');
     for (let i = 0; i < 4+Math.floor(R()*4); i++) {
       const x=rr(.025,.16),y=rr(.12,.37);
       quick([[x,y],[x+W(rr(.008,.035)),y+rr(.06,.12)]], { r:.002,ink:.62,water:.2,speed:1.2 });
@@ -1293,7 +1439,7 @@ function buildLandscape(seed, scene = 'landscape'){
     for(let i=0;i<treeCount;i++){
       const t=treeCount===1?.5:i/(treeCount-1),x=layout===1?rr(.05,.95):.08+t*.84+rr(-.035,.035);
       const base=.08+rr(0,.07),height=rr(.4,.58)*(layout===2?.88+.25*t:1);
-      tree(x,base,height,rr(.34,.55),pick(['pine','willow','plum']));treeXs.push(x);
+      tree(x,base,height,rr(.34,.55),pick(['pine','cypress','willow','plum','shrub']));treeXs.push(x);
       const accents=1+Math.floor(R()*3);
       for(let mark=0;mark<accents;mark++)D(x+W(rr(-.04,.04)),base+height*rr(.45,.86),{r:rr(.004,.008),ink:.04,ochre:.3,water:.28,after:.01});
       if(R()<.55)D(x+W(rr(-.06,.06)),base+height*rr(.48,.8),{r:.005,ink:.03,cin:-.34,water:.22,after:.01});
@@ -1307,7 +1453,8 @@ function buildLandscape(seed, scene = 'landscape'){
       bird(x,y,rr(.6,1.35));
     }
     person(treeXs[0]+W(.045),.1,.13,-1,'scholar');
-    if(layout!==0)person(treeXs[treeXs.length-1]-W(.045),.1,.12,1,'attendant');
+    if(layout!==0)person(treeXs[treeXs.length-1]-W(.045),.1,.12,1,pick(['attendant','woodcutter','child']));
+    if(R()<.45)person(treeXs[Math.floor(treeXs.length/2)],.1,.09,R()<.5?-1:1,'child');
     const branchCount=5+Math.floor(R()*6);
     for(let i=0;i<branchCount;i++){
       const x=rr(.08,.9),y=rr(.07,.18),length=rr(.035,.09),direction=R()<.5?-1:1;
@@ -1315,7 +1462,7 @@ function buildLandscape(seed, scene = 'landscape'){
     }
   }
   function horseCarriage(x, base, h){
-    Q.push({ figure: 'horse_carriage', x, y: M(base), h: h * ys, flip: true, ink: .82, cin: .08, water: .7, ochre: .14, after: .06 });
+    Q.push({ figure: 'horse_carriage', x, y: M(base), h: h * ys, flip: true, ink: .82, cin: .08, water: .52, ochre: .14, after: .06, cameraAnchorY: M(base) });
   }
   function drawCarriage(){
     const layout=Math.floor(R()*3),vanish=rr(.43,.59),nearY=rr(.34,.48),horseX=rr(.43,.68),horseSize=rr(.17,.22);
@@ -1349,7 +1496,7 @@ function buildLandscape(seed, scene = 'landscape'){
     quick([[.92,.2],[vanish+alleyWidth*.5,.31]],{r:.002,ink:.38,water:.14,speed:1.7});
     horseCarriage(horseX,.1,horseSize);
     person(horseX+W(-.16),.12,rr(.1,.14),1,'traveler');
-    if(layout!==2)person(rr(.75,.9),.13,rr(.09,.13),-1,'young_woman');
+    if(layout!==2)person(rr(.75,.9),.13,rr(.09,.13),-1,pick(['young_woman','merchant','child']));
     if(R()<.55)person(vanish+rr(-.035,.035),.31,.075,1,'attendant');
   }
   function drawKunming(){
@@ -1384,7 +1531,7 @@ function buildLandscape(seed, scene = 'landscape'){
     quick([[.03,streetY],[.97,streetY]],{r:.0022,ink:.44,water:.15,speed:1.6});
     for(let i=0;i<3+Math.floor(R()*3);i++){
       const x=houseXs[i%houseXs.length]+rr(-.045,.045);
-      tree(Math.max(.035,Math.min(.965,x)),.14+rr(-.025,.025),rr(.2,.33),rr(.28,.46),pick(['willow','plum','pine']));
+      tree(Math.max(.035,Math.min(.965,x)),.14+rr(-.025,.025),rr(.2,.33),rr(.28,.46),pick(['willow','plum','pine','cypress','shrub']));
       const blossomCount=4+Math.floor(R()*7);
       for(let j=0;j<blossomCount;j++){
         const red=R()<.5;
@@ -1396,23 +1543,26 @@ function buildLandscape(seed, scene = 'landscape'){
     const carriageX=portrait?rr(.45,.55):rr(.5,.72);
     horseCarriage(carriageX,.08+rr(0,.035),rr(.15,.2));
     person(Math.max(.08,carriageX-W(.22)),.1,rr(.11,.15),-1,pick(['elder_man','traveler']));
-    person(Math.min(.92,carriageX+W(.24)),.1,rr(.11,.15),1,pick(['young_woman','attendant']));
+    person(Math.min(.92,carriageX+W(.24)),.1,rr(.11,.15),1,pick(['young_woman','attendant','merchant']));
+    if(R()<.55)person(carriageX+W(rr(-.32,.32)),.1,.09,R()<.5?-1:1,'merchant');
   }
 
   const sceneBuilders = { ginkgo: drawGinkgo, library: drawLibrary, sports: drawSports, dormitory: drawDormitory, garden: drawGarden, stream: drawStream, birds: drawBirds, carriage: drawCarriage, kunming: drawKunming };
   if (sceneBuilders[scene]) {
+    distantBackdrop(scene);
     sceneBuilders[scene]();
     F(() => showPoem(SCENE_POEMS[scene]), 3.6);
     F(() => stampSeal(), .4);
-    return Q;
+    return finishScene();
   }
 
   const landscapeViews = [
-    { name: '远峰行舟', farBase: [.36,.4], farPeaks: [[.08,.1,.1],[.3,.14,.12],[.63,.09,.09],[.9,.12,.13]], mainBase: [.29,.32], mainPeaks: [[.34,.43,.11],[.46,.25,.08],[.22,.18,.09]], mainX: [0,.78], secondBase: [.26,.29], secondPeaks: [[.72,.23,.08],[.83,.13,.06]], secondX: [.45,1], bankBase: [.07,.1], bankPeaks: [[.11,.08,.15],[.3,.04,.06]], bankX: [0,.46], water: [.09,.25], trees: [[.06,.21,'pine',1],[.16,.17,'willow',.7]], feature: 'boat', mist: 2 },
-    { name: '峡谷飞瀑', farBase: [.42,.47], farPeaks: [[.05,.13,.1],[.28,.12,.1],[.52,.1,.12],[.75,.13,.1],[.98,.1,.08]], mainBase: [.16,.2], mainPeaks: [[.12,.6,.17],[.3,.35,.13]], mainX: [0,.48], secondBase: [.16,.21], secondPeaks: [[.85,.58,.17],[.68,.34,.12]], secondX: [.54,1], bankBase: [.03,.07], bankPeaks: [[.05,.1,.14],[.95,.08,.12]], bankX: [0,1], water: [.1,.29], trees: [[.045,.27,'pine',1],[.95,.23,'plum',.82]], feature: 'waterfall', mist: 3 },
+    { name: '远峰行舟', farBase: [.36,.4], farPeaks: [[.08,.1,.1],[.3,.14,.12],[.63,.09,.09],[.9,.12,.13]], mainBase: [.29,.32], mainPeaks: [[.34,.43,.11],[.46,.25,.08],[.22,.18,.09]], mainX: [0,.78], secondBase: [.26,.29], secondPeaks: [[.72,.23,.08],[.83,.13,.06]], secondX: [.45,1], bankBase: [.07,.1], bankPeaks: [[.11,.08,.15],[.3,.04,.06]], bankX: [0,.46], water: [.09,.25], trees: [[.06,.21,'pine',1],[.16,.17,'cypress',.7]], feature: 'boat', mist: 2 },
+    { name: '峡谷飞瀑', farBase: [.42,.47], farPeaks: [[.05,.13,.1],[.28,.12,.1],[.52,.1,.12],[.75,.13,.1],[.98,.1,.08]], mainBase: [.16,.2], mainPeaks: [[.12,.6,.17],[.3,.35,.13]], mainX: [0,.48], secondBase: [.16,.21], secondPeaks: [[.85,.58,.17],[.68,.34,.12]], secondX: [.54,1], bankBase: [.03,.07], bankPeaks: [[.05,.1,.14],[.95,.08,.12]], bankX: [0,1], water: [.1,.29], trees: [[.045,.27,'pine',1],[.95,.23,'shrub',.82]], feature: 'waterfall', mist: 3 },
     { name: '湖心亭影', farBase: [.46,.5], farPeaks: [[.08,.08,.12],[.32,.12,.13],[.68,.1,.12],[.92,.08,.12]], mainBase: [.28,.32], mainPeaks: [[.15,.28,.18],[.39,.23,.14]], mainX: [0,.55], secondBase: [.3,.34], secondPeaks: [[.8,.31,.18],[.94,.17,.08]], secondX: [.52,1], bankBase: [.025,.055], bankPeaks: [[.08,.035,.16],[.9,.055,.16]], bankX: [0,1], water: [.04,.21], trees: [[.08,.18,'willow',.8],[.9,.18,'plum',.8]], feature: 'pavilion', mist: 3 },
-    { name: '近山听泉', farBase: [.4,.45], farPeaks: [[.08,.11,.1],[.33,.09,.1],[.63,.13,.13],[.92,.1,.1]], mainBase: [.16,.2], mainPeaks: [[.09,.67,.18],[.31,.36,.13]], mainX: [0,.48], secondBase: [.22,.26], secondPeaks: [[.8,.48,.16],[.67,.28,.1]], secondX: [.54,1], bankBase: [.04,.07], bankPeaks: [[.09,.12,.17],[.91,.08,.12]], bankX: [0,1], water: [.08,.23], trees: [[.03,.3,'plum',1],[.92,.2,'pine',.8]], feature: 'waterfall', mist: 1 },
-    { name: '层岭云村', farBase: [.35,.39], farPeaks: [[.03,.1,.08],[.2,.14,.1],[.4,.09,.09],[.59,.13,.1],[.8,.1,.09],[.98,.12,.08]], mainBase: [.28,.32], mainPeaks: [[.16,.24,.11],[.36,.33,.12],[.56,.27,.1],[.79,.35,.13]], mainX: [0,1], secondBase: [.25,.29], secondPeaks: [[.1,.14,.1],[.48,.16,.12],[.89,.17,.11]], secondX: [0,1], bankBase: [.08,.12], bankPeaks: [[.1,.08,.12],[.42,.07,.14],[.87,.1,.15]], bankX: [0,1], water: [.08,.22], trees: [[.09,.14,'pine',.8],[.38,.12,'willow',.7],[.85,.16,'plum',.8]], feature: 'village', mist: 2 }
+    { name: '近山听泉', farBase: [.4,.45], farPeaks: [[.08,.11,.1],[.33,.09,.1],[.63,.13,.13],[.92,.1,.1]], mainBase: [.16,.2], mainPeaks: [[.09,.67,.18],[.31,.36,.13]], mainX: [0,.48], secondBase: [.22,.26], secondPeaks: [[.8,.48,.16],[.67,.28,.1]], secondX: [.54,1], bankBase: [.04,.07], bankPeaks: [[.09,.12,.17],[.91,.08,.12]], bankX: [0,1], water: [.08,.23], trees: [[.03,.3,'plum',1],[.92,.2,'cypress',.8]], feature: 'waterfall', mist: 1 },
+    { name: '层岭云村', farBase: [.35,.39], farPeaks: [[.03,.1,.08],[.2,.14,.1],[.4,.09,.09],[.59,.13,.1],[.8,.1,.09],[.98,.12,.08]], mainBase: [.28,.32], mainPeaks: [[.16,.24,.11],[.36,.33,.12],[.56,.27,.1],[.79,.35,.13]], mainX: [0,1], secondBase: [.25,.29], secondPeaks: [[.1,.14,.1],[.48,.16,.12],[.89,.17,.11]], secondX: [0,1], bankBase: [.08,.12], bankPeaks: [[.1,.08,.12],[.42,.07,.14],[.87,.1,.15]], bankX: [0,1], water: [.08,.22], trees: [[.09,.14,'pine',.8],[.38,.12,'willow',.7],[.85,.16,'shrub',.8]], feature: 'village', mist: 2 },
+    { name: '绝壁松风', farBase: [.48,.54], farPeaks: [[.04,.08,.1],[.26,.1,.13],[.49,.08,.12],[.73,.1,.13],[.96,.08,.1]], mainBase: [.16,.21], mainPeaks: [[.84,.64,.15],[.68,.3,.12]], mainX: [.42,1], secondBase: [.25,.31], secondPeaks: [[.12,.19,.15],[.34,.15,.13],[.49,.1,.1]], secondX: [0,.7], bankBase: [.045,.065], bankPeaks: [[.84,.56,.11],[.68,.3,.13],[.97,.18,.08]], bankX: [.48,1], water: [.035,.14], trees: [[.72,.28,'cliff-pine',1.05],[.63,.16,'pine',.82],[.52,.1,'shrub',.55]], feature: 'cliff', mist: 3, cliff: true }
   ];
   const view = pick(landscapeViews), jitterPeaks = peaks => peaks.map(([c,h,w]) => ({ c: c + rr(-.025,.025), h: h * rr(.88,1.12), w: w * rr(.9,1.1) }));
   canvas.dataset.landscapeView = view.name;
@@ -1420,16 +1570,42 @@ function buildLandscape(seed, scene = 'landscape'){
   // Distant ridges stay pale; each view changes their height and spacing.
   const farBase = rr(...view.farBase), far = range(jitterPeaks(view.farPeaks), farBase, .006);
   for (const run of runs(far, farBase, 0, 1, .008, .008)) S(run, { r: .0045, ink: .22, water: .8, speed: .9, note: .14, vel: .35 });
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < (view.cliff ? 3 : 5); j++) {
     const off = .01 + j * .02, ij = .12 * (1 - j / 5.5);
     for (const run of runs(x => far(x) - off, farBase, 0, 1, .02, .004)) S(run, { r: .022, ink: ij, water: .75, speed: 3, note: .3, after: .02, vel: .22 });
   }
-  const mainBase = rr(...view.mainBase), main = range(jitterPeaks(view.mainPeaks), mainBase, .012);
-  mountain(main, mainBase, { ink: 1, s: 1, cun: 26, moss: 14, folds: 5, x0: view.mainX[0], x1: view.mainX[1] });
-  const secondBase = rr(...view.secondBase), second = range(jitterPeaks(view.secondPeaks), secondBase, .01);
-  mountain(second, secondBase, { ink: .7, s: .9, cun: 14, moss: 8, folds: 3, x0: view.secondX[0], x1: view.secondX[1] });
-  const bankBase = rr(...view.bankBase), bank = range(jitterPeaks(view.bankPeaks), bankBase, .006);
-  mountain(bank, bankBase, { ink: 1, s: 1.1, cun: 10, moss: 6, folds: 2, x0: view.bankX[0], x1: view.bankX[1] });
+  let bank;
+  if (view.cliff) {
+    const cliffLine = [[.48,.08],[.55,.16],[.62,.3],[.68,.45],[.72,.58],[.78,.72],[.84,.84],[.92,.88],[.98,.9],[1,.88]];
+    bank = x => {
+      for (let i = 1; i < cliffLine.length; i++) if (x <= cliffLine[i][0]) {
+        const a = cliffLine[i-1], b = cliffLine[i], t = (x-a[0])/(b[0]-a[0]);
+        return a[1]+(b[1]-a[1])*t;
+      }
+      return cliffLine[cliffLine.length-1][1];
+    };
+    S(cliffLine,{r:.008,ink:1.08,water:.23,dry:.08,speed:.48,note:.07});
+    const leftBase=.15,leftRange=range([{c:.13,h:.2,w:.19},{c:.36,h:.25,w:.17}],leftBase,.008);
+    mountain(leftRange,leftBase,{ink:.78,s:.85,cun:5,moss:3,folds:2,bands:2,x0:0,x1:.53});
+    for(let band=0;band<4;band++){
+      const points=[];
+      for(let x=.51;x<=.99;x+=.025){const y=bank(x)-.025-band*.033;if(y>.07)points.push([x,y+Math.sin(x*18+band)*.004]);}
+      if(points.length>2)S(points,{r:.017,ink:.11-band*.018,water:.76,speed:2.7,note:.28,after:.02,vel:.2});
+    }
+    for(let facet=0;facet<12;facet++){
+      const x=rr(.69,.96),top=bank(x),drop=rr(.025,Math.max(.03,(top-.045)*.72));
+      const y=top-drop,slope=(bank(Math.min(.99,x+.01))-bank(Math.max(.01,x-.01)))/.02,side=slope>0?-1:1,length=rr(.02,.055);
+      S([[x,y],[x+W(side*length*.35),y-length*.35],[x+W(side*length),y-length]],{r:rr(.0022,.004),ink:rr(.38,.78),water:.12,dry:.62,speed:1.25,note:.15,after:.02});
+    }
+  } else {
+    const mainBase = rr(...view.mainBase), main = range(jitterPeaks(view.mainPeaks), mainBase, .012);
+    mountain(main, mainBase, { ink: 1, s: 1, cun: 26, moss: 14, folds: 5, x0: view.mainX[0], x1: view.mainX[1] });
+    const secondBase = rr(...view.secondBase), second = range(jitterPeaks(view.secondPeaks), secondBase, .01);
+    mountain(second, secondBase, { ink: .7, s: .9, cun: 14, moss: 8, folds: 3, x0: view.secondX[0], x1: view.secondX[1] });
+    const bankBase = rr(...view.bankBase);
+    bank = range(jitterPeaks(view.bankPeaks), bankBase, .006);
+    mountain(bank, bankBase, { ink: 1, s: 1.1, cun: 10, moss: 6, folds: 2, x0: view.bankX[0], x1: view.bankX[1] });
+  }
   for (const [baseX,height,form,treeInk] of view.trees) {
     const tx = baseX + rr(-.018,.018);
     tree(tx, bank(tx) - .004, height * rr(.86,1.12), treeInk, form);
@@ -1466,15 +1642,27 @@ function buildLandscape(seed, scene = 'landscape'){
     }
     for (let rock = -2; rock <= 2; rock++) D(cx+W(rock*spread*.32),bottom-.012,{r:.006,ink:.45,water:.22,after:.01});
   }
-  // Ripples move with each view's shoreline and water level.
-  const rippleCount = Math.floor(rr(4,10));
-  for (let i = 0; i < rippleCount; i++) {
-    const y = rr(view.water[0], view.water[1]), xa = rr(.2,.55), xb = Math.min(xa+rr(.12,.38),.98), phase = rr(0,6), points = [];
-    for (let x = xa; x <= xb; x += .01) points.push([x,y+Math.sin(x*60+phase)*.002]);
-    S(points,{r:.0019,ink:.12,cin:-.32,water:.1,dry:.5,dryGrow:.3,fade:.6,speed:1.4,note:.11,after:.05,vel:.35});
+  if (cameraView === 'side') {
+    // The side elevation opens into a vertically meandering, widening stream.
+    const phase = rr(0,6.28), banks = [[],[]], currents = [[],[],[]];
+    for (let step = 0; step <= 24; step++) {
+      const t = step / 24, y = .74 - t * .66;
+      const cx = .5 + Math.sin(t * 8 + phase) * (.025 + .045 * t), width = .025 + .075 * t;
+      banks[0].push([cx - width, y]); banks[1].push([cx + width, y]);
+      for (let lane = -1; lane <= 1; lane++) currents[lane + 1].push([cx + lane * width * .42, y]);
+    }
+    for (const bank of banks) S(bank, { r: .0034, ink: .38, water: .32, speed: .9, note: .15 });
+    for (const current of currents) S(current, { r: .0055, ink: .08, cin: -.3, water: .48, speed: 2.4, note: .25, vel: .2 });
+  } else {
+    const rippleCount = Math.floor(rr(4,10));
+    for (let i = 0; i < rippleCount; i++) {
+      const y = rr(view.water[0], view.water[1]), xa = rr(.2,.55), xb = Math.min(xa+rr(.12,.38),.98), phase = rr(0,6), points = [];
+      for (let x = xa; x <= xb; x += .01) points.push([x,y+Math.sin(x*60+phase)*.002]);
+      S(points,{r:.0019,ink:.12,cin:-.32,water:.1,dry:.5,dryGrow:.3,fade:.6,speed:1.4,note:.11,after:.05,vel:.35});
+    }
   }
   if (view.feature === 'boat') {
-    const bx = rr(.55,.68), by = rr(view.water[0],view.water[1]);
+    const bx = cameraView === 'side' ? .5 : rr(.55,.68), by = cameraView === 'side' ? .23 : rr(view.water[0],view.water[1]);
     S([[bx-W(.04),by+.009],[bx-W(.022),by+.001],[bx,by-.001],[bx+W(.022),by+.001],[bx+W(.045),by+.011]], { r:.0034,ink:1.2,water:.2,speed:.3,note:.05 });
     person(bx,by-.015,.075,1,'boatman');
   } else if (view.feature === 'pavilion') {
@@ -1483,11 +1671,14 @@ function buildLandscape(seed, scene = 'landscape'){
     distantPavilion(islandX,islandY+.018,.12);
   } else if (view.feature === 'waterfall') {
     distantWaterfall(rr(.47,.72),rr(.48,.67),rr(.12,.2),rr(.025,.045));
+  } else if (view.feature === 'cliff') {
+    distantWaterfall(.58,.56,.12,.02);
   } else {
     distantVillage();
   }
   const skyObject = pick(['sun','sun','moon','moon','cloud']);
-  const skyX = portrait ? rr(.54,.67) : rr(.68,.84), skyY = portrait ? rr(.77,.84) : rr(.77,.88);
+  const skyX = view.cliff ? (portrait ? rr(.38,.48) : rr(.53,.62)) : portrait ? rr(.54,.67) : rr(.68,.84);
+  const skyY = portrait ? rr(.77,.84) : rr(.77,.88);
   if (skyObject === 'sun') D(skyX,skyY,{r:.042,ink:0,cin:1.25,water:.15,hard:1,after:.65,chime:true});
   else if (skyObject === 'moon') {
     D(skyX,skyY,{r:.026,ink:.03,ochre:.62,water:.12,hard:.8,after:.45});
@@ -1508,16 +1699,17 @@ function buildLandscape(seed, scene = 'landscape'){
   }
   // 题诗 and 钤印
   const pi = Math.floor(R() * POEMS.length);
-  F(() => showPoem(pi), 3.6);
+  F(() => showPoem(SCENE_POEMS.landscape || POEMS[pi]), 3.6);
   F(() => stampSeal(), .4);
-  return Q;
+  return finishScene();
 }
 
 /* ───────── poem & seal ───────── */
 let poemTimers = [];
 function hidePoem(){ poemTimers.forEach(clearTimeout); poemTimers = []; poemEl.classList.remove('on'); poemEl.hidden = true; poemEl.innerHTML = ''; }
 function showPoem(k){
-  const lines = Array.isArray(k) ? k : POEMS[k];
+  const poem = Array.isArray(k) ? { lines: k } : typeof k === 'number' ? POEMS[k] : k;
+  const lines = poem.lines, source = poem.source || '';
   hidePoem(); poemEl.hidden = false;
   let delay = 0;
   lines.forEach((ln, li) => {
@@ -1528,7 +1720,8 @@ function showPoem(k){
   });
   const seal = document.createElement('div'); seal.className = 'seal'; for (const ch of '岁月如歌') { const e = document.createElement('span'); e.textContent = ch; e.setAttribute('aria-hidden', 'true'); seal.appendChild(e); } seal.setAttribute('aria-label', '印章：岁月如歌');
   poemEl.appendChild(seal);
-  poemEl.setAttribute('aria-label', lines.join('，') + '。');
+  poemEl.setAttribute('aria-label', (source ? source + '：' : '') + lines.join('，') + '。');
+  if (source) poemEl.title = source; else poemEl.removeAttribute('title');
   requestAnimationFrame(() => requestAnimationFrame(() => poemEl.classList.add('on')));
 }
 function stampSeal(){
@@ -1542,11 +1735,12 @@ function setPaintBtn(on){ paintBtn.textContent = on ? '停笔' : '落笔' + $('s
 function stopPainting(){ ghost.on = false; ghost.q = []; ghost.cur = null; ghostEl.classList.remove('on'); setPaintBtn(false); }
 function startPainting(){
   if (!figuresReady) { waitingForFigures = true; return; }
-  const go = () => { ghost.q = buildLandscape(seedCounter++, $('scene').value); ghost.cur = null; ghost.wait = .2; ghost.on = true; ghostEl.classList.add('on'); setPaintBtn(true); };
-  if (hasInk) wash(go); else { hidePoem(); go(); }
+  const go = () => { ghost.q = buildLandscape(seedCounter++, $('scene').value, $('view').value); ghost.cur = null; ghost.wait = .2; ghost.on = true; ghostEl.classList.add('on'); setPaintBtn(true); };
+  if (hasInk || hasDryInk) wash(go); else { hidePoem(); go(); }
 }
 function wash(then){
   stopPainting(); hidePoem();
+  clearDry();
   washing = true; washT = 0; washThen = then || null; whoosh();
   for (let i = 0; i < 7; i++) {
     const a = Math.random() * 6.28;
@@ -1557,11 +1751,12 @@ function wash(then){
 function washTick(dt){
   washT += dt;
   if (washT < .9 && Math.random() < .35) { const a = Math.random() * 6.28; velQ.push(vsplat(Math.random(), Math.random(), .012, Math.cos(a) * 400, Math.sin(a) * 400)); }
-  if (washT > 1.9) { clearDye(); washing = false; hasInk = false; const t = washThen; washThen = null; if (t) t(); }
+  if (washT > 1.9) { clearDye(); clearDry(); washing = false; hasInk = false; const t = washThen; washThen = null; if (t) t(); }
 }
 
 paintBtn.addEventListener('click', () => { ensureAudio(); if (ghost.on) stopPainting(); else if (!washing) startPainting(); });
 $('scene').addEventListener('change', () => { if (!ghost.on && !washing) setPaintBtn(false); });
+$('view').addEventListener('change', () => { if (!ghost.on && !washing) setPaintBtn(false); });
 $('wash').addEventListener('click', () => { ensureAudio(); if (!washing) wash(); });
 soundBtn.addEventListener('click', () => { if (!audio.ctx) ensureAudio(); else setSound(!audio.on); });
 
@@ -1573,23 +1768,33 @@ const PIGMENTS = {
   jade: { ink: 0, cin: 0, ochre: -1 }
 };
 const BRUSH_WIDTHS = { fine: .58, medium: 1, thick: 1.72 };
-let tool = 'ink', brushSize = 'medium';
-document.querySelectorAll('.pigments button').forEach(b => b.addEventListener('click', () => {
-  tool = b.dataset.tool;
-  document.querySelectorAll('.pigments button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
-}));
-document.querySelectorAll('.sizes button').forEach(b => b.addEventListener('click', () => {
-  brushSize = b.dataset.size;
-  document.querySelectorAll('.sizes button').forEach(x => x.setAttribute('aria-checked', x === b ? 'true' : 'false'));
-}));
-const paperModeButtons = document.querySelectorAll('.paper-modes button');
+let tool = 'ink', brushSize = 'medium', brushType = 'brush';
+const pigmentSelect = $('pigment'), brushTypeSelect = $('brush-type'), brushSizeSelect = $('brush-size');
+function brushWidthScale(){
+  const width = BRUSH_WIDTHS[brushSize] || 1;
+  return brushSize === 'fine' && brushType !== 'pencil' ? width * .5 : width;
+}
+function setTool(next){
+  tool = next;
+  pigmentSelect.value = tool;
+  if (tool === 'water' && brushType !== 'brush') setBrushType('brush');
+}
+function setBrushType(next){
+  brushType = next;
+  brushTypeSelect.value = brushType;
+  if (brushType === 'pencil' && tool === 'water') setTool('ink');
+}
+pigmentSelect.addEventListener('change', () => setTool(pigmentSelect.value));
+brushTypeSelect.addEventListener('change', () => setBrushType(brushTypeSelect.value));
+brushSizeSelect.addEventListener('change', () => { brushSize = brushSizeSelect.value; });
+const paperThemeSelect = $('paper-theme');
 function setPaperTheme(mode){
   paperTheme = mode === 'dark' ? 'dark' : 'light';
   document.documentElement.dataset.theme = paperTheme;
-  paperModeButtons.forEach(b => b.setAttribute('aria-checked', b.dataset.paperTheme === paperTheme ? 'true' : 'false'));
+  paperThemeSelect.value = paperTheme;
   try { localStorage.setItem('moyun-paper-theme', paperTheme); } catch (_) {}
 }
-paperModeButtons.forEach(b => b.addEventListener('click', () => setPaperTheme(b.dataset.paperTheme)));
+paperThemeSelect.addEventListener('change', () => setPaperTheme(paperThemeSelect.value));
 setPaperTheme(paperTheme);
 const sheet = $('sheet'), aboutBtn = $('about');
 aboutBtn.addEventListener('click', () => { sheet.hidden = !sheet.hidden; aboutBtn.setAttribute('aria-expanded', String(!sheet.hidden)); });
@@ -1603,6 +1808,37 @@ addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) { sh
 const pointers = new Map();
 let hinted = false;
 function toUV(e){ const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height]; }
+function dryColor(){
+  const colors = { ink: '--ink', cinnabar: '--cinnabar', azurite: '--azurite', ochre: '--ochre', jade: '--jade' };
+  return getComputedStyle(document.documentElement).getPropertyValue(colors[tool] || '--ink').trim();
+}
+function dryPoint(x, y){ return [x * canvas.clientWidth, (1 - y) * canvas.clientHeight]; }
+function dryDot(x, y, ev){
+  const [px, py] = dryPoint(x, y), pressure = ev.pointerType === 'pen' ? ev.pressure || .5 : .5;
+  dryCtx.save();
+  dryCtx.globalAlpha = .78;
+  dryCtx.fillStyle = dryColor();
+  dryCtx.beginPath();
+  dryCtx.arc(px, py, (1 + BRUSH_WIDTHS[brushSize] * 1.5) * (.5 + pressure * .5), 0, Math.PI * 2);
+  dryCtx.fill();
+  dryCtx.restore();
+  hasDryInk = true;
+}
+function drySegment(s, x, y, ev){
+  const [x0, y0] = dryPoint(s.x, s.y), [x1, y1] = dryPoint(x, y);
+  const widthScale = BRUSH_WIDTHS[brushSize] || 1, k = Math.min(1, s.v / 2.2);
+  const pressure = s.pen ? ev.pressure || .5 : .5;
+  dryCtx.save();
+  dryCtx.globalAlpha = .72 + .16 * (1 - k);
+  dryCtx.strokeStyle = dryColor();
+  dryCtx.lineWidth = Math.max(.7, (1 + widthScale * 1.7) * (1 - .18 * k) * (s.pen ? .5 + pressure * 1.2 : 1));
+  dryCtx.lineCap = 'round'; dryCtx.lineJoin = 'round';
+  dryCtx.beginPath();
+  dryCtx.moveTo(x0, y0); dryCtx.lineTo(x1, y1);
+  dryCtx.stroke();
+  dryCtx.restore();
+  hasDryInk = true;
+}
 canvas.addEventListener('pointerdown', e => {
   e.preventDefault();
   try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
@@ -1610,11 +1846,16 @@ canvas.addEventListener('pointerdown', e => {
   if (!hinted) { hinted = true; hintEl.classList.add('gone'); }
   if (!sheet.hidden) { sheet.hidden = true; aboutBtn.setAttribute('aria-expanded', 'false'); }
   const [x, y] = toUV(e);
-  const widthScale = BRUSH_WIDTHS[brushSize], pigment = PIGMENTS[tool] || PIGMENTS.ink;
+  const widthScale = brushWidthScale(), pigment = PIGMENTS[tool] || PIGMENTS.ink;
   const s = { x, y, t: e.timeStamp || performance.now(), v: 0, load: 1, acc: 0, seed: Math.random() * 900, pen: e.pointerType === 'pen', r: null };
   pointers.set(e.pointerId, s);
   if (tool === 'water') { dyeQ.push(dab(x, y, .03 * widthScale, 0, 0, .5, 0)); }
-  else { dyeQ.push(dab(x, y, .014 * widthScale, pigment.ink * .55, pigment.cin * .6, .9, 0, 0, 1, 0, s.seed, pigment.ochre * .6)); hasInk = true; }
+  else if (brushType === 'pencil') { dryDot(x, y, e); }
+  else {
+    const hardBrush = brushType === 'hard', strength = hardBrush ? .3 : .55;
+    dyeQ.push(dab(x, y, (hardBrush ? .011 : .014) * widthScale, pigment.ink * strength, pigment.cin * strength, hardBrush ? .16 : .9, hardBrush ? .28 : 0, 0, 1, 0, s.seed, pigment.ochre * strength));
+    hasInk = true;
+  }
   note(y, .45, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm');
 });
 function moveTo(s, ev){
@@ -1622,17 +1863,24 @@ function moveTo(s, ev){
   const len = Math.hypot((x - s.x) * A, y - s.y); if (len < .0008) return;
   const now = ev.timeStamp || performance.now(), dtm = Math.max(4, now - s.t) / 1000; s.t = now;
   s.v = s.v * .75 + (len / dtm) * .25;
-  const widthScale = BRUSH_WIDTHS[brushSize] || 1, pigment = PIGMENTS[tool] || PIGMENTS.ink;
+  const widthScale = brushWidthScale(), pigment = PIGMENTS[tool] || PIGMENTS.ink;
   if (tool === 'water') {
     const radius = .03 * widthScale;
     brushSeg(s.x, s.y, x, y, { r0: radius, r1: radius, ink: 0, cin: 0, water: .7, dry: 0, seed: s.seed, force: Math.min(s.v * velocity.h * 1.2, 1200) });
     s.acc += len; if (s.acc > .16) { s.acc = 0; note(y, .25, x * 2 - 1, 'harm'); }
+  } else if (brushType === 'pencil') {
+    drySegment(s, x, y, ev);
   } else {
     const k = Math.min(1, s.v / 2.2), pr = s.pen ? (ev.pressure || .5) : .5;
-    const r = .013 * widthScale * (1 - .62 * k) * (s.pen ? .4 + pr * 1.3 : 1);
+    const hardBrush = brushType === 'hard';
+    const r = .013 * widthScale * (1 - (hardBrush ? .4 : .62) * k) * (s.pen ? .4 + pr * 1.3 : 1);
     s.load = Math.max(0, s.load - len * .75);
-    const dry = Math.min(.95, Math.max(0, (.5 - s.load) / .5) * .8 + k * .35), amt = .35 + .75 * s.load;
-    brushSeg(s.x, s.y, x, y, { r0: s.r ?? r, r1: r, ink: pigment.ink * amt, cin: pigment.cin * amt, ochre: pigment.ochre * amt, water: .3 + .4 * s.load * (1 - k), dry, seed: s.seed, force: Math.min(s.v, 3) * 3 });
+    const dry = hardBrush ? Math.min(.78, .3 + k * .22) : Math.min(.95, Math.max(0, (.5 - s.load) / .5) * .8 + k * .35), amt = .35 + .75 * s.load;
+    brushSeg(s.x, s.y, x, y, {
+      r0: s.r ?? r, r1: r, ink: pigment.ink * amt * (hardBrush ? .58 : 1), cin: pigment.cin * amt * (hardBrush ? .58 : 1),
+      ochre: pigment.ochre * amt * (hardBrush ? .58 : 1), water: hardBrush ? .06 + .1 * s.load * (1 - k) : .3 + .4 * s.load * (1 - k),
+      dry, seed: s.seed, force: hardBrush ? Math.min(s.v * .08, .25) : Math.min(s.v, 3) * 3
+    });
     s.r = r;
     s.acc += len; if (s.acc > .075) { s.acc = 0; note(y, .3 + .45 * k, x * 2 - 1, tool === 'ink' || tool === 'azurite' ? 'pluck' : 'harm'); }
   }
