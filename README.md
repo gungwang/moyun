@@ -11,7 +11,7 @@ An interactive ink-painting canvas. Ink runs on a real-time fluid simulation on 
 
 ## What it does
 
-- **Watch**: on load, a brush you can't see paints a fresh landscape. Choose among ten scenes and three camera views: front/top-down, 45° overhead, or side. Seeded layouts are reshuffled on each generation. Matching classical Chinese poems are preferred; original short poems fill scenes without a suitable classical verse. Side-view landscapes show a vertical river, while buildings and trees stay upright.
+- **Watch**: on load, a brush you can't see paints a fresh landscape. Choose among ten scenes and three camera views: front/top-down, 45° overhead, or side. Enter up to 112 characters of custom poetry or lyrics in the bottom toolbar to replace the scene poem; long text wraps and repositions to fit. Seeded layouts are reshuffled on each generation. Matching classical Chinese poems are preferred; original short poems fill scenes without a suitable classical verse. Side-view landscapes show a vertical river, while buildings and trees stay upright.
 - **Paint**: choose a brush type—traditional ink brush, dry pencil, or lightly bleeding stiff brush—then choose ink, cinnabar, azurite, ochre, jade, or clear water and a fine, medium, or thick size. The pencil draws on a separate crisp layer without stirring or bleeding the painting; the stiff brush uses much less water and flow than the traditional brush.
 - **Play**: `清水` (clear water) is a fluid brush — stir a finished painting and watch the ink swirl.
 - **Listen**: strokes play a pentatonic guqin, so nothing you draw is ever out of tune.

@@ -75,10 +75,15 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
 .bar{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px 4px;width:max-content;max-width:calc(100% - 32px);box-sizing:border-box;padding:5px 10px;background:var(--veil);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:3px}
 .bar button{appearance:none;background:none;border:0;margin:0;min-height:40px;padding:0 10px;font:inherit;font-size:15px;letter-spacing:.1em;color:var(--ink-soft);cursor:pointer;background-repeat:no-repeat;background-position:50% calc(100% - 6px);background-size:0 2px;transition:color .2s,background-size .25s}
 .bar button:hover{color:var(--ink)}
-.bar button:focus-visible,.bar select:focus-visible,.sheet button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.bar button:focus-visible,.bar select:focus-visible,.poem-entry textarea:focus-visible,.sheet button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
 .control{display:inline-flex;align-items:center;gap:4px;min-height:40px;color:var(--ink-faint);font-size:12px;letter-spacing:.04em;white-space:nowrap}
 .bar select{appearance:none;height:36px;min-width:0;max-width:none;box-sizing:border-box;padding:0 18px 0 5px;border:0;background-color:transparent;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 8px) 16px,calc(100% - 4px) 16px;background-size:4px 4px;background-repeat:no-repeat;font:inherit;font-size:13px;letter-spacing:.03em;color:var(--ink-soft);cursor:pointer}
 #scene{width:122px}#view{width:116px}#brush-type{width:96px}#pigment{width:88px}#brush-size{width:72px}#paper-theme{width:76px}
+.poem-entry{display:flex;align-items:center;gap:7px;flex:0 1 360px;width:min(360px,calc(100vw - 56px));max-width:100%;min-width:0;color:var(--ink-faint);font-size:12px;letter-spacing:.04em}
+.poem-entry label{white-space:nowrap}
+#custom-poem{flex:1 1 auto;width:0;min-width:0;height:36px;max-height:64px;box-sizing:border-box;resize:vertical;padding:5px 7px;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--ink);font:inherit;font-size:12px;line-height:1.4}
+#custom-poem::placeholder{color:var(--ink-faint);opacity:.85}
+#poem-count{min-width:42px;text-align:right;font-family:var(--font-mono);font-size:10px;letter-spacing:0;font-variant-numeric:tabular-nums}
 .bar select:hover{color:var(--ink)}
 .bar .primary{color:var(--ink);font-weight:600;display:inline-flex;align-items:center;gap:8px}
 .bar .primary::before{content:"";width:8px;height:8px;background:var(--cinnabar);border-radius:1px}
@@ -103,6 +108,9 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   .bar button{font-size:13px;padding:0 3px;letter-spacing:.02em}
   .control{gap:2px;font-size:11px}
   .bar .control select{height:34px;padding-left:3px;font-size:12px}
+  .poem-entry{flex:1 1 100%;width:100%;max-width:100%;gap:5px}
+  #custom-poem{height:34px;padding:4px 5px;font-size:11px}
+  #poem-count{min-width:36px;font-size:9px}
   .sep{display:none}
   .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 260px)}
   .sheet{bottom:calc(env(safe-area-inset-bottom,0px) + 250px);max-height:min(48vh,380px)}
@@ -151,6 +159,11 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);overf
   <button id="wash">洗纸</button>
   <button id="sound" aria-pressed="false">琴 · 静</button>
   <button id="about" aria-expanded="false" aria-controls="sheet">背后</button>
+  <div class="poem-entry">
+    <label for="custom-poem">诗词/歌词</label>
+    <textarea id="custom-poem" rows="1" aria-label="输入自定义诗词或歌词" aria-describedby="poem-count" placeholder="留空使用场景原诗"></textarea>
+    <output id="poem-count">0/112</output>
+  </div>
 </nav>
 
 <section class="sheet" id="sheet" hidden aria-label="这张纸背后的原理">
@@ -197,6 +210,7 @@ let paperTheme = 'light';
 try { if (localStorage.getItem('moyun-paper-theme') === 'dark') paperTheme = 'dark'; } catch (_) {}
 document.documentElement.dataset.theme = paperTheme;
 const poemEl = $('poem'), ghostEl = $('ghost'), hintEl = $('hint');
+const customPoemInput = $('custom-poem'), poemCount = $('poem-count');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
 
@@ -1646,7 +1660,7 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
   if (sceneBuilders[scene]) {
     distantBackdrop(scene);
     sceneBuilders[scene]();
-    F(() => showPoem(SCENE_POEMS[scene]), 3.6);
+    F(() => showScenePoem(SCENE_POEMS[scene]), 3.6);
     F(() => stampSeal(), .4);
     return finishScene();
   }
@@ -1800,7 +1814,7 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
   }
   // 题诗 and 钤印
   const pi = Math.floor(R() * POEMS.length);
-  F(() => showPoem(SCENE_POEMS.landscape || POEMS[pi]), 3.6);
+  F(() => showScenePoem(SCENE_POEMS.landscape || POEMS[pi]), 3.6);
   F(() => stampSeal(), .4);
   return finishScene();
 }
@@ -1808,23 +1822,104 @@ function buildLandscape(seed, scene = 'landscape', camera = 'front'){
 /* ───────── poem & seal ───────── */
 let poemTimers = [];
 function hidePoem(){ poemTimers.forEach(clearTimeout); poemTimers = []; poemEl.classList.remove('on'); poemEl.hidden = true; poemEl.innerHTML = ''; }
+function customPoemLayout(text){
+  const safeTop = 30, lineHeight = 1.62;
+  const panelTop = document.querySelector('.bar').getBoundingClientRect().top;
+  const mastLeft = document.querySelector('.mast').getBoundingClientRect().left;
+  const availableHeight = Math.max(100, panelTop - safeTop - 16);
+  const availableWidth = Math.max(100, mastLeft - 26 - 18);
+  const inlineFontSize = poemEl.style.fontSize;
+  poemEl.style.removeProperty('font-size');
+  let fontSize = Number.parseFloat(getComputedStyle(poemEl).fontSize) || 26;
+  if (inlineFontSize) poemEl.style.fontSize = inlineFontSize;
+  const wrap = size => {
+    const maxChars = Math.max(1, Math.floor(availableHeight / (size * lineHeight)));
+    return text.split('\n').flatMap(line => {
+      const chars = Array.from(line);
+      if (!chars.length) return [''];
+      const columns = [];
+      for (let i = 0; i < chars.length; i += maxChars) columns.push(chars.slice(i, i + maxChars).join(''));
+      return columns;
+    });
+  };
+  let lines = wrap(fontSize);
+  let textWidth = lines.length * fontSize * lineHeight + fontSize * 1.4;
+  while (fontSize > 14 && textWidth > availableWidth) {
+    fontSize = Math.max(14, fontSize - 1);
+    lines = wrap(fontSize);
+    textWidth = lines.length * fontSize * lineHeight + fontSize * 1.4;
+  }
+  const longestColumn = Math.max(...lines.map(line => Array.from(line).length), 0);
+  const textHeight = longestColumn * fontSize * lineHeight;
+  const top = safeTop + Math.min(18, Math.max(0, availableHeight - textHeight) * .035);
+  return {
+    lines,
+    fontSize,
+    left: Math.max(16, Math.min(26, mastLeft - textWidth - 18)),
+    top
+  };
+}
+function showScenePoem(fallback){
+  const customText = customPoemInput.value.trim();
+  showPoem(customText || fallback);
+}
 function showPoem(k){
-  const poem = Array.isArray(k) ? { lines: k } : typeof k === 'number' ? POEMS[k] : k;
-  const lines = poem.lines, source = poem.source || '';
+  const custom = typeof k === 'string';
+  const text = custom ? k.replace(/\r\n?/g, '\n').trim() : '';
+  const poem = custom ? null : Array.isArray(k) ? { lines: k } : typeof k === 'number' ? POEMS[k] : k;
+  const layout = custom ? customPoemLayout(text) : null;
+  const lines = custom ? layout.lines : poem.lines, source = custom ? '' : poem.source || '';
   hidePoem(); poemEl.hidden = false;
+  if (custom) {
+    poemEl.style.fontSize = `${layout.fontSize}px`;
+    poemEl.style.left = `${layout.left}px`;
+    poemEl.style.top = `calc(env(safe-area-inset-top,0px) + ${layout.top}px)`;
+  } else {
+    poemEl.style.removeProperty('font-size');
+    poemEl.style.removeProperty('left');
+    poemEl.style.removeProperty('top');
+  }
+  const charCount = lines.reduce((count, line) => count + Array.from(line).length, 0);
+  const charDelay = custom ? Math.min(200, 35000 / Math.max(1, charCount)) : 200;
+  const linePause = (custom ? Math.min(240, 1000 / Math.max(1, lines.length)) : 240) * 10;
   let delay = 0;
   lines.forEach((ln, li) => {
     const d = document.createElement('div'); d.className = 'ln';
-    for (const ch of ln) { const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; s.style.transitionDelay = delay + 'ms'; delay += 140; d.appendChild(s); }
-    poemTimers.push(setTimeout(() => play([7, 5, 8, 4][li], .5, -.5, 'pluck', true), delay - 600));
-    delay += 240; poemEl.appendChild(d);
+    const characters = Array.from(ln);
+    for (const ch of (characters.length ? characters : ['　'])) {
+      const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; s.style.transitionDelay = delay + 'ms'; delay += charDelay; d.appendChild(s);
+    }
+    poemTimers.push(setTimeout(() => play([7, 5, 8, 4][li % 4], .5, -.5, 'pluck', true), delay - 600));
+    delay += linePause; poemEl.appendChild(d);
   });
   const seal = document.createElement('div'); seal.className = 'seal'; for (const ch of '岁月如歌') { const e = document.createElement('span'); e.textContent = ch; e.setAttribute('aria-hidden', 'true'); seal.appendChild(e); } seal.setAttribute('aria-label', '印章：岁月如歌');
   poemEl.appendChild(seal);
-  poemEl.setAttribute('aria-label', (source ? source + '：' : '') + lines.join('，') + '。');
+  poemEl.setAttribute('aria-label', custom ? text : (source ? source + '：' : '') + lines.join('，') + '。');
   if (source) poemEl.title = source; else poemEl.removeAttribute('title');
   requestAnimationFrame(() => requestAnimationFrame(() => poemEl.classList.add('on')));
 }
+function updatePoemCount(){
+  const characters = Array.from(customPoemInput.value);
+  if (characters.length > 112) {
+    const cursor = Array.from(customPoemInput.value.slice(0, customPoemInput.selectionStart)).length;
+    customPoemInput.value = characters.slice(0, 112).join('');
+    const position = Array.from(customPoemInput.value).slice(0, cursor).join('').length;
+    customPoemInput.setSelectionRange(position, position);
+  }
+  poemCount.textContent = `${Array.from(customPoemInput.value).length}/112`;
+}
+function applyCustomPoem(){
+  const customText = customPoemInput.value.trim();
+  if (customText) showPoem(customText);
+  else {
+    const scene = canvas.dataset.generatedScene || $('scene').value;
+    showScenePoem(SCENE_POEMS[scene] || SCENE_POEMS.landscape);
+  }
+  if (!ghost.on && !washing && !poemEl.hidden) stampSeal();
+}
+customPoemInput.addEventListener('input', updatePoemCount);
+customPoemInput.addEventListener('change', applyCustomPoem);
+updatePoemCount();
 function stampSeal(){
   const s = poemEl.querySelector('.seal'); if (!s) return;
   s.classList.add('on'); play(0, .8, -.3, 'low', true);
